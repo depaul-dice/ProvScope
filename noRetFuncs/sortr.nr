@@ -1,0 +1,11 @@
+strrchr
+reallocarray
+euidaccess
+sched_getaffinity
+__syscall_cp
+__ofl_unlock
+__lsysinfo
+__stdio_close
+lseek
+getopt_long
+atexit

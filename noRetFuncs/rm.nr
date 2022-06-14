@@ -1,0 +1,9 @@
+strrchr
+fstatat
+unlinkat
+getopt_long
+atexitstrrchr
+fstatat
+unlinkat
+getopt_long
+atexit

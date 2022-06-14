@@ -1,0 +1,7 @@
+strrchr
+__ofl_unlock
+__stdio_close
+lseek
+getline
+getopt_long
+atexit

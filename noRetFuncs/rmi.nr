@@ -1,0 +1,5 @@
+strrchr
+fstatat
+unlinkat
+getopt_long
+atexit

@@ -1,0 +1,39 @@
+digraph "sort_buffer_size" {
+	label="sort_buffer_size";
+
+	Node0x1150c60 [shape=record, label="{0x1150c60\lepoint\l}"];
+	Node0x112fc00 [shape=record, label="{0x112fc00\lfunccall\lfileno\l}"];
+	Node0x112fc00_1 [shape=record, label="{0x112fc00_1\lfunccall\lfstat\l}"];
+	Node0x112fca0 [shape=record, label="{0x112fca0\lfunccall\lfstat\l}"];
+	Node0x112fcf0 [shape=record, label="{0x112fcf0\lfunccall\lstat\l}"];
+	Node0x112fde0 [shape=record, label="{0x112fde0\lfunccall\lsort_die\l}"];
+	Node0x1130060 [shape=record, label="{0x1130060\lfunccall\ldefault_sort_size\l}"];
+	Node0x11302e0 [shape=record, label="{0x11302e0\lret\l}"];
+	Node0x1150c60:s0 -> Node0x112fc00;
+	Node0x1150c60:s1 -> Node0x112fca0;
+	Node0x1150c60:s2 -> Node0x112fcf0;
+	Node0x1150c60:s3 -> Node0x11302e0;
+	Node0x112fc00 -> Node0x112fc00_1;
+	Node0x112fc00_1:s0 -> Node0x112fca0;
+	Node0x112fc00_1:s1 -> Node0x112fcf0;
+	Node0x112fc00_1:s2 -> Node0x11302e0;
+	Node0x112fc00_1:s3 -> Node0x112fde0;
+	Node0x112fc00_1:s4 -> Node0x1130060;
+	Node0x112fc00_1:s5 -> Node0x112fc00;
+	Node0x112fca0:s0 -> Node0x112fcf0;
+	Node0x112fca0:s1 -> Node0x11302e0;
+	Node0x112fca0:s2 -> Node0x112fde0;
+	Node0x112fca0:s3 -> Node0x1130060;
+	Node0x112fca0:s4 -> Node0x112fc00;
+	Node0x112fca0:s5 -> Node0x112fca0;
+	Node0x112fcf0:s0 -> Node0x11302e0;
+	Node0x112fcf0:s1 -> Node0x112fde0;
+	Node0x112fcf0:s2 -> Node0x1130060;
+	Node0x112fcf0:s3 -> Node0x112fc00;
+	Node0x112fcf0:s4 -> Node0x112fca0;
+	Node0x112fcf0:s5 -> Node0x112fcf0;
+	Node0x1130060:s0 -> Node0x11302e0;
+	Node0x1130060:s1 -> Node0x112fc00;
+	Node0x1130060:s2 -> Node0x112fca0;
+	Node0x1130060:s3 -> Node0x112fcf0;
+}

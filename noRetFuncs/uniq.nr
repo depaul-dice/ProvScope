@@ -1,0 +1,13 @@
+strrchr
+__ofl_unlock
+__stdio_close
+__dup3
+lseek
+getopt_long
+atexitstrrchr
+__ofl_unlock
+__stdio_close
+__dup3
+lseek
+getopt_long
+atexit

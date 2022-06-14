@@ -1,0 +1,9 @@
+__stpncpy
+__ofl_unlock
+__stdio_close
+stat
+__syscall_cp
+__munmap
+chown
+chmod
+remove

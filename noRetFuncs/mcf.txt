@@ -1,0 +1,2 @@
+__stdio_close
+__munmap

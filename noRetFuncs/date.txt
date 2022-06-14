@@ -1,0 +1,16 @@
+_IO_file_stat
+_IO_file_read
+__uflow
+__strdup
+qsort
+_IO_file_close
+realloc
+_IO_file_seek
+__strtoul_internal
+_IO_sgetn
+__underflow
+__overflow
+fputc
+strftime
+nl_langinfo
+atexit

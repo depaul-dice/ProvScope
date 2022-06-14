@@ -1,0 +1,4 @@
+__stdio_seek
+__ofl_unlock
+atof
+__stdio_close

@@ -1,0 +1,9 @@
+strrchr
+__secs_to_zone
+__lctrans
+strtoul
+strftime
+stat
+__nl_langinfo
+getopt_long
+atexit

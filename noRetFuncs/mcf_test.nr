@@ -1,0 +1,4 @@
+__ofl_unlock
+do_read
+__stdio_close
+__munmap
