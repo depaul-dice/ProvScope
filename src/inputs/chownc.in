@@ -1,0 +1,2 @@
+./funcTrace -p ../funcList.txt ../noRetFuncs/chownc.nr ../coreutil_parsed/chown_parsed ../coreFuncTraceInput/chownc.ftr
+

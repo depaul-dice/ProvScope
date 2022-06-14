@@ -1,0 +1,1 @@
+./funcTrace -c ../funcList.txt ../noRetFuncs/date.nr ../coreutil_parsed/date_parsed ../coreFuncTraceInput/dated.ftr ../coreFuncTraceInput/dater.ftr

@@ -1,0 +1,1 @@
+./funcTrace -p ../funcList.txt ../noRetFuncs/bzip2_test_control.nr ../coreutil_parsed/bzip2_parsed ../coreFuncTraceInput/bzip2_test_control.ftr

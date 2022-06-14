@@ -1,0 +1,1 @@
+./funcTrace -p ../funcList.txt ../noRetFuncs/minimap2.nr ../scientific_parsed/minimap2_parsed ../coreFuncTraceInput/minimap2.ftr

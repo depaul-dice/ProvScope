@@ -1,0 +1,1 @@
+./funcTrace -p ../funcList.txt ../noRetFuncs/b2sum.nr ../coreutil_parsed/b2sum_parsed ../coreFuncTraceInput/b2sum.ftr

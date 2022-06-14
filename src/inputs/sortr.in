@@ -1,0 +1,1 @@
+./funcTrace -p ../funcList.txt ../noRetFuncs/sortr.nr ../coreutil_parsed/sort_parsed ../coreFuncTraceInput/sortr.ftr

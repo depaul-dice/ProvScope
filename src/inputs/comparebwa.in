@@ -1,0 +1,1 @@
+./funcTrace -c ../funcList.txt ../noRetFuncs/bwa.nr ../scientific_parsed/bwa_parsed ../coreFuncTraceInput/bwa_human.ftr ../coreFuncTraceInput/bwa_orang.ftr

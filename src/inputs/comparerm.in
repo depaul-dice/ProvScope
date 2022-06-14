@@ -1,0 +1,1 @@
+./funcTrace -c ../funcList.txt ../noRetFuncs/rm.nr ../coreutil_parsed/rm_parsed ../coreFuncTraceInput/rmf.ftr ../coreFuncTraceInput/rmi.ftr

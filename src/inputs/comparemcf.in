@@ -1,0 +1,1 @@
+./funcTrace -c ../funcList.txt ../noRetFuncs/mcf.nr ../coreutil_parsed/mcf_parsed ../coreFuncTraceInput/mcf_test.ftr ../coreFuncTraceInput/mcf_train.ftr

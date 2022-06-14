@@ -1,0 +1,1 @@
+./funcTrace -p ../funcList.txt ../noRetFuncs/uniqd.nr ../coreutil_parsed/uniq_parsed ../coreFuncTraceInput/uniqd.ftr

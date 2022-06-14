@@ -1,0 +1,1 @@
+./funcTrace -p ../funcList.txt ../noRetFuncs/dated_noSys.nr ../coreutil_parsed/date_parsed_withIrrelevantFuncs ../coreFuncTraceInput/dated_noSys.ftr

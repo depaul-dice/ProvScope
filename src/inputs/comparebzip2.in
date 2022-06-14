@@ -1,0 +1,1 @@
+./funcTrace -c ../funcList.txt ../noRetFuncs/bzip2.nr ../coreutil_parsed/bzip2_parsed ../coreFuncTraceInput/bzip2_test_control.ftr ../coreFuncTraceInput/bzip2_test_dryer.ftr
