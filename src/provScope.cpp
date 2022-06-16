@@ -18,6 +18,10 @@ funcTrace *initMainFT(void)
     return ft;
 }
 
+/*
+ * this function is called when you need to compare the two paths
+ * the path tracing is now done lazily... so that you wouldn't have to deal with large paths and get stuck in the exponential algorithms, the less amount of work, the better
+ */
 int pathCompare(Args& args)
 {
     ErrorCode ec = ErrorCode::SUCCESS;
@@ -25,20 +29,36 @@ int pathCompare(Args& args)
     char *tmpStr = (char *)malloc(strlen(args.parsedDirectory.c_str()) + 1);
     strcpy(tmpStr, args.parsedDirectory.c_str());
 
-    std::map<std::string, cfg_t *>cfgs = readCFGs(tmpStr, ec);
+    /*
+     * this part is reading cfgs that are created with llvmanalysis repo
+     */
+    std::map<std::string, cfg_t *>cfgs = readCFGs(tmpStr, ec); 
     free(tmpStr);
     //Tools::print_map(cfgs);
 
+    /*
+     * this part is reading the clibFile which states which functions are relevant to system calls
+     */
     std::cout << "making dict\n";
     std::map<std::string, int> clibDict = file2Dict(args.clibFile);    
+
+    /*
+     * this part is creating the flat trace without the consideration of function hierarchy from the trace that's captured preliminarily.
+     */
     //Tools::print_map(clibDict);
     std::cout << "making flatTrace\n";
-    std::vector<std::string> flatTrace1 = makeFlatTrace(args.flatTrace1);
+    std::vector<std::string> flatTrace1 = makeFlatTrace(args.flatTrace1); 
     //print_vector(flatTrace);
     std::vector<std::string> flatTrace2 = makeFlatTrace(args.flatTrace2); 
 
+    /*
+     * this part is reading the functions that did not have return statement, which creates more hassle to create function level trace from the flat trace we just read
+     */
     std::map<std::string, int> noRetFuncs = file2Dict(args.noRetFile);
 
+    /*
+     * the below is where function trace is being made hierarchical instead of flat
+     */
     auto start1 = std::chrono::steady_clock::now();
     funcTrace *ft1 = new funcTrace();
     ft1->makeFuncTrace(flatTrace1, clibDict, noRetFuncs, cfgs);
@@ -59,6 +79,9 @@ int pathCompare(Args& args)
         << std::chrono::duration_cast<std::chrono::microseconds>(end2 - start2).count()
         << " microseconds\n";
 
+    /*
+     * below is where hierarchical function trace is being compared with the other hierarchical function trace
+     */
     std::cout << "comparison has started" << std::endl;
     long time = 0;
     int diff = 0;
@@ -71,6 +94,9 @@ int pathCompare(Args& args)
     std::cout << "path tracing time: "
         << time << " microseconds\n";
     
+    /*
+     * reporting the number of divergence in the trace
+     */
     std::cout << diff << " divergence were there\n";
 
     delete ft1; 
@@ -84,6 +110,10 @@ int pathCompare(Args& args)
     return EXIT_SUCCESS;
 }
 
+/*
+ * this function rarely works due to the path explosion problem.
+ * to iterate through all the possible paths, it would take a exponential time and to do that, even with hierarchical function trace, it takes significant amount of time.
+ */
 int findAllPath(Args& args)
 {
     ErrorCode ec = ErrorCode::SUCCESS;
@@ -130,6 +160,11 @@ std::map<std::string, cfg_t *> getCFGs(Args &args)
 
     return cfgs; 
 }
+
+/*
+ * This function finds a path from the beggining of the trace to the end.
+ * Since this method does not allow the string level comparison of 2 traces, which enables lazy path tracing, it would take more time to trace the paths, but it usually works despite the fact in the worst case, it could face the path explosion proble.
+ */
 int findAPath(Args& args)
 {
     /*
@@ -170,6 +205,9 @@ int findAPath(Args& args)
     return EXIT_SUCCESS;
 }
 
+/*
+ * This part is printing the hierarchical function trace using indent to show the hierarchy
+ */
 int printHierarchicalPath(Args& args)
 {
     /*
@@ -202,6 +240,10 @@ int printHierarchicalPath(Args& args)
     return EXIT_SUCCESS;
 }
 
+/*
+ * this function is (obviously) showing the usage of the program
+ * below in the fprintf functions are the usage of the program
+ */
 int usage()
 {
     fprintf(stderr, "           USAGE:\n \
@@ -212,6 +254,9 @@ int usage()
     return EXIT_SUCCESS;      
 }
 
+/*
+ * this is main function, all it does is pass the arguments to each options and according to the options given, does path-finding, comparison, printing a hierarchical path, printing a usage of the program
+ */
 int main(int argc, char **argv)
 {
 
