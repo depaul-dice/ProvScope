@@ -7,11 +7,11 @@
 using namespace std;
 
 //Have to create "alpha,minStringLength,maxStringLength" each time, before calling construct
-int k=1,maxStringLength=-1,minStringLength=INT_MAX;
-unordered_map<string, int> prefix, sets;  //prefix = prefix to state number, sets = set to state number
-int state_index=0;
-unordered_set<int> finalStates;
-unordered_set<string> alpha; // this is all the states
+static int k=1,maxStringLength=-1,minStringLength=INT_MAX;
+static unordered_map<string, int> prefix, sets;  //prefix = prefix to state number, sets = set to state number
+static int state_index=0;
+static unordered_set<int> finalStates;
+static unordered_set<string> alpha; // this is all the states
 
 struct trieNode {
     unordered_map<string,trieNode*> children;
