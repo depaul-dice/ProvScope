@@ -490,7 +490,7 @@ std::vector<std::tuple<node *, unsigned>> funcTrace::cognizeLoops(std::vector<no
     return loopPath;
 }
 
-void funcTrace::ftcmp(funcTrace *ft2, std::map<std::string, cfg_t *> cfgs, long &time, int &diff)
+void funcTrace::ftcmp(funcTrace *ft2, std::map<std::string, cfg_t *> &cfgs, long &time, int &diff)
 {
     /*
     if(DEBUG)
@@ -551,26 +551,53 @@ void funcTrace::ftcmp(funcTrace *ft2, std::map<std::string, cfg_t *> cfgs, long 
     time = time + std::chrono::duration_cast<std::chrono::microseconds>(tok - tik).count();
 
     //std::vector<std::tuple<unsigned, unsigned>> tmpPairs;
-    std::vector<std::tuple<unsigned, unsigned>> alignedPairs;
-
-    assert(alignedPairs.size() == 0);
-    unsigned i = 0; unsigned j = 0;
 
     Comparison c(path1, path2, loopPath1, loopPath2);
+    this->__ftcmp(GREEDY, c, cfgs, ft2, diff, time);
+}
 
-#ifdef LOOPCMP
-    c.loopGreedyApproach(alignedPairs, diff);
+void funcTrace::__ftcmp(int which, Comparison &c, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, int &diff, long &time) 
+{
+    if(which == GREEDY) 
+    {
+        greedyContent(c, diff, cfgs, ft2, time);
+    }
+    else if(which == EDITDISTANCE) 
+    {
+        editDistanceContent(c, diff, cfgs, ft2, time);
+    }
+    else if(which == LOOPGREEDY)
+    {
+        loopGreedyContent(c, diff, cfgs, ft2, time);
+    }
+    else
+    {
+        std::cout << "comparison method not implemented\n";
+    }
+}
+
+void funcTrace::greedyContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time)
+{    
+    unsigned i = 0; unsigned j = 0;
+    std::vector<std::tuple<unsigned, unsigned>> alignedPairs;
+    c.greedyApproach(alignedPairs, diff);
     for(unsigned t = 1; t < alignedPairs.size() - 1; t++)
     {
-        i = std::get<0>(alignedPairs[t]) - 1;        
-        j = std::get<1>(alignedPairs[t]) - 1; 
-        //std::cout << "going to work on (" << i << ", " << j << ")\n";
+        i = std::get<0>(alignedPairs[t]) - 1;
+        j = std::get<1>(alignedPairs[t]) - 1;
+        //std::cout << "doing ftcmp for i: " << i << ", j: " << j << std::endl;
         this->__funcTrace[i]->ftcmp(ft2->getFuncTrace()[j], cfgs, time, diff);
     }
+}
 
-#else
+void funcTrace::editDistanceContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time)
+{
+    
+    std::vector<node *> path1 = c.hpath;
+    std::vector<node *> path2 = c.vpath;
 
-#ifdef EDITDISTANCE
+    unsigned i = 0; unsigned j = 0;
+    std::vector<std::tuple<unsigned, unsigned>> alignedPairs;
     c.editDistance(alignedPairs);
     unsigned prevI = 0; unsigned prevJ = 0;
     for(unsigned t = 0; t < alignedPairs.size(); t++)
@@ -603,19 +630,20 @@ void funcTrace::ftcmp(funcTrace *ft2, std::map<std::string, cfg_t *> cfgs, long 
 
         prevI = i; prevJ = j;
     }
-#else
-    c.greedyApproach(alignedPairs, diff);
+}
 
+void funcTrace::loopGreedyContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time)
+{
+    unsigned i = 0; unsigned j = 0;
+    std::vector<std::tuple<unsigned, unsigned>> alignedPairs;
+    c.loopGreedyApproach(alignedPairs, diff);
     for(unsigned t = 1; t < alignedPairs.size() - 1; t++)
     {
-        i = std::get<0>(alignedPairs[t]) - 1;
-        j = std::get<1>(alignedPairs[t]) - 1;
-        //std::cout << "doing ftcmp for i: " << i << ", j: " << j << std::endl;
+        i = std::get<0>(alignedPairs[t]) - 1;        
+        j = std::get<1>(alignedPairs[t]) - 1; 
+        //std::cout << "going to work on (" << i << ", " << j << ")\n";
         this->__funcTrace[i]->ftcmp(ft2->getFuncTrace()[j], cfgs, time, diff);
     }
-#endif /* EDITDISTANCE */
-#endif /* LOOPCMP */
-
 }
 
 int funcTrace::getAPathRecursive(std::map<std::string, cfg_t *> cfgs)

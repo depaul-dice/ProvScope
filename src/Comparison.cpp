@@ -342,9 +342,8 @@ ErrorCode Comparison::__loopGreedyContents(std::vector<std::tuple<node *,unsigne
             {
                 node *node2Match = std::get<0>(content1[i]);
                 unsigned indexOne = std::get<1>(content1[i]);
-                node *nodeMatched;
                 unsigned indexTwo;
-                //node *nodeMatched;
+                node *nodeMatched;
                 //unsigned indexTwo;
                 if(node2Match->type != nodeType::Virtual && match.find(node2Match) != match.end())
                 {
@@ -466,7 +465,6 @@ ErrorCode Comparison::loopGreedyApproach(std::vector<std::tuple<unsigned, unsign
      * step 1. get the matching pairs of the nodes 
      */
 
-
     unsigned i = 0; unsigned j = 0; // these only consider the match at the surface
     std::map<node *, std::vector<unsigned>> match;
     std::map<std::string, std::vector<unsigned>> virtualNodeMatch;
@@ -538,9 +536,8 @@ ErrorCode Comparison::loopGreedyApproach(std::vector<std::tuple<unsigned, unsign
             {
                 node *node2Match = std::get<0>(loopPath1[i]);
                 unsigned indexOne = std::get<1>(loopPath1[i]);
-                node *nodeMatched;
                 unsigned indexTwo;
-                //node *nodeMatched;
+                node *nodeMatched;
                 //unsigned indexTwo;
                 if(node2Match->type != nodeType::Virtual && match.find(node2Match) != match.end())
                 {

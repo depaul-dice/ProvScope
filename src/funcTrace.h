@@ -21,7 +21,9 @@
 #define FILEREADSIZE 4096
 //#define PRINTPOSSIBLEPATH 0
 //#define EDITDISTANCE 0
-#define LOOPCMP 0
+#define LOOPGREEDY 0
+#define GREEDY 1
+#define EDITDISTANCE 2
 
 class funcTrace 
 {
@@ -52,7 +54,7 @@ public:
     void printRecursiveFT(std::ostream& os);
 
     // comparing two function trace
-    void ftcmp(funcTrace *, std::map<std::string, cfg_t *>, long&, int&);
+    void ftcmp(funcTrace *, std::map<std::string, cfg_t *>&, long&, int&);
     // count the number of paths by getting all the paths, the algorithm is faulty
     long cntPaths(std::map<std::string, cfg_t *> cfgs);
     // get one path that does not contradict the function trace
@@ -93,6 +95,11 @@ private:
     void printPath(std::ostream& os, std::vector<node *> path);
     void printLooppath(std::ostream& os, std::vector<std::tuple<node *, unsigned>>& loopPath, unsigned numTab);
     std::vector<std::tuple<node *, unsigned>> cognizeLoops(std::vector<node *>& originalPath);
+
+    void __ftcmp(int which, Comparison &c, std::map<std::string, cfg_t *>& cfgs, funcTrace *ft2, int &diff, long &time);
+    void greedyContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time);
+    void editDistanceContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time);
+    void loopGreedyContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time);
 };
 
 #endif /* FUNCTRACE_H */

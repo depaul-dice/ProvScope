@@ -15,6 +15,9 @@
 class Comparison
 {
 public:
+    std::vector<node *>& hpath;
+    std::vector<node *>& vpath;
+
     Comparison() = delete;
     Comparison(const Comparison&) = delete;
     Comparison& operator = (const Comparison&) = delete;
@@ -33,8 +36,6 @@ public:
 private:
     const float insertCost = 2;
     const float alternateCost = 2;
-    std::vector<node *>& hpath;
-    std::vector<node *>& vpath;
     std::vector<std::tuple<node *, unsigned>>& loopPath1;
     std::vector<std::tuple<node *, unsigned>>& loopPath2;
 
