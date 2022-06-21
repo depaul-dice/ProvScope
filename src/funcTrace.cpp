@@ -553,7 +553,7 @@ void funcTrace::ftcmp(funcTrace *ft2, std::map<std::string, cfg_t *> &cfgs, long
     //std::vector<std::tuple<unsigned, unsigned>> tmpPairs;
 
     Comparison c(path1, path2, loopPath1, loopPath2);
-    this->__ftcmp(GREEDY, c, cfgs, ft2, diff, time);
+    this->__ftcmp(REGEX, c, cfgs, ft2, diff, time);
 }
 
 void funcTrace::__ftcmp(int which, Comparison &c, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, int &diff, long &time) 
@@ -569,6 +569,10 @@ void funcTrace::__ftcmp(int which, Comparison &c, std::map<std::string, cfg_t *>
     else if(which == LOOPGREEDY)
     {
         loopGreedyContent(c, diff, cfgs, ft2, time);
+    }
+    else if(which == REGEX)
+    {
+        regExContent(c, diff, cfgs, ft2, time);
     }
     else
     {
@@ -644,6 +648,21 @@ void funcTrace::loopGreedyContent(Comparison &c, int &diff, std::map<std::string
         //std::cout << "going to work on (" << i << ", " << j << ")\n";
         this->__funcTrace[i]->ftcmp(ft2->getFuncTrace()[j], cfgs, time, diff);
     }
+}
+
+void funcTrace::regExContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time) 
+{
+    unsigned i, j;
+    std::vector<std::tuple<unsigned, unsigned>> alignedPairs;
+    c.regEx(alignedPairs, diff);
+    for(unsigned t = 1; t < alignedPairs.size() - 1; t++)
+    {
+        i = std::get<0>(alignedPairs[t]) - 1;        
+        j = std::get<1>(alignedPairs[t]) - 1; 
+        //std::cout << "going to work on (" << i << ", " << j << ")\n";
+        this->__funcTrace[i]->ftcmp(ft2->getFuncTrace()[j], cfgs, time, diff);
+    }
+  
 }
 
 int funcTrace::getAPathRecursive(std::map<std::string, cfg_t *> cfgs)

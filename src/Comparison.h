@@ -5,6 +5,8 @@
 #include "Matrix.h"
 #include "cfg.h"
 #include "ec.h"
+#include "fsa/fsa.h"
+#include "regexGraph.h"
 #include <cassert>
 #include <cstring>
 #include <vector>
@@ -33,6 +35,8 @@ public:
 
     ErrorCode loopGreedyApproach(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff);
 
+    ErrorCode regEx(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff);
+
 private:
     const float insertCost = 2;
     const float alternateCost = 2;
@@ -49,6 +53,8 @@ private:
     ErrorCode findMinCostTrace(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs);
     ErrorCode fillMatrix(void);
     bool nodeMatch(node *a, node *b);
+
+    regexGraph createRegex(void);
    
 };
 

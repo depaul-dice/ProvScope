@@ -19,11 +19,12 @@
 #include "Comparison.h"
 
 #define FILEREADSIZE 4096
-//#define PRINTPOSSIBLEPATH 0
-//#define EDITDISTANCE 0
+#define PRINTPOSSIBLEPATH 0
+
 #define LOOPGREEDY 0
-#define GREEDY 1
-#define EDITDISTANCE 2
+#define REGEX 1
+#define GREEDY 2
+#define EDITDISTANCE 3
 
 class funcTrace 
 {
@@ -100,6 +101,7 @@ private:
     void greedyContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time);
     void editDistanceContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time);
     void loopGreedyContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time);
+    void regExContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time);
 };
 
 #endif /* FUNCTRACE_H */

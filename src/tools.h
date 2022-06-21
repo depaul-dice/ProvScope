@@ -7,6 +7,7 @@
 #include <cstring>
 
 #include <map>
+#include <set>
 #include <vector>
 #include <iostream>
 
@@ -35,6 +36,26 @@ namespace Tools
         {
             std::cout << m[i] << std::endl;
         }
+    }
+
+    template <typename K, typename V>
+    static inline bool isContained(K key, std::map<K, V> table)
+    {
+        auto it = table.find(key);
+        if(it != table.end())
+            return true;
+        else 
+            return false;
+    }
+
+    template <typename K>
+    static inline bool isContained(K key, std::set<K> table)
+    {
+        auto it = table.find(key);
+        if(it != table.end())
+            return true;
+        else
+            return false;
     }
 
 

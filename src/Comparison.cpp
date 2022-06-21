@@ -1,5 +1,6 @@
 
 #include "Comparison.h"
+using namespace Tools;
 
 /*
 Comparison::Comparison(std::vector<node *>& path1, std::vector<node *>& path2)
@@ -631,3 +632,114 @@ ErrorCode Comparison::loopGreedyApproach(std::vector<std::tuple<unsigned, unsign
     }
     return ErrorCode::SUCCESS;
 }
+
+
+regexGraph Comparison::createRegex()
+{
+    std::vector<std::vector<node *>> paths{hpath, vpath};
+    std::vector<node *> path;
+    node *currNode;
+    node *prev;
+    std::set<node *> nodes;
+    std::map<node *, std::set<node *>> edges;
+    node *entryPoint = paths[0][0];
+
+    for(int i = 0; i < paths.size(); i++) 
+    {
+        path = paths[i];
+        prev = nullptr; 
+        for(int j = 0; j < path.size(); j++) 
+        {
+            currNode = path[j];
+            nodes.insert(currNode);
+            if(prev != nullptr) 
+            {
+                if(isContained(prev, edges)) 
+                {
+                    edges[prev].insert(currNode);
+                }
+                else
+                {
+                    std::set<node *> dsts{currNode};
+                    edges[prev] = dsts;
+                }
+            }
+            prev = currNode;
+        }
+    }
+    
+    return regexGraph(entryPoint, nodes, edges);
+}
+
+ErrorCode Comparison::regEx(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff)
+{
+    regexGraph regex = createRegex();
+    return ErrorCode::SUCCESS;
+}
+
+/*
+ErrorCode Comparison::regEx(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff)
+{
+    //std::unordered_set<std::string> vertices;
+    std::unordered_map<std::string, std::string> conversionTable;
+    int index = 128;
+    
+    for(unsigned i = 0; i < hpath.size(); i++) 
+    {
+        std::string tmp = std::string(hpath[i]->name);
+        auto got = conversionTable.find(tmp);
+        if(got == conversionTable.end()) 
+        {
+            conversionTable[tmp] = std::to_string(index++);
+        }
+    }
+
+    for(unsigned i = 0; i < vpath.size(); i++)
+    {
+        std::string tmp = std::string(vpath[i]->name);
+        auto got = conversionTable.find(tmp);
+        if(got == conversionTable.end()) 
+        {
+            conversionTable[tmp] = std::to_string(index++);
+        }
+    } 
+
+    for(auto i = conversionTable.begin(); i != conversionTable.end(); i++)
+    {
+        std::cout << i->first << ", " << i->second << std::endl;
+        insertAlpha(i->second);
+    }
+    //printAlpha();
+
+    std::vector<std::string> path1, path2;
+    std::vector<std::vector<std::string>> input;
+    for(unsigned i = 0; i < hpath.size(); i++) 
+    {
+        path1.push_back(conversionTable[std::string(hpath[i]->name)]);
+    } 
+    for(unsigned i = 0; i < vpath.size(); i++) 
+    {
+        path2.push_back(conversionTable[std::string(vpath[i]->name)]);
+    }
+    input.push_back(path1);
+    input.push_back(path2);
+    
+    std::vector<std::unordered_map<int, std::unordered_set<int>>> transition_table;
+    
+    int l = std::max(hpath.size(), vpath.size());
+    std::cout << "l: " << l << std::endl;
+    construct(input, l, transition_table);
+    for(int i = 0; i < transition_table.size(); i++) {
+        std::cout << "at " << i << std::endl;
+        for(auto element: transition_table[i]) {
+            std::cout << element.first << "->";
+            for(auto itr = element.second.begin(); itr != element.second.end(); itr++) {
+                std::cout << *itr << ", ";
+            }
+            std::cout << std::endl;
+        }
+    }
+
+    return ErrorCode::SUCCESS;
+}
+*/
