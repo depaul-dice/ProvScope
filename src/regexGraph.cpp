@@ -42,22 +42,20 @@ void regexGraph::colorNodes(node *curr, vector<node *>& traversals, int &currCol
     unsigned index = traversals.size() - 1;
     
     node *tmp;
-    while(traversals[index] != curr)
+    do
     {
         tmp = traversals[index]; 
+        cout << "coloring " <<  *tmp << endl;
         if(isContained(tmp, colors)) 
         {
-            set<int> set = colors[tmp];
-            set.insert(currColor);
-            colors[tmp] = set;
+            colors[tmp].insert(currColor);
         }
         else
         {
             set<int> set{currColor};
             colors[tmp] = set;
         }
-        index--;
-    }
+    } while(traversals[index--] != curr);
     currColor++;
 }
 
@@ -66,10 +64,15 @@ void regexGraph::colorNodes(node *curr, vector<node *>& traversals, int &currCol
  */
 void regexGraph::findGroupsRecursive(vector<node *> traversals, set<node *> history, set<node *> &done, node *curr, int &currColor)
 {
-    if(isContained(curr, done)) return; // we have already visited this node
+    cout << "at " << *curr << endl;
+    if(isContained(curr, done)) {
+        cout << "have already visited. returning\n";
+        return; // we have already visited this node
+    }
     // else
     if(isContained(curr, history))
     {
+        cout << "contained in the history, coloring nodes\n";
         colorNodes(curr, traversals, currColor);
     }
     else
@@ -97,6 +100,7 @@ void regexGraph::findGroups()
     set<node *> history{curr};
     set<node *> done{curr};
     int currColor = 0;
+    cout << "at " << *curr << endl;
 
     // go through all the destinations available
     set<node *>& dsts{edges[curr]};
@@ -125,24 +129,11 @@ bool regexGraph::isBackedge(node *src, node *dst)
 void regexGraph::printNodes()
 {
     std::cout << "these are nodes\n";
-    for(auto it = nodes.begin(); it != nodes.end(); it++)
-    {
-        std::cout << **it << std::endl;
-    }
-
-
+    print_set(nodes);
 }
 
 void regexGraph::printEdges()
 {
     std::cout << "\nthose are edges\n";
-    for(auto it = edges.begin(); it != edges.end(); it++)
-    {
-        std::cout << "src: " << *(it->first) << "\ndsts:\n";
-        std::set<node *> dsts = edges[it->first];
-        for(auto itr = dsts.begin(); itr != dsts.end(); itr++)
-        {
-            std::cout << "\t" << **itr << std::endl;
-        }
-    }
+    print_map(edges);
 }

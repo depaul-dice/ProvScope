@@ -20,12 +20,45 @@ namespace Tools
 
     char *extractSubstring(char *filename);
 
+    template <typename E>
+    void print_set (std::set<E> const &m)
+    {
+        for(auto it = m.begin(); it != m.end(); it++)
+        {
+            std::cout << *it << std::endl;
+        }
+        
+    }
+
+    template <typename E>
+    void print_set(std::set<E *> const &m)
+    {
+        for(auto it = m.begin(); it != m.end(); it++)
+        {
+            if(*it != nullptr)
+                std::cout << **it << std::endl;
+            else
+                std::cout << "null" << std::endl;
+        }
+    }
+
     template <typename K, typename V>
     void print_map (std::map<K, V> const &m)
     {
         for (auto const &pair: m) 
         {
             std::cout << "{" << pair.first << ": " << pair.second << "}\n";
+        }
+    }
+
+    template <typename K, typename V>
+    void print_map (std::map<K *, std::set<V *>> const &m)
+    {
+        for(auto const &pair: m)
+        {
+            std::cout << *pair.first << "-> \n{";
+            print_set(pair.second);
+            std::cout << "}" << std::endl;
         }
     }
 
@@ -36,16 +69,6 @@ namespace Tools
         {
             std::cout << m[i] << std::endl;
         }
-    }
-
-    template <typename E>
-    void print_set (std::set<E> const &m)
-    {
-        for(auto it = m.begin(); it != m.end(); it++)
-        {
-            std::cout << *it << std::endl;
-        }
-        
     }
 
     template <typename K, typename V>
