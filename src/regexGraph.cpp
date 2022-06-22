@@ -10,34 +10,11 @@ regexGraph::regexGraph(const regexGraph& regex)
 
 regexGraph::regexGraph(node *ep, set<node *> &nodes, map<node *, set<node *>> &edges) : entryPoint(ep), nodes(nodes), edges(edges)
 {
+    printNodes();
+    printEdges();
     findGroups(); 
 }
 
-
-/*
- * the 2 static function below are to simply save my typing of doing the find and checking if it is the end or not
- */
-/*
-template <typename K, typename V>
-static inline bool isContained(K key, map<K, V> table)
-{
-    auto it = table.find(key);
-    if(it != table.end())
-        return true;
-    else 
-        return false;
-}
-
-template <typename K>
-static inline bool isContained(K key, set<K> table)
-{
-    auto it = table.find(key);
-    if(it != table.end())
-        return true;
-    else
-        return false;
-}
-*/
 
 /*
  * this function adds the backedges and colors
@@ -137,10 +114,35 @@ void regexGraph::findGroups()
  */
 bool regexGraph::isBackedge(node *src, node *dst)
 {
-    if(isContained(src, backedges)) // is any backedge coming out of the source?
+    if(isContained(src, backedges)) // is any backedge coming out of the source? the function is from tools.h
     {
         if(isContained(dst, backedges[src])) // is the edge to dst from src backedge?
             return true;
     }
     return false;
+}
+
+void regexGraph::printNodes()
+{
+    std::cout << "these are nodes\n";
+    for(auto it = nodes.begin(); it != nodes.end(); it++)
+    {
+        std::cout << **it << std::endl;
+    }
+
+
+}
+
+void regexGraph::printEdges()
+{
+    std::cout << "\nthose are edges\n";
+    for(auto it = edges.begin(); it != edges.end(); it++)
+    {
+        std::cout << "src: " << *(it->first) << "\ndsts:\n";
+        std::set<node *> dsts = edges[it->first];
+        for(auto itr = dsts.begin(); itr != dsts.end(); itr++)
+        {
+            std::cout << "\t" << **itr << std::endl;
+        }
+    }
 }

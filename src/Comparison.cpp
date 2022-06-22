@@ -644,11 +644,11 @@ regexGraph Comparison::createRegex()
     std::map<node *, std::set<node *>> edges;
     node *entryPoint = paths[0][0];
 
-    for(int i = 0; i < paths.size(); i++) 
+    for(unsigned i = 0; i < paths.size(); i++) 
     {
         path = paths[i];
         prev = nullptr; 
-        for(int j = 0; j < path.size(); j++) 
+        for(unsigned j = 0; j < path.size(); j++) 
         {
             currNode = path[j];
             nodes.insert(currNode);

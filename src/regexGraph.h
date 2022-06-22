@@ -31,6 +31,8 @@ private:
     void colorNodes(node *curr, std::vector<node *>&, int &);
     void findGroupsRecursive(std::vector<node *> traversals, std::set<node *> history, std::set<node *> &done, node *curr, int &currColor);
     void findGroups(); // this colors all the nodes
+    void printNodes();
+    void printEdges();
 };
 
 #endif /* REGEX_H */

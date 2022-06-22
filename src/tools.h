@@ -38,6 +38,16 @@ namespace Tools
         }
     }
 
+    template <typename E>
+    void print_set (std::set<E> const &m)
+    {
+        for(auto it = m.begin(); it != m.end(); it++)
+        {
+            std::cout << *it << std::endl;
+        }
+        
+    }
+
     template <typename K, typename V>
     static inline bool isContained(K key, std::map<K, V> table)
     {
