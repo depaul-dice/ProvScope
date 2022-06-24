@@ -482,9 +482,10 @@ ErrorCode Comparison::loopGreedyApproach(std::vector<std::tuple<unsigned, unsign
         nodeTwo = std::get<0>(loopPath2[j]);
         indexOne = std::get<1>(loopPath1[i]);
         indexTwo = std::get<1>(loopPath2[j]);
-
+        // if the nodes matches
         if(this->nodeMatch(nodeOne, nodeTwo))
         {
+            // if they are not virtual nodes
             if(nodeOne->type != nodeType::Virtual)
             {
                 alignedPairs.push_back(std::make_tuple(indexOne, indexTwo));
@@ -674,6 +675,7 @@ regexGraph Comparison::createRegex()
 ErrorCode Comparison::regEx(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff)
 {
     regexGraph regex = createRegex();
+    
     return ErrorCode::SUCCESS;
 }
 

@@ -442,10 +442,14 @@ void funcTrace::printLooppath(std::ostream& os, std::vector<std::tuple<node *, u
     }
 }
 
+/*
+ * this function is used when you are creating the looppath
+ * you go through each nodes and consider it the loop when you go through the same node
+ */
 std::vector<std::tuple<node *, unsigned>> funcTrace::cognizeLoops(std::vector<node *>& originalPath)
 {
     //std::vector<node *> loopPath;
-    std::vector<std::tuple<node *, unsigned>> loopPath;
+    std::vector<std::tuple<node *, unsigned>> loopPath; // the second element is index
     std::map<node *, unsigned> pastNodes;
     virtualNode *vn;
     node *curr;
@@ -468,23 +472,23 @@ std::vector<std::tuple<node *, unsigned>> funcTrace::cognizeLoops(std::vector<no
         {
             prev = pastNodes[curr];
             // you want to create a tmpVec and insert all those in the index of loopPath into tmpVec
-            //std::cout << "loop found, prev: " << prev << " at index: " << index << std::endl;
-            //std::vector<node *> newVec = std::vector<node *>(loopPath.begin() + prev, loopPath.end());
+            // below is the part that copies at once
             std::vector<std::tuple<node *, unsigned>> newVec = std::vector<std::tuple<node *, unsigned>>(loopPath.begin() + prev, loopPath.end());
+           
 
             // you need to delete all the smaller things from pastNodes
             for(unsigned i = prev; i < index; i++)
             {
                 tmp = std::get<0>(loopPath.back());
                 loopPath.pop_back();
-                pastNodes.erase(tmp);
+                pastNodes.erase(tmp); // you need to delete the elements from hashmap too
             }
             index = prev + 1;
-            vn = new virtualNode(newVec, curr->name);
+            vn = new virtualNode(newVec, curr->name); // and creating the virtual node here
             pastNodes[curr] = index;
            
             loopPath.push_back(std::make_tuple((node *)vn, (unsigned)-1));
-            loopPath.push_back(std::make_tuple(curr, origIndex));
+            loopPath.push_back(std::make_tuple(curr, origIndex)); 
         }
     }
     return loopPath;

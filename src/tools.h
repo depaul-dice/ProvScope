@@ -72,7 +72,7 @@ namespace Tools
     }
 
     template <typename K, typename V>
-    static inline bool isContained(K key, std::map<K, V> table)
+    inline bool isContained(K key, std::map<K, V> table)
     {
         auto it = table.find(key);
         if(it != table.end())
@@ -82,7 +82,7 @@ namespace Tools
     }
 
     template <typename K>
-    static inline bool isContained(K key, std::set<K> table)
+    inline bool isContained(K key, std::set<K> table)
     {
         auto it = table.find(key);
         if(it != table.end())
@@ -91,8 +91,32 @@ namespace Tools
             return false;
     }
 
+    template <typename K>
+    inline bool isContained(std::set<K> small, std::set<K> big)
+    {
+        for(auto it = small.begin(); it != small.end(); it++)
+        {
+            if(!isContained(*it, big)) return false;
+        }
+        return true;
+    }
 
-    //void print_vector (std::vector<funcTrace *> const &m);
+
+    /*
+     * implementing the set difference
+     */
+    template <typename E> 
+    std::set<E> diff(std::set<E> first, const std::set<E> &second)
+    {
+        for(auto it = second.begin(); it != second.end(); it++)
+        {
+            if(isContained(*it, first))
+            {
+                first.erase(*it);
+            }
+        }
+        return first;
+    }
 
 }
 

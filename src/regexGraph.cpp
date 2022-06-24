@@ -10,8 +10,8 @@ regexGraph::regexGraph(const regexGraph& regex)
 
 regexGraph::regexGraph(node *ep, set<node *> &nodes, map<node *, set<node *>> &edges) : entryPoint(ep), nodes(nodes), edges(edges)
 {
-    printNodes();
-    printEdges();
+    //printNodes();
+    //printEdges();
     findGroups(); 
 }
 
@@ -26,17 +26,22 @@ void regexGraph::colorNodes(node *curr, vector<node *>& traversals, int &currCol
     node *prev = traversals.back();
     if(isContained(prev, backedges))
     {
-        set<node *> dsts = backedges[prev];
-        dsts.insert(curr);
-        backedges[prev] = dsts;
+        backedges[prev].insert(curr);
     }
     else
     {
         set<node *> dsts{curr};
         backedges[prev] = dsts;
     }
-    tuple<node *, node *> edge(make_tuple(prev, curr));  
-    backedge2color[edge] = currColor;
+    
+    // get the color of the backedge
+    int tmpColor;
+    if(!isContained(curr, backedge2color)) {
+        backedge2color[curr] = currColor;
+        tmpColor = currColor++;
+    } else {
+        tmpColor = backedge2color[curr];
+    }
 
     // then let's add the color for all the nodes
     unsigned index = traversals.size() - 1;
@@ -45,18 +50,17 @@ void regexGraph::colorNodes(node *curr, vector<node *>& traversals, int &currCol
     do
     {
         tmp = traversals[index]; 
-        cout << "coloring " <<  *tmp << endl;
+        //cout << "coloring " <<  *tmp << " with " << tmpColor << endl;
         if(isContained(tmp, colors)) 
         {
-            colors[tmp].insert(currColor);
+            colors[tmp].insert(tmpColor);
         }
         else
         {
-            set<int> set{currColor};
+            set<int> set{tmpColor};
             colors[tmp] = set;
         }
     } while(traversals[index--] != curr);
-    currColor++;
 }
 
 /*
@@ -64,15 +68,15 @@ void regexGraph::colorNodes(node *curr, vector<node *>& traversals, int &currCol
  */
 void regexGraph::findGroupsRecursive(vector<node *> traversals, set<node *> history, set<node *> &done, node *curr, int &currColor)
 {
-    cout << "at " << *curr << endl;
+    //cout << "at " << *curr << endl;
     if(isContained(curr, done)) {
-        cout << "have already visited. returning\n";
+        //cout << "have already visited. returning\n";
         return; // we have already visited this node
     }
     // else
     if(isContained(curr, history))
     {
-        cout << "contained in the history, coloring nodes\n";
+        //cout << "contained in the history, coloring nodes\n";
         colorNodes(curr, traversals, currColor);
     }
     else
@@ -100,7 +104,7 @@ void regexGraph::findGroups()
     set<node *> history{curr};
     set<node *> done{curr};
     int currColor = 0;
-    cout << "at " << *curr << endl;
+    //cout << "at " << *curr << endl;
 
     // go through all the destinations available
     set<node *>& dsts{edges[curr]};
@@ -118,12 +122,40 @@ void regexGraph::findGroups()
  */
 bool regexGraph::isBackedge(node *src, node *dst)
 {
+    if(src == nullptr || dst == nullptr) return false;
+    
     if(isContained(src, backedges)) // is any backedge coming out of the source? the function is from tools.h
     {
         if(isContained(dst, backedges[src])) // is the edge to dst from src backedge?
             return true;
     }
     return false;
+}
+
+/*
+ * this function returns -1 if the edge is not backedge
+ * otherwise, returns the color (int)
+ */
+int regexGraph::getColorBackedge(node *src, node *dst)
+{
+    if(!isBackedge(src, dst)) return -1;
+    else 
+    {
+        return backedge2color[dst];
+    }
+}
+
+set<int> regexGraph::getColors(node *curr)
+{
+    if(isContained(curr, colors)) 
+    {
+        return colors[curr]; 
+    }
+    else
+    {
+        set<int> s{};
+        return s;
+    }
 }
 
 void regexGraph::printNodes()
