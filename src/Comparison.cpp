@@ -1,6 +1,8 @@
 
 #include "Comparison.h"
+using namespace std;
 using namespace Tools;
+using namespace regex;
 
 /*
 Comparison::Comparison(std::vector<node *>& path1, std::vector<node *>& path2)
@@ -675,6 +677,13 @@ regexGraph Comparison::createRegex()
 ErrorCode Comparison::regEx(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff)
 {
     regexGraph regex = createRegex();
+    set<int> baseColors1;
+    set<int> baseColors2;
+    unsigned index = 0;
+    vector<regexNode> regexHPath = pathAnalysis(hpath, regex, baseColors1, index);   
+    //pathPrint(regexPath);
+    index = 0;
+    vector<regexNode> regexVPath = pathAnalysis(vpath, regex, baseColors2, index);
     
     return ErrorCode::SUCCESS;
 }

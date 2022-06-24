@@ -3,6 +3,7 @@
 
 #include "regexGraph.h"
 #include "cfg.h"
+#include <cassert>
 #include <vector>
 #include <set>
 
@@ -18,6 +19,8 @@ public:
     regexNode(std::set<int> color, std::vector<std::vector<regexNode>> nodes); // this is when it is virtual node
     node *get();
 
+    friend std::ostream& operator << (std::ostream& os, const regexNode& tmp);
+
 private:
     bool isVirtual;
     std::set<int> colors;
@@ -28,6 +31,9 @@ private:
 
 namespace regex {
 
-    std::vector<regexNode> pathAnalysis(std::vector<node *>& path, regexGraph& rg, std::set<int> &baseColors, unsigned &baseIndex);
+    std::vector<regexNode> pathAnalysis(std::vector<node *> path, regexGraph& rg, std::set<int> &baseColors, unsigned &baseIndex);
+
+    void pathPrint(std::vector<regexNode> &path);
+
 }
 #endif /* REGEXNODE_H */

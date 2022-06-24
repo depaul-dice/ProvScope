@@ -6,7 +6,7 @@ DEPS = funcTrace.h readFiles.h cfg.h ec.h Args.h tools.h Matrix.h Comparison.h f
 $(EXEC): provScope.cpp $(OBJ)  
 	$(CC) -o $@ $^ -Wall -std=c++14 -lssl -lcrypto
 
-debug: provScope.cpp funcTrace.cpp readFiles.cpp cfg.cpp Args.cpp tools.cpp Matrix.cpp Comparison.cpp ec.cpp regexGraph.cpp
+debug: provScope.cpp funcTrace.cpp readFiles.cpp cfg.cpp Args.cpp tools.cpp Matrix.cpp Comparison.cpp ec.cpp regexGraph.cpp regexNode.cpp
 	$(CC) -o $@ $^ -Wall -std=c++14 -ggdb -lssl -lcrypto 
 
 %.o: %.cpp $(DEPS)

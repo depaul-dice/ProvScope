@@ -318,6 +318,7 @@ std::ostream& operator << (std::ostream& os, const node& tmp)
     if(tmp.loop == true)
         os << "loop,";
 
+    /*
     os << tmp.numOEdges << ",";
     os << tmp.numIEdges << ",";
     node *curr = nullptr;
@@ -361,6 +362,7 @@ std::ostream& operator << (std::ostream& os, const node& tmp)
     {
         os << "na";
     }
+    */
     
     if(tmp.cfg != nullptr)
     {

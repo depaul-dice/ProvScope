@@ -7,6 +7,7 @@
 #include "ec.h"
 #include "fsa/fsa.h"
 #include "regexGraph.h"
+#include "regexNode.h"
 #include <cassert>
 #include <cstring>
 #include <vector>

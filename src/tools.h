@@ -42,6 +42,18 @@ namespace Tools
         }
     }
 
+    template <typename E>
+    std::ostream& operator << (std::ostream& os, const std::set<E> S)
+    {
+        os << "{";
+        for(auto itr = S.begin(); itr != S.end(); itr++)
+        {
+            os << *itr << ", ";
+        }
+        os << "}";
+        return os;
+    }
+
     template <typename K, typename V>
     void print_map (std::map<K, V> const &m)
     {
