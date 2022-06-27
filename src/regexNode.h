@@ -10,6 +10,10 @@
 #include <map>
 #include <tuple>
 
+/*
+ * This is a class that node could be virtual containing a vector of vector of nodes (each vector representing the one iteration of the loop)
+ * This class is used as a set with regexGraph, which does the preliminary stuff to coloring the nodes assigning which nodes belong to which loop.
+ */ 
 class regexNode
 {
 public:
@@ -41,17 +45,38 @@ private:
     std::vector<std::vector<regexNode>> nodes; 
 };
 
+/*
+ * the function in this namespace is specifically for the comparison using the node coloring of the regular expression of the walks
+ */
 namespace regex {
 
+    /*
+     * it takes in vector of node * as an input and according to the colors of the each nod  in regexGraph, it creates the virtual nodes and returns vector of regexNodes
+     */
     std::vector<regexNode> pathAnalysis(std::vector<node *> path, regexGraph& rg, std::set<int> &baseColors, unsigned &baseIndex);
 
+    /*
+     * this function prints the vector of regexNode to the stdout
+     */
     void pathPrint(std::vector<regexNode> &path);
 
+    /*
+     * this function is specifically for realigning after the divergence of the function
+     * it will manipulate i and j to be at the convergence point
+     */
     void regexRealignment(std::map<regexNode, std::vector<unsigned>> &realignmentMap, std::vector<regexNode> &path1, std::vector<regexNode> &path2, unsigned &i, unsigned &j, std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, std::vector<std::tuple<unsigned, unsigned>> &alignedVirtualNodes, std::vector<unsigned> &convergencePoints);
 
-    void prepareMap(std::map<regexNode, std::vector<unsigned>> &realignmentMap, std::vector<regexNode> &path1, int i);
-    void regexRealignment(std::map<regexNode, int> &realignmentMap, std::vector<regexNode> &path1, std::vector<regexNode> &path2, int &i, int &j, std::vector<std::tuple<unsigned, unsigned>> &alignedPairs);
-    void regexAlignment(std::vector<regexNode> &path1, std::vector<regexNode> &path2, std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff);
+    /*
+     * this fills in the map for the realignment
+     */
+    void prepareMap(std::map<regexNode, std::vector<unsigned>> &realignmentMap, std::vector<regexNode> &path2, int j);
+
+    /*
+     * this is the function which adds all the parts that diverged and converged
+     * I think I should add a dummy node if it didn't converge at the end of the iteration
+     * (but you should delete it after you output them to avoid memory leaks)
+     */
+    void regexAlignment(std::vector<regexNode> &path1, std::vector<regexNode> &path2, std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff, std::vector<unsigned> &divergencePoints, std::vector<unsigned> &convergencePoints);
 
 }
 #endif /* REGEXNODE_H */
