@@ -684,6 +684,7 @@ ErrorCode Comparison::regEx(std::vector<std::tuple<unsigned, unsigned>> &aligned
     //pathPrint(regexPath);
     index = 0;
     vector<regexNode> regexVPath = pathAnalysis(vpath, regex, baseColors2, index);
+    regexAlignment(regexHPath, regexVPath, alignedPairs, diff);
     
     return ErrorCode::SUCCESS;
 }

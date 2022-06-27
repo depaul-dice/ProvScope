@@ -7,6 +7,7 @@
 #include <cstring>
 
 #include <map>
+#include <unordered_map>
 #include <set>
 #include <vector>
 #include <iostream>
@@ -90,6 +91,16 @@ namespace Tools
         if(it != table.end())
             return true;
         else 
+            return false;
+    }
+
+    template <typename K, typename V>
+    inline bool isContained(K key, std::unordered_map<K, V> table)
+    {
+        auto it = table.find(key);
+        if(it != table.end())
+            return true;
+        else
             return false;
     }
 
