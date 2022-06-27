@@ -20,7 +20,10 @@ public:
 
     regexNode(node *content, int index, std::set<int> colors); // this is when it actually have the node *
     regexNode(std::set<int> color, std::vector<std::vector<regexNode>> nodes); // this is when it is virtual node
+    
+    // below are all necessary for the map implementation as well as direct comparison
     bool operator == (const regexNode&) const; // operator overloading for ==
+    bool operator != (const regexNode &rhs) const;
     bool operator < (const regexNode&) const; // this is necessary for map implementation
 
     node *get();

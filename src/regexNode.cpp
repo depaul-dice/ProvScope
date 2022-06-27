@@ -23,6 +23,11 @@ bool regexNode::operator == (const regexNode& rhs) const
     return _isVirtual == rhs._isVirtual && colors == rhs.colors && content == rhs.content && originalIndex == rhs.originalIndex && nodes == rhs.nodes; 
 }
 
+bool regexNode::operator != (const regexNode &rhs) const
+{
+    return !(*this == rhs);
+}
+
 bool regexNode::operator < (const regexNode& rhs) const
 {
     if(*this == rhs) return false;
@@ -39,6 +44,17 @@ bool regexNode::operator < (const regexNode& rhs) const
         for(unsigned i = 0; i < nodes.size(); i++)
         {
             if(nodes[i].size() != rhs.nodes[i].size()) return nodes[i].size() != rhs.nodes.size();
+        }
+
+        for(unsigned i = 0; i < nodes.size(); i++)
+        {
+            for(unsigned j = 0; j < nodes[i].size(); j++)
+            { 
+                if(nodes[i][j] != rhs.nodes[i][j])
+                {
+                    return nodes[i][j] < rhs.nodes[i][j];
+                } 
+            }
         }
         return false;
     }
