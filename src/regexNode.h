@@ -23,7 +23,7 @@ public:
     ~regexNode() = default;
 
     regexNode(node *content, int index, std::set<int> colors); // this is when it actually have the node *
-    regexNode(std::set<int> color, std::vector<std::vector<regexNode>> nodes); // this is when it is virtual node
+    regexNode(std::set<int> color, node *startNode, std::vector<std::vector<regexNode>> nodes); // this is when it is virtual node
     
     // below are all necessary for the map implementation as well as direct comparison
     bool operator == (const regexNode&) const; // operator overloading for ==
@@ -34,6 +34,7 @@ public:
     bool isVirtual();
     unsigned getIndex();
     std::vector<std::vector<regexNode>> getInside();
+    void setIndex(unsigned index);
 
     friend std::ostream& operator << (std::ostream& os, const regexNode& tmp);
 
@@ -43,6 +44,21 @@ private:
     node *content; // nullptr if it is a virtual node
     unsigned originalIndex;
     std::vector<std::vector<regexNode>> nodes; 
+};
+
+class Interval
+{
+public:
+    Interval() = default;
+    Interval(const Interval&) = default;
+    Interval& operator = (const Interval&) = default;
+    ~Interval() = default;
+    Interval(unsigned start, unsigned end);
+
+    friend std::ostream& operator << (std::ostream& os, const Interval& tmp);
+    
+    unsigned start;
+    unsigned end;
 };
 
 /*
@@ -63,8 +79,10 @@ namespace regex {
     /*
      * this function is specifically for realigning after the divergence of the function
      * it will manipulate i and j to be at the convergence point
+     * will return where it converged in terms of index
+     * if it didn't converge, will return -1
      */
-    void regexRealignment(std::map<regexNode, std::vector<unsigned>> &realignmentMap, std::vector<regexNode> &path1, std::vector<regexNode> &path2, unsigned &i, unsigned &j, std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, std::vector<std::tuple<unsigned, unsigned>> &alignedVirtualNodes, std::vector<unsigned> &convergencePoints);
+    unsigned regexRealignment(std::map<regexNode, std::vector<unsigned>> &realignmentMap, std::vector<regexNode> &path1, std::vector<regexNode> &path2, unsigned &i, unsigned &j, std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, std::vector<std::tuple<unsigned, unsigned>> &alignedVirtualNodes);
 
     /*
      * this fills in the map for the realignment
@@ -76,7 +94,8 @@ namespace regex {
      * I think I should add a dummy node if it didn't converge at the end of the iteration
      * (but you should delete it after you output them to avoid memory leaks)
      */
-    void regexAlignment(std::vector<regexNode> &path1, std::vector<regexNode> &path2, std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff, std::vector<unsigned> &divergencePoints, std::vector<unsigned> &convergencePoints);
+    void regexAlignment(std::vector<regexNode> &path1, std::vector<regexNode> &path2, std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff, std::vector<Interval> &points);
 
+    bool cmpInterval(const Interval &i1, const Interval &i2);
 }
 #endif /* REGEXNODE_H */

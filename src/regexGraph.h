@@ -21,6 +21,9 @@ public:
     bool isBackedge(node *src, node *dst);
     int getColorBackedge(node *src, node *dst);
     std::set<int> getColors(node *);
+    void visualizeGraph(std::string filename);
+
+    friend std::ostream& operator << (std::ostream& os, const regexGraph& tmp);
 
 private:
     node *entryPoint;

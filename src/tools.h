@@ -11,6 +11,7 @@
 #include <set>
 #include <vector>
 #include <iostream>
+#include <tuple>
 
 //#include "funcTrace.h"
 
@@ -55,6 +56,19 @@ namespace Tools
         return os;
     }
 
+    template <typename E>
+    std::ostream& operator << (std::ostream& os, const std::set<E *> S)
+    {
+        os << "{";
+        for(auto itr = S.begin(); itr != S.end(); itr++)
+        {
+            os << **itr << ", ";
+        }
+        os << "}";
+        return os;
+       
+    }
+
     template <typename K, typename V>
     void print_map (std::map<K, V> const &m)
     {
@@ -75,6 +89,31 @@ namespace Tools
         }
     }
 
+    template <typename K, typename V>
+    std::ostream& operator << (std::ostream& os, const std::map<K, V> &m)
+    {
+        os << "{\n";
+        for(auto const &pair: m)
+        {
+            os << pair.first << "-> " << pair.second << std::endl;
+        }
+        os << "}\n";
+        return os;
+       
+    }
+
+    template <typename K, typename V>
+    std::ostream& operator << (std::ostream& os, const std::map<K *, V> &m)
+    {
+        os << "{\n";
+        for(auto const &pair: m)
+        {
+            os << *pair.first << "-> " << pair.second << std::endl;
+        }
+        os << "}\n";
+        return os;
+    }
+
     template <typename E>
     void print_vector (std::vector<E> const &m)
     {
@@ -83,6 +122,28 @@ namespace Tools
             std::cout << m[i] << std::endl;
         }
     }
+
+    template <typename E>
+    std::ostream& operator << (std::ostream &os, std::vector<E> const &V)
+    {
+        os << "< ";
+        for(unsigned i = 0; i < V.size(); i++)
+        {
+            if(i < V.size() - 1)
+                os << V[i] << ", ";
+            else
+                os << V[i];
+        }
+        os << " >";
+        return os;
+    }
+    
+    template <typename S, typename T>
+    std::ostream& operator << (std::ostream &os, std::tuple<S, T> const &m)
+    {
+        os << "{" << std::get<0>(m) << ", " << std::get<1>(m) << "}"; 
+        return os;
+    } 
 
     template <typename K, typename V>
     inline bool isContained(K key, std::map<K, V> table)
@@ -140,6 +201,31 @@ namespace Tools
         }
         return first;
     }
+
+    /*
+     * did it in terms of operator overloading
+     */
+    template <typename E>
+    std::set<E> operator - (const std::set<E> &first, const std::set<E> &second)
+    {
+        std::set<E> diff = first;
+        for(auto it = second.begin(); it != second.end(); it++)
+        {
+            if(isContained(*it, diff))
+            {
+                diff.erase(*it);
+            }
+        }
+        return diff;
+    } 
+
+    /*
+    template <typename S, typename T>
+    bool cmpTuple(const std::tuple<S, T> &t1, const std::tuple<S, T> &t2)  
+    {
+        return std::get<0>(t1) < std::get<0>(t2);
+    }
+    */
 
 }
 

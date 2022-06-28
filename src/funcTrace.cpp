@@ -4,6 +4,8 @@
  * I copied the code from https://www.techiedelight.com/print-keys-values-map-cpp/ to print out the map
  */
 #include "funcTrace.h"
+using namespace std;
+using namespace Tools;
 
 /*
 funcTraceElement::funcTraceElement(const std::string& funcName)
@@ -657,13 +659,20 @@ void funcTrace::loopGreedyContent(Comparison &c, int &diff, std::map<std::string
 void funcTrace::regExContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time) 
 {
     unsigned i, j;
-    std::vector<std::tuple<unsigned, unsigned>> alignedPairs;
+    vector<tuple<unsigned, unsigned>> alignedPairs;
     c.regEx(alignedPairs, diff);
+    cout << "printing alignedPairs";
+    for(unsigned i = 0; i < alignedPairs.size(); i++)
+    {
+        cout << alignedPairs[i] << ", " << endl;
+    }
+    
     for(unsigned t = 1; t < alignedPairs.size() - 1; t++)
     {
         i = std::get<0>(alignedPairs[t]) - 1;        
         j = std::get<1>(alignedPairs[t]) - 1; 
-        //std::cout << "going to work on (" << i << ", " << j << ")\n";
+        cout << "going to work on (" << i << ", " << j << "), "
+            << __funcTrace[i]->funcName << ", " << ft2->getFuncTrace()[j]->funcName << endl;
         this->__funcTrace[i]->ftcmp(ft2->getFuncTrace()[j], cfgs, time, diff);
     }
   

@@ -15,7 +15,6 @@ regexGraph::regexGraph(node *ep, set<node *> &nodes, map<node *, set<node *>> &e
     findGroups(); 
 }
 
-
 /*
  * this function adds the backedges and colors
  * backedge is added for the back of the traversal and colors are added until it goes back to curr
@@ -145,6 +144,10 @@ int regexGraph::getColorBackedge(node *src, node *dst)
     }
 }
 
+void regexGraph::visualizeGraph(std::string filename)
+{
+}
+
 set<int> regexGraph::getColors(node *curr)
 {
     if(isContained(curr, colors)) 
@@ -168,4 +171,14 @@ void regexGraph::printEdges()
 {
     std::cout << "\nthose are edges\n";
     print_map(edges);
+}
+
+ostream& operator << (ostream& os, const regexGraph& tmp)
+{
+    os << "nodes:\n" << tmp.nodes << endl;
+    os << "edges:\n" << tmp.edges << endl; 
+    os << "colors:\n" << tmp.colors << endl;
+    os << "backedges:\n" << tmp.backedges << endl;
+    os << "backedge2color:\n" << tmp.backedge2color << endl;
+    return os;
 }

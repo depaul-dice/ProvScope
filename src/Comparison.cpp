@@ -674,17 +674,48 @@ regexGraph Comparison::createRegex()
     return regexGraph(entryPoint, nodes, edges);
 }
 
+static bool cmpTuple(const tuple<unsigned, unsigned> &t1, const tuple<unsigned, unsigned> &t2)
+{
+    return get<0>(t1) < get<0>(t2); 
+}
+
 ErrorCode Comparison::regEx(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff)
 {
     regexGraph regex = createRegex();
+    cout << "done with creating regex\n";
+    cout << "printing regexGraph\n";
+    cout << regex;
     set<int> baseColors1;
     set<int> baseColors2;
     unsigned index = 0;
     vector<regexNode> regexHPath = pathAnalysis(hpath, regex, baseColors1, index);   
-    //pathPrint(regexPath);
+    cout << "printing hpath in regex considered form\n";
+    pathPrint(regexHPath);
     index = 0;
     vector<regexNode> regexVPath = pathAnalysis(vpath, regex, baseColors2, index);
-    regexAlignment(regexHPath, regexVPath, alignedPairs, diff);
+    vector<Interval> points; // this shows where it diverged and converged
+    cout << "done with analysis of the paths\n"; 
+    
+    regexAlignment(regexHPath, regexVPath, alignedPairs, diff, points);
+    cout << "done with alignment\n";
+    sort(points.begin(), points.end(), cmpInterval);
+    cout << "printing points\n";
+    cout << points << endl;
+
+    sort(alignedPairs.begin(), alignedPairs.end(), cmpTuple);
+
+    for(unsigned i = 0; i < points.size(); i++)
+    {
+        cout << "diverged at " << *hpath[points[i].start] << endl 
+            << "reconverged at " << *hpath[points[i].end] << endl;
+    }
+
+    cout << "printing alignedPairs\n";
+    for(unsigned i = 0; i < alignedPairs.size(); i++)
+    {
+        cout << alignedPairs[i] << ", ";
+    }
+    cout << endl;
     
     return ErrorCode::SUCCESS;
 }

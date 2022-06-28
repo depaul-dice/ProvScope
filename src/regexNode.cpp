@@ -1,3 +1,5 @@
+// for the code that is comparig the interval, I have referred to https://www.geeksforgeeks.org/sorting-a-vector-in-c/
+
 #include "regexNode.h"
 
 using namespace std;
@@ -8,16 +10,25 @@ regexNode::regexNode(const regexNode& tmp)
 {
 }
 
+/*
+ * constructor for non-virtual nodes
+ */
 regexNode::regexNode(node *content, int index, std::set<int> colors)
     :_isVirtual(false), colors(colors), content(content), originalIndex(index), nodes()
 {
 }
 
-regexNode::regexNode(std::set<int> colors, vector<vector<regexNode>> nodes)
-    :_isVirtual(true), colors(colors), content(nullptr), originalIndex(-1), nodes(nodes)
+/*
+ * constructor for virtua nodes
+ */
+regexNode::regexNode(std::set<int> colors, node *startNode, vector<vector<regexNode>> nodes)
+    :_isVirtual(true), colors(colors), content(startNode), originalIndex(-1), nodes(nodes)
 {
 }
 
+/*
+ * necessary for the map implementation
+ */
 bool regexNode::operator == (const regexNode& rhs) const
 {
     return _isVirtual == rhs._isVirtual && colors == rhs.colors && content == rhs.content && originalIndex == rhs.originalIndex && nodes == rhs.nodes; 
@@ -80,6 +91,14 @@ std::vector<std::vector<regexNode>> regexNode::getInside()
     return nodes;
 }
 
+void regexNode::setIndex(unsigned index)
+{
+    originalIndex = index;
+}
+
+/*
+ * for printing nodes
+ */
 ostream& operator << (ostream& os, const regexNode& tmp)
 {
     if(tmp.content != nullptr) {
@@ -95,6 +114,17 @@ ostream& operator << (ostream& os, const regexNode& tmp)
             }
         }
     }
+    return os;
+}
+
+Interval::Interval(unsigned start, unsigned end)
+    :start(start), end(end)
+{
+}
+
+ostream& operator << (ostream& os, const Interval& tmp)
+{
+    os << "{" << tmp.start << ", " << tmp.end << "}";
     return os;
 }
 
@@ -114,8 +144,9 @@ namespace regex
         while(i < path.size())
         { 
             currNode = path[i++];     
+AfterLoop:
             currColors = rg.getColors(currNode); 
-            set<int> diffColors = diff(currColors, baseColors);
+            set<int> diffColors = currColors - baseColors;
 
             assert(diffColors.size() < 2); // this case will be taken care of later
             if(!diffColors.empty()) {
@@ -127,8 +158,10 @@ namespace regex
                  */
                 // this while loop should be within one iteration of loop
                 // currColors are now base
-                // cout << "diffColors were not empty\n";
+                cout << "diffColors were not empty\nNow it is :" << currColors;
+                
                 vector<vector<regexNode>> iterations;
+                node *startNode = currNode;
                 while(i < path.size() && isContained(currColors, rg.getColors(currNode)))
                 {
                     vector<node *> tmpVec;
@@ -138,7 +171,7 @@ namespace regex
                         tmpVec.push_back(currNode); 
                         prevNode = currNode;
                         currNode = path[i++];
-                        if(i >= path.size() || !isContained(currColors, rg.getColors(currNode)))
+                        if(i >= path.size() || !isContained(currColors, rg.getColors(path[i])))
                             break;
                     }
 
@@ -146,20 +179,20 @@ namespace regex
                     {
                         prevNode = nullptr;
                     }
-                    /*
                     cout << "printing out tmpVec before doing the recursive calls\n";
                     for(unsigned j = 0; j < tmpVec.size(); j++)
                     {
                         cout << *tmpVec[j] << endl;
                     }
-                    */
 
                     vector<regexNode> oneIteration = pathAnalysis(tmpVec, rg, currColors, currIndex); // currIndex is updated here 
                     iterations.push_back(oneIteration);
                 }
-                regexNode rn(currColors, iterations);
+                regexNode rn(currColors, startNode, iterations);
+                rn.setIndex(currIndex - 1);
                 vec.push_back(rn);
                 prevNode = nullptr;
+                goto AfterLoop;
             } else {
                 /*
                  * this means the context was the same (thank god)
@@ -173,6 +206,9 @@ namespace regex
         return vec;
     }
 
+    /*
+     * printing out the path here
+     */
     void pathPrint(vector<regexNode> &path) {
         cout << "in pathPrint\n";
         for(unsigned i = 0; i < path.size(); i++)
@@ -181,6 +217,9 @@ namespace regex
         }
     }
 
+    /*
+     * filling in the map for the realignment
+     */
     void prepareMap(map<regexNode, vector<unsigned>> &realignmentMap, vector<regexNode> &path2, unsigned j)
     {
         for(unsigned index = j; index < path2.size(); index++)
@@ -190,17 +229,21 @@ namespace regex
         return;
     }
 
-    void regexRealignment(map<regexNode, vector<unsigned>> &realignmentMap, vector<regexNode> &path1, vector<regexNode> &path2, unsigned &i, unsigned &j, vector<tuple<unsigned, unsigned>> &alignedPairs, vector<tuple<unsigned, unsigned>> &alignedVirtualNodes, vector<unsigned> &convergencePoints)
+    /* 
+     * this function is used when the divergence happened
+     */
+    unsigned regexRealignment(map<regexNode, vector<unsigned>> &realignmentMap, vector<regexNode> &path1, vector<regexNode> &path2, unsigned &i, unsigned &j, vector<tuple<unsigned, unsigned>> &alignedPairs, vector<tuple<unsigned, unsigned>> &alignedVirtualNodes)
     {
         unsigned size;
+        unsigned convergencePoint = (unsigned)-1;
         if(realignmentMap.size() == 0) 
             prepareMap(realignmentMap, path2, j); 
         unsigned j_start = j;
         for(unsigned index = i; index < path1.size(); index++)
         {
-            if(isContained(path2[index], realignmentMap)) 
+            if(isContained(path1[index], realignmentMap)) 
             {
-                vector<unsigned> &currVec = realignmentMap[path2[index]]; 
+                vector<unsigned> &currVec = realignmentMap[path1[index]]; 
                 size = currVec.size();
                 for(unsigned t = 0; t < size; t++)
                 {
@@ -208,6 +251,7 @@ namespace regex
                     {
                         i = index; // change the i into index
                         j = currVec[t];
+                        cout << "realigned at " << path1[i] << endl;
                         if(path2[index].isVirtual()) 
                         {
                             // aligned with the virtual node at i and j
@@ -218,24 +262,27 @@ namespace regex
                             // aligned at normal nodes
                             alignedPairs.push_back(make_tuple(path1[i].getIndex(), path2[j].getIndex()));
                         }
-                        convergencePoints.push_back(i);
+
+                        convergencePoint = path1[i].getIndex();
                         for(unsigned alpha = 0; alpha < t; alpha++)
                         {
                             currVec.erase(currVec.begin());
                         }
-                        break;
+                        return convergencePoint;
                     }
                 }
             }
             // else just go to the next alignment
         } 
+        return convergencePoint;
     }
 
-    void regexAlignment(vector<regexNode> &path1, vector<regexNode> &path2, vector<tuple<unsigned, unsigned>> &alignedPairs, int &diff)
+    /*
+     * this function is the API of the comparison
+     */
+    void regexAlignment(vector<regexNode> &path1, vector<regexNode> &path2, vector<tuple<unsigned, unsigned>> &alignedPairs, int &diff, vector<Interval> &points)
     {
         unsigned i = 0, j = 0;
-        vector<unsigned> divergencePoints; // necessary to sort this later and push them out
-        vector<unsigned> convergencePoints; // necessary to sort this and push them out
         vector<tuple<unsigned, unsigned>> alignedVirtualNodes;
         map<regexNode, vector<unsigned>> realignmentMap;
 
@@ -247,10 +294,12 @@ namespace regex
                 // else put them in alignedVirtualNodes
                 if(path1[i].isVirtual()) 
                 {
+                    cout << "aligned at virtual node: " << path1[i] << endl;
                     alignedVirtualNodes.push_back(make_tuple(i, j));
                 }
                 else
                 {
+                    cout << "aligned at non-virtual node: " << path1[i] << endl;
                     alignedPairs.push_back(make_tuple(path1[i].getIndex(), path2[j].getIndex()));
                 }
                 
@@ -258,10 +307,21 @@ namespace regex
             }
             else
             {
-                divergencePoints.push_back(i - 1);
+                unsigned start;
+                unsigned end;
+                if(i > 0) {
+                    start = path1[i - 1].getIndex();
+                    //cout << "this is the index of divergence: " << start << endl;
+                } else {
+                    start = (unsigned)-1;
+                }
                 // you need to do the realignment here! 
+                cout << "did not align at " << path1[i] << " vs. " << path2[j] << endl;
+                using namespace Tools;
                 diff++;
-                regexRealignment(realignmentMap, path1, path2, i, j, alignedPairs, alignedVirtualNodes, convergencePoints);
+                end = regexRealignment(realignmentMap, path1, path2, i, j, alignedPairs, alignedVirtualNodes);
+                points.push_back(Interval(start, end));
+                i++; j++;
             }
         }
 
@@ -279,10 +339,17 @@ namespace regex
                 diff++;
             }  
             unsigned iterations = min(content1.size(), content2.size());
+            // doing the regexAlignment recursively for the virtual nodes
             for(unsigned t = 0; t < iterations; t++)
             {
-                regexAlignment(content1[t], content2[t], alignedPairs, diff);
+                regexAlignment(content1[t], content2[t], alignedPairs, diff, points);
             }
         }
+
+    }
+
+    bool cmpInterval(const Interval &i1, const Interval &i2)
+    {
+        return i1.start < i2.start;
     }
 }
