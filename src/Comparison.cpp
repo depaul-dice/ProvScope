@@ -685,6 +685,7 @@ ErrorCode Comparison::regEx(std::vector<std::tuple<unsigned, unsigned>> &aligned
     cout << "done with creating regex\n";
     cout << "printing regexGraph\n";
     cout << regex;
+    regex.visualize("file.txt");
     set<int> baseColors1;
     set<int> baseColors2;
     unsigned index = 0;

@@ -7,6 +7,8 @@
 #include <map>
 #include <tuple>
 #include <vector>
+#include <iostream>
+#include <fstream>
 
 class regexGraph
 {
@@ -21,7 +23,7 @@ public:
     bool isBackedge(node *src, node *dst);
     int getColorBackedge(node *src, node *dst);
     std::set<int> getColors(node *);
-    void visualizeGraph(std::string filename);
+    void visualize(std::string filename);
 
     friend std::ostream& operator << (std::ostream& os, const regexGraph& tmp);
 
@@ -33,6 +35,9 @@ private:
     std::map<node *, std::set<node *>> backedges; 
     std::map<node *, int> backedge2color;
 
+    void writePrefix(std::ofstream &file);
+    void writeEachNode(std::ofstream &file, node *tmp);
+    void writeEachEdge(std::ofstream &file, node *src, node *dst);
     void colorNodes(node *curr, std::vector<node *>&, int &);
     void findGroupsRecursive(std::vector<node *> traversals, std::set<node *> history, std::set<node *> &done, node *curr, int &currColor);
     void findGroups(); // this colors all the nodes

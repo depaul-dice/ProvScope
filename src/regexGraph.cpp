@@ -144,8 +144,83 @@ int regexGraph::getColorBackedge(node *src, node *dst)
     }
 }
 
-void regexGraph::visualizeGraph(std::string filename)
+void regexGraph::writePrefix(ofstream &file)
 {
+    file << "digraph g {\n\tlabel = \"g\";\n\n";
+}
+
+void regexGraph::writeEachNode(ofstream &file, node *tmp)
+{
+    // write the content of node * for now
+    file << "\tNode" << tmp->name << " [shape=record, label=\"{" << tmp->name << "\\l";
+    funcNode *fn = nullptr;
+    switch(tmp->type)
+    {
+        case nodeType::ePoint:
+            file << "ePoint";
+            break;
+        case nodeType::sysCall:
+            file << "sysCall";
+            break;
+        case nodeType::funcCall:
+            fn = (funcNode *)tmp;
+            file << "funcCall\\l" << fn->funcName;
+            break;
+        case nodeType::empty:
+            file << "empty";
+            break;
+        case nodeType::retCall:
+            file << "return";
+            break;
+        case nodeType::Virtual:
+            file << "virtual";
+            break;
+        default:
+            ;// do nothing
+    }
+
+    if(isContained(tmp, colors))
+    {
+        file << "\\l\\{"; 
+        for(auto it = colors[tmp].begin(); it != colors[tmp].end(); it++)
+        {
+            file << *it << ", ";
+        }
+        file << "\\}";
+    }
+
+    file << "\\l}\"];\n";
+}
+
+void regexGraph::writeEachEdge(ofstream &file, node *src, node *dst)
+{
+    file << "\tNode" << src->name << " -> Node" << dst->name << ";\n";
+}
+
+void regexGraph::visualize(string filename)
+{
+    ofstream file;
+    file.open(filename);
+    writePrefix(file);
+    for(auto it = nodes.begin(); it != nodes.end(); it++)
+    {
+        writeEachNode(file, *it);
+    }
+
+    node *src, *dst;
+    for(auto const &pair: edges)
+    {
+        src = pair.first;
+        for(auto it = pair.second.begin(); it != pair.second.end(); it++)
+        {
+            dst = *it;
+            writeEachEdge(file, src, dst);
+        }
+    }
+
+    file << "}"; // this is postfix
+
+    file.close();
 }
 
 set<int> regexGraph::getColors(node *curr)
