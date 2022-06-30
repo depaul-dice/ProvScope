@@ -564,6 +564,23 @@ void funcTrace::ftcmp(funcTrace *ft2, std::map<std::string, cfg_t *> &cfgs, long
 
 void funcTrace::__ftcmp(int which, Comparison &c, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, int &diff, long &time) 
 {
+    switch (which) {
+        case GREEDY:
+            greedyContent(c, diff, cfgs, ft2, time);
+            break;
+        case EDITDISTANCE:
+            greedyContent(c, diff, cfgs, ft2, time);
+            break;
+        case LOOPGREEDY:
+            loopGreedyContent(c, diff, cfgs, ft2, time);
+            break;
+        case REGEX:
+            regExContent(c, diff, cfgs, ft2, time);
+            break;
+        default:
+            std::cerr << "comparison method not implemented\n";
+    }
+    /*
     if(which == GREEDY) 
     {
         greedyContent(c, diff, cfgs, ft2, time);
@@ -582,8 +599,9 @@ void funcTrace::__ftcmp(int which, Comparison &c, std::map<std::string, cfg_t *>
     }
     else
     {
-        std::cout << "comparison method not implemented\n";
+        std::cerr << "comparison method not implemented\n";
     }
+    */
 }
 
 void funcTrace::greedyContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time)
