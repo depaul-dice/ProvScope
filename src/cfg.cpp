@@ -16,6 +16,8 @@
 #define BLACK 1
 #define ONELINE 4096 
 
+using namespace std;
+
 enum class NodeInfos
 {
     NAME,
@@ -398,22 +400,70 @@ void node::printNodeSimply(std::ostream& os)
 
 }
 
+bool node::operator == (const node& rhs) const
+{
+    return strcmp(this->name, rhs.name) == 0;
+}
+
+bool node::operator == (const virtualNode &rhs) const
+{
+    return false;
+}
+
+virtualNode::virtualNode(const virtualNode &tmp)
+    :node(nodeType::Virtual, tmp.name), contents(tmp.contents), head(nullptr)
+{
+    if(contents.size() > 0) {
+        head = get<0>(contents[0]);
+    } else {
+        cerr << "could not find head: " << *this << endl;
+    }
+}
+
+virtualNode& virtualNode::operator = (const virtualNode& tmp) 
+{
+    contents = tmp.contents;
+    if(contents.size() > 0) {
+        head = get<0>(tmp.contents[0]);
+    } else {
+        cerr << "could not find head: " << *this << endl;
+    }
+    return *this;
+}
+
 virtualNode::~virtualNode()
 {
+    /*
     node *curr;
     for(unsigned i = 0; i < contents.size(); i++)
     {
-        curr = std::get<0>(contents[i]);
+        curr = get<0>(contents[i]);
         if(curr->type == nodeType::Virtual)
         {
             delete curr;
         }
     }
+    */
 }
 
 virtualNode::virtualNode(std::vector<std::tuple<node *, unsigned>> &cs, char *_name)
-    : node(nodeType::Virtual, _name), contents(cs)
+    : node(nodeType::Virtual, _name), contents(cs), head(nullptr)
 {
+    if(cs.size() > 0) {
+        head = get<0>(cs[0]);
+    } else {
+        cerr << "could not find head: " << *this << endl;
+    }
+}
+
+bool virtualNode::operator == (const node& rhs) const
+{
+    return false;
+}
+
+bool virtualNode::operator == (const virtualNode& rhs) const
+{
+    return *(this->head) == *(rhs.head);
 }
 
 funcNode::~funcNode()

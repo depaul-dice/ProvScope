@@ -1,12 +1,15 @@
 // Copyright (c) 2021 Yuta Nakamura. All rights reserved.
 #include "readFiles.h"
 
-std::map<std::string, int> file2Dict(std::string file)
-{
-    std::map<std::string, int> dict;
+using namespace std;
+using namespace Tools;
 
-    std::ifstream inFile;
-    std::string tmp;
+map<string, int> file2Dict(string file)
+{
+    map<string, int> dict;
+
+    ifstream inFile;
+    string tmp;
     
     inFile.open(file);
 
@@ -93,7 +96,7 @@ std::map<std::string, cfg_t *> readCFGs(char *dirName, ErrorCode& ec)
         else
         {
             cfg_t *cfg = new cfg_t(filename);
-            name = Tools::extractSubstring(filename);
+            name = extractSubstring(filename);
             cfgs[(std::string)name] = cfg;
             //cfgs.insert(make_pair((string)name, cfg));
             //map<string, cfg_t *>::iterator it;

@@ -19,12 +19,13 @@
 #include "Comparison.h"
 
 #define FILEREADSIZE 4096
-#define PRINTPOSSIBLEPATH 0
+//#define PRINTPOSSIBLEPATH 0
 
 #define LOOPGREEDY 0
 #define REGEX 1
 #define GREEDY 2
 #define EDITDISTANCE 3
+#define POSTDOMINATOR 4
 
 class funcTrace 
 {
@@ -69,6 +70,7 @@ public:
 private:
     std::string funcName;
     std::vector<funcTrace *> __funcTrace;
+    std::vector<virtualNode *> virtualNodes;
     //SHA_CTX deepHV; 
     //SHA_CTX surfaceHV;
     unsigned char surfaceDigest [20];
@@ -101,7 +103,8 @@ private:
     void greedyContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time);
     void editDistanceContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time);
     void loopGreedyContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time);
-    void regExContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time);
+    void postDominatorContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time);
+    //void regExContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time);
 };
 
 #endif /* FUNCTRACE_H */

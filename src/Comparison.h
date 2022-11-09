@@ -5,9 +5,10 @@
 #include "Matrix.h"
 #include "cfg.h"
 #include "ec.h"
-#include "fsa/fsa.h"
-#include "regexGraph.h"
-#include "regexNode.h"
+//#include "fsa/fsa.h"
+//#include "regexGraph.h"
+//#include "regexNode.h"
+#include "subgraph.h"
 #include <cassert>
 #include <cstring>
 #include <vector>
@@ -24,7 +25,7 @@ public:
     Comparison() = delete;
     Comparison(const Comparison&) = delete;
     Comparison& operator = (const Comparison&) = delete;
-    ~Comparison() = default;
+    ~Comparison();
 
     //Comparison(std::vector<node *>& path1, std::vector<node *>& path2);
     Comparison(std::vector<node *>& path1, std::vector<node *>& path2, std::vector<std::tuple<node *, unsigned>>& loopPath1, std::vector<std::tuple<node *, unsigned>>& loopPath2);
@@ -36,13 +37,15 @@ public:
 
     ErrorCode loopGreedyApproach(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff);
 
-    ErrorCode regEx(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff);
+    //ErrorCode regEx(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff);
+    ErrorCode postDominatorApproach(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff, std::vector<std::tuple<node *, unsigned>> &tlp1, std::vector<std::tuple<node *, unsigned>> &tlp2);
+
+    std::vector<std::tuple<node *, unsigned>>& loopPath1;
+    std::vector<std::tuple<node *, unsigned>>& loopPath2;
 
 private:
     const float insertCost = 2;
     const float alternateCost = 2;
-    std::vector<std::tuple<node *, unsigned>>& loopPath1;
-    std::vector<std::tuple<node *, unsigned>>& loopPath2;
 
     Matrix matrix;
 
@@ -54,8 +57,9 @@ private:
     ErrorCode findMinCostTrace(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs);
     ErrorCode fillMatrix(void);
     bool nodeMatch(node *a, node *b);
+    bool stopCondition(node *n, node *dp, std::set<node *>& pd);
 
-    regexGraph createRegex(void);
+    //regexGraph createRegex(void);
    
 };
 

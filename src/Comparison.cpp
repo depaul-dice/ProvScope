@@ -2,7 +2,7 @@
 #include "Comparison.h"
 using namespace std;
 using namespace Tools;
-using namespace regex;
+//using namespace regex;
 
 /*
 Comparison::Comparison(std::vector<node *>& path1, std::vector<node *>& path2)
@@ -15,6 +15,11 @@ Comparison::Comparison(std::vector<node *>& path1, std::vector<node *>& path2, s
     :hpath(path1), vpath(path2), loopPath1(lp1), loopPath2(lp2), matrix(path2.size() + 1, path1.size() + 1)
 {
 } 
+
+Comparison::~Comparison()
+{
+    
+}
 
 void Comparison::printMatrix(std::ostream &os)
 {
@@ -173,6 +178,7 @@ ErrorCode Comparison::editDistance(std::vector<std::tuple<unsigned, unsigned>> &
     return ec;
 }
 
+// this does not create a virtual nodes
 void Comparison::greedyApproach(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff)
 {
     std::vector<node *>& path1 = hpath;
@@ -259,13 +265,13 @@ void Comparison::greedyApproach(std::vector<std::tuple<unsigned, unsigned>> &ali
 
 bool Comparison::nodeMatch(node *a, node *b)
 {
-    if(a->type == nodeType::Virtual && b->type == nodeType::Virtual)
-    {
-        if(strcmp(a->name, b->name) == 0) return true;
+    if(a->type == nodeType::Virtual && b->type == nodeType::Virtual) {
+        virtualNode *va = (virtualNode *)a, *vb = (virtualNode *)b;
+        if(va->head == vb->head) return true;
         else return false;
-    }
-    else
-    {
+    } else if(a->type == nodeType::Virtual && b->type == nodeType::Virtual) {
+        return false;
+    } else {
         if(a == b) return true;
         else return false;
     }
@@ -457,6 +463,11 @@ ErrorCode Comparison::__loopGreedyContents(std::vector<std::tuple<node *,unsigne
     return ErrorCode::SUCCESS;
 }
 
+/*
+ * this is finding the closest common points as a point of convergence using greedy approach
+ * virtual nodes are made using the nodes that are traversed multiple times
+ * you should look over this and make the code simpler
+ */
 ErrorCode Comparison::loopGreedyApproach(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff)
 {
     /*
@@ -468,9 +479,9 @@ ErrorCode Comparison::loopGreedyApproach(std::vector<std::tuple<unsigned, unsign
      * step 1. get the matching pairs of the nodes 
      */
 
-    unsigned i = 0; unsigned j = 0; // these only consider the match at the surface
-    std::map<node *, std::vector<unsigned>> match;
-    std::map<std::string, std::vector<unsigned>> virtualNodeMatch;
+    unsigned i = 0, j = 0; // these only consider the match at the surface
+    map<node *, vector<unsigned>> match;
+    map<string, vector<unsigned>> virtualNodeMatch;
 
     node *nodeOne;
     node *nodeTwo;
@@ -480,10 +491,10 @@ ErrorCode Comparison::loopGreedyApproach(std::vector<std::tuple<unsigned, unsign
 
     while(i < loopPath1.size() && j < loopPath2.size())
     {
-        nodeOne = std::get<0>(loopPath1[i]); 
-        nodeTwo = std::get<0>(loopPath2[j]);
-        indexOne = std::get<1>(loopPath1[i]);
-        indexTwo = std::get<1>(loopPath2[j]);
+        nodeOne = get<0>(loopPath1[i]); 
+        nodeTwo = get<0>(loopPath2[j]);
+        indexOne = get<1>(loopPath1[i]);
+        indexTwo = get<1>(loopPath2[j]);
         // if the nodes matches
         if(this->nodeMatch(nodeOne, nodeTwo))
         {
@@ -637,6 +648,7 @@ ErrorCode Comparison::loopGreedyApproach(std::vector<std::tuple<unsigned, unsign
 }
 
 
+/*
 regexGraph Comparison::createRegex()
 {
     std::vector<std::vector<node *>> paths{hpath, vpath};
@@ -720,7 +732,7 @@ ErrorCode Comparison::regEx(std::vector<std::tuple<unsigned, unsigned>> &aligned
     
     return ErrorCode::SUCCESS;
 }
-
+*/
 /*
 ErrorCode Comparison::regEx(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff)
 {
@@ -787,3 +799,154 @@ ErrorCode Comparison::regEx(std::vector<std::tuple<unsigned, unsigned>> &aligned
     return ErrorCode::SUCCESS;
 }
 */
+
+bool Comparison::stopCondition(node *n, node *dp, set<node *>& pd) {
+    if(n->type == nodeType::Virtual) {
+        //virtualNode *vn = (virtualNode *)n;
+        if(!nodeMatch(n, dp) && isContained(n, pd)) {
+            return true;
+        } 
+    } else {
+        if(isContained(n, pd))
+            return true;
+    }
+    return false;
+}
+
+/* 
+ * the below method is creating a post dominator
+ */
+ErrorCode Comparison::postDominatorApproach(vector<tuple<unsigned, unsigned>> &alignedPairs, int &diff, vector<tuple<node *, unsigned>>& tlp1, vector<tuple<node *, unsigned>>& tlp2) {
+    vector<node *> lp1{}, lp2{};
+    for(tuple<node *, unsigned> ln: tlp1) {
+        lp1.push_back(get<0>(ln));
+    }
+    for(tuple<node *, unsigned> ln: tlp2) {
+        lp2.push_back(get<0>(ln));
+    }
+
+    /*
+    cout << "printing the paths\npath1\n";
+    for(auto node: lp1) {
+        cout << *node << endl;
+    }
+    cout << "path2\n";
+    for(auto node: lp2) {
+        cout << *node << endl;
+    }
+    cout << endl << endl;
+    */
+    
+    subgraph *sg = new subgraph(lp1, lp2);
+    //cout << "i made a subgraph\n";
+    map<node *, set<node *>> pd = sg->findPostDominators();
+    //cout << "found post dominators\n";
+    //cout << pd << endl;
+
+    unsigned i = 0, j = 0, indexOne, indexTwo;
+    node *nodeOne, *nodeTwo, *dp = nullptr, *tmpOne, *tmpTwo;
+    bool aligned = false;
+    while(i < tlp1.size() && j < tlp2.size()) {
+        nodeOne = get<0>(tlp1[i]); 
+        nodeTwo = get<0>(tlp2[j]);
+        indexOne = get<1>(tlp1[i]);
+        indexTwo = get<1>(tlp2[j]);
+        if(nodeOne->type == nodeType::Virtual) {
+            tmpOne = nodeOne;
+            nodeOne = (node *)(sg->virtualNodes[((virtualNode *)nodeOne)->head]);
+        }
+        if(nodeTwo->type == nodeType::Virtual) {
+            tmpTwo = nodeTwo;
+            nodeTwo = (node *)(sg->virtualNodes[((virtualNode *)nodeTwo)->head]);
+        }
+        //cout << "nodeOne: " << *nodeOne << endl;
+        //cout << "nodeTwo:" << *nodeTwo << endl;
+        if(nodeMatch(nodeOne, nodeTwo)) {
+            aligned = true;
+            if(nodeOne->type != nodeType::Virtual) {
+                alignedPairs.push_back(make_tuple(indexOne, indexTwo));
+            } else {
+                if(postDominatorApproach(alignedPairs, diff, ((virtualNode *)tmpOne)->contents, ((virtualNode *)tmpTwo)->contents) != ErrorCode::SUCCESS) {
+                    cerr << "Failed in virtual node content\n";
+                    exit(1);
+                }
+            }
+            i++; j++;
+        } else {
+            if(aligned) {
+                dp = get<0>(tlp1[i - 1]);
+                if(dp->type == nodeType::Virtual) {
+                    dp = sg->virtualNodes[((virtualNode *)dp)->head];
+                }
+                cout << "diverted at "; dp->printNodeSimply(cout);
+                cout << " in i: " << i - 1 << " and j: " << j - 1 << endl;
+                aligned = false;
+                diff++;
+                //cout << "now " << *nodeOne << " and " << *nodeTwo << endl;
+                /*
+                for(auto n: lp1) {
+                    cout << *n << endl;
+                }
+                for(auto n: lp2) {
+                    cout << *n << endl;
+                }
+                */
+            }
+
+            set<node *> &p = pd[dp];
+
+            //cout << "printing\n" << p << endl;
+            
+            bool end = false;
+            while(!stopCondition(nodeOne, dp, p)) {
+                if(i == tlp1.size() - 1) {
+                    end = true;
+                    break;
+                }
+                nodeOne = get<0>(tlp1[++i]);
+                if(nodeOne->type == nodeType::Virtual) {
+                    tmpOne = nodeOne;
+                    nodeOne = (node *)(sg->virtualNodes[((virtualNode *)nodeOne)->head]);
+                } 
+                indexOne = get<1>(tlp1[i]);
+            } 
+
+            if(end) {
+                cout << "converged at ";
+                node *endNode = get<0>(tlp1[0]);
+                endNode->printNodeSimply(cout); 
+                cout << " at the end of the loop iteration\n";
+                if(endNode->type == nodeType::ePoint) {
+                    cerr << "Error: the last point was entry point of the function\nlast divergence point: " << *dp << endl;
+                    exit(1);
+                }
+
+                aligned = true;
+                break;
+            }
+
+            //cout << "stopping at " << *nodeOne << endl;
+            while(!stopCondition(nodeTwo, dp, p)) {
+                nodeTwo = get<0>(tlp2[++j]);
+                if(nodeTwo->type == nodeType::Virtual) {
+                    tmpTwo = nodeTwo;
+                    nodeTwo = (node *)(sg->virtualNodes[((virtualNode *)nodeTwo)->head]);
+                } 
+                indexTwo = get<1>(tlp2[j]); 
+            }
+            //cout << "stopping at " << *nodeTwo << endl;
+            // I am asserting here 
+            assert(nodeMatch(nodeOne, nodeTwo));
+            cout << "converged at ";
+            nodeOne->printNodeSimply(cout);
+            cout << "in i: " << indexOne << " and j: " << indexTwo << endl;
+            aligned = true;
+        }
+    }
+
+    delete sg;
+    //cout << "returning\n";
+    return ErrorCode::SUCCESS;
+}
+
+

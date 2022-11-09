@@ -30,10 +30,15 @@ funcTrace::~funcTrace()
     {
         delete __funcTrace[i];
     }
+
+    for(unsigned i = 0; i < virtualNodes.size(); i++)
+    {
+        delete virtualNodes[i];
+    }
 }
 
-funcTrace::funcTrace(std::string funcName)
-    :funcName(funcName), DEBUG(0)
+funcTrace::funcTrace(string funcName)
+    :funcName(funcName), virtualNodes(), DEBUG(0)
 {
     memset(surfaceDigest, 0, 20);
     memset(deepDigest, 0, 20);
@@ -65,12 +70,12 @@ bool funcTrace::operator == (const funcTrace &tmp)
     return true;
 }
 
-funcTrace* funcTrace::operator [] (std::size_t idx)
+funcTrace* funcTrace::operator [] (size_t idx)
 {
     return __funcTrace[idx];
 }
 
-const funcTrace* funcTrace::operator [] (std::size_t idx) const
+const funcTrace* funcTrace::operator [] (size_t idx) const
 {
     return __funcTrace[idx];
 }
@@ -484,9 +489,16 @@ std::vector<std::tuple<node *, unsigned>> funcTrace::cognizeLoops(std::vector<no
                 tmp = std::get<0>(loopPath.back());
                 loopPath.pop_back();
                 pastNodes.erase(tmp); // you need to delete the elements from hashmap too
+               
+                /*
+                if(tmp->type == nodeType::Virtual) {
+                    delete (virtualNode *)tmp;
+                }
+                */
             }
             index = prev + 1;
             vn = new virtualNode(newVec, curr->name); // and creating the virtual node here
+            virtualNodes.push_back(vn);
             pastNodes[curr] = index;
            
             loopPath.push_back(std::make_tuple((node *)vn, (unsigned)-1));
@@ -559,10 +571,10 @@ void funcTrace::ftcmp(funcTrace *ft2, std::map<std::string, cfg_t *> &cfgs, long
     //std::vector<std::tuple<unsigned, unsigned>> tmpPairs;
 
     Comparison c(path1, path2, loopPath1, loopPath2);
-    this->__ftcmp(REGEX, c, cfgs, ft2, diff, time);
+    this->__ftcmp(POSTDOMINATOR, c, cfgs, ft2, diff, time);
 }
 
-void funcTrace::__ftcmp(int which, Comparison &c, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, int &diff, long &time) 
+void funcTrace::__ftcmp(int which, Comparison &c, map<string, cfg_t *> &cfgs, funcTrace *ft2, int &diff, long &time) 
 {
     switch (which) {
         case GREEDY:
@@ -574,45 +586,42 @@ void funcTrace::__ftcmp(int which, Comparison &c, std::map<std::string, cfg_t *>
         case LOOPGREEDY:
             loopGreedyContent(c, diff, cfgs, ft2, time);
             break;
+        case POSTDOMINATOR:
+            postDominatorContent(c, diff, cfgs, ft2, time);
+            break;
+        /*
         case REGEX:
             regExContent(c, diff, cfgs, ft2, time);
             break;
+        */
         default:
             std::cerr << "comparison method not implemented\n";
     }
-    /*
-    if(which == GREEDY) 
-    {
-        greedyContent(c, diff, cfgs, ft2, time);
-    }
-    else if(which == EDITDISTANCE) 
-    {
-        editDistanceContent(c, diff, cfgs, ft2, time);
-    }
-    else if(which == LOOPGREEDY)
-    {
-        loopGreedyContent(c, diff, cfgs, ft2, time);
-    }
-    else if(which == REGEX)
-    {
-        regExContent(c, diff, cfgs, ft2, time);
-    }
-    else
-    {
-        std::cerr << "comparison method not implemented\n";
-    }
-    */
 }
 
-void funcTrace::greedyContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time)
+void funcTrace::postDominatorContent(Comparison &c, int &diff, map<string, cfg_t *> &cfgs, funcTrace *ft2, long& time)
+{
+    unsigned i = 0, j = 0;
+    vector<tuple<unsigned, unsigned>> alignedPairs;
+    c.postDominatorApproach(alignedPairs, diff, c.loopPath1, c.loopPath2);
+    for(unsigned t = 1; t < alignedPairs.size() - 1; t++) 
+    {
+        i = get<0>(alignedPairs[t]) - 1;
+        j = get<1>(alignedPairs[t]) - 1;
+        //std::cout << "doing ftcmp for i: " << i << ", j: " << j << std::endl;
+        this->__funcTrace[i]->ftcmp(ft2->getFuncTrace()[j], cfgs, time, diff);
+    }
+} 
+
+void funcTrace::greedyContent(Comparison &c, int &diff, map<string, cfg_t *> &cfgs, funcTrace *ft2, long &time)
 {    
     unsigned i = 0; unsigned j = 0;
-    std::vector<std::tuple<unsigned, unsigned>> alignedPairs;
+    vector<tuple<unsigned, unsigned>> alignedPairs;
     c.greedyApproach(alignedPairs, diff);
     for(unsigned t = 1; t < alignedPairs.size() - 1; t++)
     {
-        i = std::get<0>(alignedPairs[t]) - 1;
-        j = std::get<1>(alignedPairs[t]) - 1;
+        i = get<0>(alignedPairs[t]) - 1;
+        j = get<1>(alignedPairs[t]) - 1;
         //std::cout << "doing ftcmp for i: " << i << ", j: " << j << std::endl;
         this->__funcTrace[i]->ftcmp(ft2->getFuncTrace()[j], cfgs, time, diff);
     }
@@ -674,6 +683,7 @@ void funcTrace::loopGreedyContent(Comparison &c, int &diff, std::map<std::string
     }
 }
 
+/*
 void funcTrace::regExContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time) 
 {
     unsigned i, j;
@@ -695,6 +705,7 @@ void funcTrace::regExContent(Comparison &c, int &diff, std::map<std::string, cfg
     }
   
 }
+*/
 
 int funcTrace::getAPathRecursive(std::map<std::string, cfg_t *> cfgs)
 {
@@ -758,6 +769,12 @@ int funcTrace::matchingFuncs(const std::vector<std::string> &flatTrace, unsigned
         if(currStr[0] == '/')
         {
             currStr.erase(0, 1);
+            if(callStack.size() == 0)
+            {
+                fprintf(stderr, "could not find the matching function %s\n", currStr.c_str());
+                return 1;
+            }
+
             while(callStack.back() != currStr)
             {
                 // keep on popping until finding the actual match
@@ -812,21 +829,30 @@ unsigned funcTrace::copeNoRetFuncs(unsigned &index, const std::vector<std::strin
    /* this part of the algorithm is problematic because you are not aware whether or not the function is returning */
    while(funcs.find(currStr) != funcs.end()) // as long as you find that funcs you continue 
    {
+
         // check if this is not in noRetFuncs
+        bool next = false;
         if(noRetFuncs.find(currStr) != noRetFuncs.end())
         {
-            /*
-            fprintf(stderr, "noRetFuncs found in copeNoRetFuncs, haven't considered this case yet\nnew noRetFunc: %s, original noRetFunc: %s\n", currStr.c_str(), originalFunc.c_str());
-            exit(1);
-            */
+            //cout << currStr << " is a noRetFunc inside noRetFunc\n";
             index = copeNoRetFuncs(index, flatTrace, clibDict, cfgs, noRetFuncs);
+            //cout << "came back from " << currStr << endl;
             currStr = flatTrace[++index];
+            next = true;
         }
 
         if(matchingFuncs(flatTrace, index))
         {
             fprintf(stderr, "matching funcs did not work correctly\n");
-            exit(1);
+            if(next)
+            {
+                cout << "I am going to interpret this as an end\n";
+                break;
+            }
+            else
+            {
+                exit(1);
+            }
         }       
     
         // here trying to get the next call 
@@ -854,6 +880,7 @@ funcTrace *funcTrace::makeFuncTrace(std::vector<std::string>& flatTrace, std::ma
     //funcTrace *rv;
     funcTrace *currFT;
     funcTrace *currEle;
+    //unsigned cnt = 0;
 
     for(unsigned index = 0; index < flatTrace.size(); index++)
     {
@@ -872,9 +899,10 @@ funcTrace *funcTrace::makeFuncTrace(std::vector<std::string>& flatTrace, std::ma
             // it needs to put an end to the current fTrace and go up one more
             if(currFT->getFuncName() != currStr)
             {
-                std::cerr << "it is not returning to the right function\n"   
-                    << "currFT->getFuncName(): " << currFT->getFuncName() << std::endl
-                    << currStr << std::endl;
+                cerr << "it is not returning to the right function\n"   
+                    << "index: " << index << endl
+                    << "currFT->getFuncName(): " << currFT->getFuncName() << endl
+                    << currStr << endl;
                 exit(1);
             }
 
@@ -901,10 +929,12 @@ funcTrace *funcTrace::makeFuncTrace(std::vector<std::string>& flatTrace, std::ma
                 // create a function trace element
                 currEle = new funcTrace(currStr);
                 currFT->push_back(currEle);
+
                 if(noRetFuncs.find(currStr) != noRetFuncs.end())
                 {
-                    //std::cout << "index :" << index << std::endl;
+                    //cout << currStr << " is noRetFunc!\n";
                     index = copeNoRetFuncs(index, flatTrace, clibDict, cfgs, noRetFuncs);
+                    //cout << "came back from " << currStr << endl;
                 }
                 else
                 {

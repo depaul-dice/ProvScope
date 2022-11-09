@@ -22,6 +22,7 @@ std::ostream& operator << (std::ostream& os, const nodeType&);
 
 class node;
 class cfg_t;
+class virtualNode;
 
 struct edge 
 {
@@ -61,6 +62,8 @@ public:
 
     friend std::ostream& operator << (std::ostream& os, const node&);
     void printNodeSimply(std::ostream& os);
+    bool operator == (const node& rhs) const;
+    bool operator == (const virtualNode &rhs) const;
 
     // members
     char *name;
@@ -78,13 +81,16 @@ class virtualNode: public node
 {
 public:
     virtualNode() = delete;
-    virtualNode(const virtualNode&) = delete;
-    virtualNode& operator = (const virtualNode&) = delete;
+    virtualNode(const virtualNode&);
+    virtualNode& operator = (const virtualNode&);
     ~virtualNode();
     
     virtualNode(std::vector<std::tuple<node *, unsigned>>& cs, char *_name);
+    bool operator == (const node& rhs) const;
+    bool operator == (const virtualNode& rhs) const;
 
     std::vector<std::tuple<node *, unsigned>> contents;
+    node *head;
 };
 
 class funcNode: public node

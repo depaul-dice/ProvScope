@@ -226,7 +226,18 @@ namespace Tools
         return std::get<0>(t1) < std::get<0>(t2);
     }
     */
-
+    
+    template <typename E>
+    std::set<E> intersection (const std::set<E> &first, const std::set<E> &second)
+    {
+        std::set<E> r{};
+        for(auto e: first) {
+            if(isContained(e, second)) {
+                r.insert(e);
+            }
+        }
+        return r; 
+    }
 }
 
 #endif /* TOOLS_H */

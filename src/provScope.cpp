@@ -11,6 +11,8 @@
 #include "cfg.h"
 #include "Args.h"
 
+using namespace std;
+
 // I want to write this function in some namespace or something later
 funcTrace *initMainFT(void)
 {
@@ -25,14 +27,14 @@ funcTrace *initMainFT(void)
 int pathCompare(Args& args)
 {
     ErrorCode ec = ErrorCode::SUCCESS;
-    std::cout << "reading cfgs\n";
+    cout << "reading cfgs\n";
     char *tmpStr = (char *)malloc(strlen(args.parsedDirectory.c_str()) + 1);
     strcpy(tmpStr, args.parsedDirectory.c_str());
 
     /*
      * this part is reading cfgs that are created with llvmanalysis repo
      */
-    std::map<std::string, cfg_t *>cfgs = readCFGs(tmpStr, ec); 
+    map<std::string, cfg_t *>cfgs = readCFGs(tmpStr, ec); 
     free(tmpStr);
     //Tools::print_map(cfgs);
 
@@ -46,62 +48,62 @@ int pathCompare(Args& args)
      * this part is creating the flat trace without the consideration of function hierarchy from the trace that's captured preliminarily.
      */
     //Tools::print_map(clibDict);
-    std::cout << "making flatTrace\n";
-    std::vector<std::string> flatTrace1 = makeFlatTrace(args.flatTrace1); 
+    cout << "making flatTrace\n";
+    vector<string> flatTrace1 = makeFlatTrace(args.flatTrace1); 
     //print_vector(flatTrace);
-    std::vector<std::string> flatTrace2 = makeFlatTrace(args.flatTrace2); 
+    vector<string> flatTrace2 = makeFlatTrace(args.flatTrace2); 
 
     /*
      * this part is reading the functions that did not have return statement, which creates more hassle to create function level trace from the flat trace we just read
      */
-    std::map<std::string, int> noRetFuncs = file2Dict(args.noRetFile);
+    map<string, int> noRetFuncs = file2Dict(args.noRetFile);
 
     /*
      * the below is where function trace is being made hierarchical instead of flat
      */
-    auto start1 = std::chrono::steady_clock::now();
+    auto start1 = chrono::steady_clock::now();
     funcTrace *ft1 = new funcTrace();
     ft1->makeFuncTrace(flatTrace1, clibDict, noRetFuncs, cfgs);
     ft1->updateHash();
-    auto end1 = std::chrono::steady_clock::now();
+    auto end1 = chrono::steady_clock::now();
 
-    auto start2 = std::chrono::steady_clock::now();
+    auto start2 = chrono::steady_clock::now();
     funcTrace *ft2 = new funcTrace();
     ft2->makeFuncTrace(flatTrace2, clibDict, noRetFuncs, cfgs);
     ft2->updateHash();
-    auto end2 = std::chrono::steady_clock::now();
+    auto end2 = chrono::steady_clock::now();
 
-    std::cout << "flatTrace1 functionTrace make time: "
+    cout << "flatTrace1 functionTrace make time: "
         << std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1).count()
         << " microseconds\n";
 
-    std::cout << "flatTrace2 functionTrace make time: "
+    cout << "flatTrace2 functionTrace make time: "
         << std::chrono::duration_cast<std::chrono::microseconds>(end2 - start2).count()
         << " microseconds\n";
 
     /*
      * below is where hierarchical function trace is being compared with the other hierarchical function trace
      */
-    std::cout << "comparison has started" << std::endl;
+    cout << "comparison has started" << std::endl;
     long time = 0;
     int diff = 0;
-    auto tik = std::chrono::steady_clock::now();
+    auto tik = chrono::steady_clock::now();
     ft1->ftcmp(ft2, cfgs, time, diff);
-    auto tok = std::chrono::steady_clock::now();
-    std::cout << "comparison time: "
-        << std::chrono::duration_cast<std::chrono::microseconds>(tok - tik).count()
+    auto tok = chrono::steady_clock::now();
+    cout << "comparison time: "
+        << chrono::duration_cast<std::chrono::microseconds>(tok - tik).count()
         << " microseconds\n";
-    std::cout << "path tracing time: "
+    cout << "path tracing time: "
         << time << " microseconds\n";
     
     /*
      * reporting the number of divergence in the trace
      */
-    std::cout << diff << " divergence were there\n";
+    cout << diff << " divergence were there\n";
 
     delete ft1; 
     delete ft2;
-    std::map<std::string, cfg_t *>::iterator it;
+    map<string, cfg_t *>::iterator it;
     for(it = cfgs.begin(); it != cfgs.end(); it++)
     {
         delete it->second;
