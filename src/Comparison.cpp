@@ -188,25 +188,19 @@ void Comparison::greedyApproach(std::vector<std::tuple<unsigned, unsigned>> &ali
     std::map<node *, std::vector<unsigned>> match;
     unsigned j_start;
 
-    while(i < path1.size() && j < path2.size())
-    {
-        if(path1[i] == path2[j])
-        {
+    while(i < path1.size() && j < path2.size()) {
+        if(path1[i] == path2[j]) {
             alignedPairs.push_back(std::make_tuple(i, j));
             //std::cout << "adding (top) :" << i << ", " << j << std::endl;
             i++; j++;
-        }
-        else
-        {
+        } else {
             diff++;
             std::cout << "diverted at ";
             path1[i - 1]->printNodeSimply(std::cout);
             std::cout << " in i: " << i - 1 << " and j: " << j - 1 << std::endl;
             // preparing the hashmap
-            if(match.size() == 0)
-            {
-                for(unsigned k = j; k < path2.size(); k++)
-                {
+            if(match.size() == 0) {
+                for(unsigned k = j; k < path2.size(); k++) {
                     //std::cout << "adding :" << *path2[k] <<std::endl;
                     match[path2[k]].push_back(k);
                 } 
@@ -214,46 +208,36 @@ void Comparison::greedyApproach(std::vector<std::tuple<unsigned, unsigned>> &ali
 
             j_start = j;
             // search for each node in path 1 if it exists in path2
-            while(i < path1.size())
-            {
-                if(match.find(path1[i]) == match.end())
-                {
+            while(i < path1.size()) {
+                if(match.find(path1[i]) == match.end()) {
                     //std::cout << "did not find for " << *(path1[i]) << "i: " << i << std::endl;
                     i++;
                     //std::cout << "i: " << i << std::endl;
-                }
-                else
-                {
+                } else {
                     //std::cout << "found for " << *(path1[i]) << "i: " << i << std::endl;
-                    std::vector<unsigned>& vec = match[path1[i]];
+                    vector<unsigned>& vec = match[path1[i]];
                     bool found = false;
                     unsigned size = vec.size();
                     //std::cout << vec[0] << ',' << j_start << std::endl;
-                    for(unsigned t = 0; t < size; t++)
-                    {
-                        if(vec[t] >= j_start)
-                        {
+                    for(unsigned t = 0; t < size; t++) {
+                        if(vec[t] >= j_start) {
                             j = vec[t];
                             found = true;
                             //std::cout << "adding " << i << "," << j << std::endl;
-                            alignedPairs.push_back(std::make_tuple(i, j));
-                            for(unsigned alpha = 0; alpha < t; alpha++)
-                            {
+                            alignedPairs.push_back(make_tuple(i, j));
+                            for(unsigned alpha = 0; alpha < t; alpha++) {
                                 vec.erase(vec.begin());
                             }
                             break;
                         }
                     }
 
-                    if(!found)
-                    {
+                    if(!found) {
                         i++;
-                    }
-                    else
-                    {
-                        std::cout << "converged at ";
-                        path1[i]->printNodeSimply(std::cout);
-                        std::cout << " in i: " << i << " and j: " << j << std::endl;
+                    } else {
+                        cout << "converged at ";
+                        path1[i]->printNodeSimply(cout);
+                        cout << " in i: " << i << " and j: " << j << endl;
                         i++; j++;
                         break;
                     }
@@ -290,23 +274,17 @@ ErrorCode Comparison::__loopGreedyContents(std::vector<std::tuple<node *,unsigne
     unsigned j_start;
     bool aligned = true;
 
-    while(i < content1.size() && j < content2.size())
-    {
+    while(i < content1.size() && j < content2.size()) {
         nodeOne = std::get<0>(content1[i]);
         nodeTwo = std::get<0>(content2[j]);
         indexOne = std::get<1>(content1[i]);
         indexTwo = std::get<1>(content2[j]);
-        if(this->nodeMatch(nodeOne, nodeTwo))
-        {
-            if(nodeOne->type != nodeType::Virtual)
-            {
+        if(this->nodeMatch(nodeOne, nodeTwo)) {
+            if(nodeOne->type != nodeType::Virtual) {
                 alignedPairs.push_back(std::make_tuple(indexOne, indexTwo));
                 //std::cout << "pushing i: " << indexOne << ", j: " << indexTwo << ", size: " << alignedPairs.size() << std::endl;
-            }
-            else
-            {
-                if(this->__loopGreedyContents(((virtualNode *)nodeOne)->contents, ((virtualNode *)nodeTwo)->contents, alignedPairs, diff) != ErrorCode::SUCCESS)
-                {
+            } else {
+                if(this->__loopGreedyContents(((virtualNode *)nodeOne)->contents, ((virtualNode *)nodeTwo)->contents, alignedPairs, diff) != ErrorCode::SUCCESS) {
                     std::cerr << "Failed in virtual node content\n";
                     exit(1);
                 }
@@ -317,145 +295,116 @@ ErrorCode Comparison::__loopGreedyContents(std::vector<std::tuple<node *,unsigne
             std::cout << '\n';
             */
             i++; j++;
-        }
-        else
-        {
+        } else {
             aligned = false;
             diff++;
-            std::cout << "diverted at ";
-            (std::get<0>(content1[i - 1]))->printNodeSimply(std::cout);
+            cout << "diverted at ";
+            (get<0>(content1[i - 1]))->printNodeSimply(cout);
             //nodeOne->printNodeSimply(std::cout);
-            std::cout << " in i: " << i - 1 << " and j: " << j - 1 << std::endl;
+            cout << " in i: " << i - 1 << " and j: " << j - 1 << endl;
 
         
             // if the matching hashmap is not filled, fill it up
-            if(match.size() == 0 && virtualNodeMatch.size() == 0)
-            {
+            if(match.size() == 0 && virtualNodeMatch.size() == 0) {
                 node *tmpNode;
-                for(unsigned k = j; k < content2.size(); k++)
-                {
+                for(unsigned k = j; k < content2.size(); k++) {
                     tmpNode = std::get<0>(content2[k]);
-                    if(tmpNode->type == nodeType::Virtual)
-                    {
+                    if(tmpNode->type == nodeType::Virtual) {
                         virtualNodeMatch[tmpNode->name].push_back(k);
-                    }
-                    else
-                    {
+                    } else {
                         match[tmpNode].push_back(k);
                     }
                 }
             }
 
             j_start = j;
-            while(i < content1.size())
-            {
+            while(i < content1.size()) {
                 node *node2Match = std::get<0>(content1[i]);
                 unsigned indexOne = std::get<1>(content1[i]);
                 unsigned indexTwo;
                 node *nodeMatched;
                 //unsigned indexTwo;
-                if(node2Match->type != nodeType::Virtual && match.find(node2Match) != match.end())
-                {
+                if(node2Match->type != nodeType::Virtual && match.find(node2Match) != match.end()) {
                     // this is when it was found in the normal one
-                    std::vector<unsigned> &vec = match[node2Match];
+                    vector<unsigned> &vec = match[node2Match];
                     bool found = false;
                     unsigned size = vec.size();
-                    for(unsigned t = 0; t < size; t++)
-                    {
-                        if(vec[t] >= j_start)
-                        {
+                    for(unsigned t = 0; t < size; t++) {
+                        if(vec[t] >= j_start) {
                             j = vec[t];
-                            nodeMatched = std::get<0>(content2[j]);
-                            indexTwo = std::get<1>(content2[j]);
+                            nodeMatched = get<0>(content2[j]);
+                            indexTwo = get<1>(content2[j]);
                             //std::cout << "node found: ";
                             //nodeMatched->printNodeSimply(std::cout);
                             
                             //std::cout << "\t" << indexTwo << std::endl;
                             found = true;
-                            for(unsigned alpha = 0; alpha < t; alpha++)
-                            { 
+                            for(unsigned alpha = 0; alpha < t; alpha++) { 
                                 vec.erase(vec.begin());
                             }
                             break;
                         }
                     }
 
-                    if(!found)
-                    {
-                        std::cout << "NODE NOT FOUND\n";
+                    if(!found) {
+                        cout << "NODE NOT FOUND\n";
                         i++;
-                    }
-                    else
-                    {
-                        std::cout << "converged at ";
-                        node2Match->printNodeSimply(std::cout);
-                        std::cout << " in i: " << indexOne << " and j: " << indexTwo << std::endl;
-                        alignedPairs.push_back(std::make_tuple(indexOne, indexTwo));
+                    } else {
+                        cout << "converged at ";
+                        node2Match->printNodeSimply(cout);
+                        cout << " in i: " << indexOne << " and j: " << indexTwo << endl;
+                        alignedPairs.push_back(make_tuple(indexOne, indexTwo));
                         //std::cout << "pushing i: " << indexOne << ", j: " << indexTwo << ", size: " << alignedPairs.size() << std::endl;
                         aligned = true;
                         i++; j++;
                         break;
                     }
-                }
-                else if(node2Match->type == nodeType::Virtual && virtualNodeMatch.find(node2Match->name) == virtualNodeMatch.end())
-                {
+                } else if(node2Match->type == nodeType::Virtual && virtualNodeMatch.find(node2Match->name) == virtualNodeMatch.end()) {
                     // this is when it was found in the virtual node
-                    std::vector<unsigned> &vec = virtualNodeMatch[node2Match->name];
+                    vector<unsigned> &vec = virtualNodeMatch[node2Match->name];
                     bool found = false;
                     unsigned size = vec.size();
-                    for(unsigned t = 0; t < size; t++)
-                    {
-                        if(vec[t] >= j_start)
-                        {
+                    for(unsigned t = 0; t < size; t++) {
+                        if(vec[t] >= j_start) {
                             j = vec[t];
                             found = true;
                             //alignedVN.push_back(std::make_tuple(i, j));
-                            for(unsigned alpha = 0; alpha < t; alpha++)
-                            {
+                            for(unsigned alpha = 0; alpha < t; alpha++) {
                                 vec.erase(vec.begin());
                             }
                             break;
                         }
                     }
 
-                    if(!found)
-                    {
+                    if(!found) {
                         i++;
-                    }
-                    else
-                    {
-                        std::cout << "converged at ";
-                        node2Match->printNodeSimply(std::cout);
-                        std::cout << " in i: " << indexOne << " and j: " << indexTwo << std::endl; 
+                    } else {
+                        cout << "converged at ";
+                        node2Match->printNodeSimply(cout);
+                        cout << " in i: " << indexOne << " and j: " << indexTwo << endl; 
                         i++; j++;
                         aligned = true;
-                        if(this->__loopGreedyContents(((virtualNode *)node2Match)->contents, ((virtualNode *)nodeTwo)->contents, alignedPairs, diff) != ErrorCode::SUCCESS)
-                        {
-                            std::cerr << "something wrong with the __loopGreedyContents\n";
+                        if(this->__loopGreedyContents(((virtualNode *)node2Match)->contents, ((virtualNode *)nodeTwo)->contents, alignedPairs, diff) != ErrorCode::SUCCESS) {
+                            cerr << "something wrong with the __loopGreedyContents\n";
                             exit(1);
                         }
                         break;
                     }
-                }
-                else if(node2Match->type == nodeType::Virtual && virtualNodeMatch.find(node2Match->name) != virtualNodeMatch.end())
-                {
+                } else if(node2Match->type == nodeType::Virtual && virtualNodeMatch.find(node2Match->name) != virtualNodeMatch.end()) {
                     // this is when it was not found as the virtual node
                     i++;
-                }
-                else
-                {
+                } else {
                     // this is when it was not found as not a virtual node
                     i++;
                 }
             }
 
 
-            if(aligned == false)
-            {
-                node *tmpNode = std::get<0>(content1[0]);
-                std::cout << "converged at ";
-                tmpNode->printNodeSimply(std::cout);
-                std::cout << "at the end\n";
+            if(aligned == false) {
+                node *tmpNode = get<0>(content1[0]);
+                cout << "converged at ";
+                tmpNode->printNodeSimply(cout);
+                cout << "at the end\n";
             }
 
         }
@@ -489,26 +438,20 @@ ErrorCode Comparison::loopGreedyApproach(std::vector<std::tuple<unsigned, unsign
     unsigned indexTwo;
     unsigned j_start;
 
-    while(i < loopPath1.size() && j < loopPath2.size())
-    {
+    while(i < loopPath1.size() && j < loopPath2.size()) {
         nodeOne = get<0>(loopPath1[i]); 
         nodeTwo = get<0>(loopPath2[j]);
         indexOne = get<1>(loopPath1[i]);
         indexTwo = get<1>(loopPath2[j]);
         // if the nodes matches
-        if(this->nodeMatch(nodeOne, nodeTwo))
-        {
+        if(this->nodeMatch(nodeOne, nodeTwo)) {
             // if they are not virtual nodes
-            if(nodeOne->type != nodeType::Virtual)
-            {
-                alignedPairs.push_back(std::make_tuple(indexOne, indexTwo));
+            if(nodeOne->type != nodeType::Virtual) {
+                alignedPairs.push_back(make_tuple(indexOne, indexTwo));
                 //std::cout << "pushing i: " << indexOne << ", j: " << indexTwo << ", size: " << alignedPairs.size() << std::endl;
-            }
-            else
-            {
-                if(this->__loopGreedyContents(((virtualNode *)nodeOne)->contents,((virtualNode *)nodeTwo)->contents, alignedPairs, diff) != ErrorCode::SUCCESS)
-                {
-                    std::cerr << "Failed in virtual node content\n";
+            } else {
+                if(this->__loopGreedyContents(((virtualNode *)nodeOne)->contents,((virtualNode *)nodeTwo)->contents, alignedPairs, diff) != ErrorCode::SUCCESS) {
+                    cerr << "Failed in virtual node content\n";
                     exit(1);
                 } 
             }
@@ -522,51 +465,42 @@ ErrorCode Comparison::loopGreedyApproach(std::vector<std::tuple<unsigned, unsign
         else
         {
             diff++;
-            std::cout << "diverted at ";
-            (std::get<0>(loopPath1[i - 1]))->printNodeSimply(std::cout);
+            cout << "diverted at ";
+            (get<0>(loopPath1[i - 1]))->printNodeSimply(cout);
             //nodeOne->printNodeSimply(std::cout);
-            std::cout << " in i: " << i - 1 << " and j: " << j - 1 << std::endl;
+            cout << " in i: " << i - 1 << " and j: " << j - 1 << endl;
 
         
             // if the matching hashmap is not filled, fill it up
-            if(match.size() == 0 && virtualNodeMatch.size() == 0)
-            {
+            if(match.size() == 0 && virtualNodeMatch.size() == 0) {
                 node *tmpNode;
-                for(unsigned k = j; k < loopPath2.size(); k++)
-                {
-                    tmpNode = std::get<0>(loopPath2[k]);
-                    if(tmpNode->type == nodeType::Virtual)
-                    {
+                for(unsigned k = j; k < loopPath2.size(); k++) {
+                    tmpNode = get<0>(loopPath2[k]);
+                    if(tmpNode->type == nodeType::Virtual) {
                         virtualNodeMatch[tmpNode->name].push_back(k);
-                    }
-                    else
-                    {
+                    } else {
                         match[tmpNode].push_back(k);
                     }
                 }
             }
 
             j_start = j;
-            while(i < loopPath1.size())
-            {
-                node *node2Match = std::get<0>(loopPath1[i]);
-                unsigned indexOne = std::get<1>(loopPath1[i]);
+            while(i < loopPath1.size()) {
+                node *node2Match = get<0>(loopPath1[i]);
+                unsigned indexOne = get<1>(loopPath1[i]);
                 unsigned indexTwo;
                 node *nodeMatched;
                 //unsigned indexTwo;
-                if(node2Match->type != nodeType::Virtual && match.find(node2Match) != match.end())
-                {
+                if(node2Match->type != nodeType::Virtual && match.find(node2Match) != match.end()) {
                     // this is when it was found in the normal one
-                    std::vector<unsigned> &vec = match[node2Match];
+                    vector<unsigned> &vec = match[node2Match];
                     bool found = false;
                     unsigned size = vec.size();
-                    for(unsigned t = 0; t < size; t++)
-                    {
-                        if(vec[t] >= j_start)
-                        {
+                    for(unsigned t = 0; t < size; t++) {
+                        if(vec[t] >= j_start) {
                             j = vec[t];
-                            nodeMatched = std::get<0>(loopPath2[j]);
-                            indexTwo = std::get<1>(loopPath2[j]);
+                            nodeMatched = get<0>(loopPath2[j]);
+                            indexTwo = get<1>(loopPath2[j]);
                             /*
                             std::cout << "node found: ";
                             nodeMatched->printNodeSimply(std::cout);
@@ -574,70 +508,54 @@ ErrorCode Comparison::loopGreedyApproach(std::vector<std::tuple<unsigned, unsign
                             std::cout << "\t" << indexTwo << std::endl;
                             */
                             found = true;
-                            for(unsigned alpha = 0; alpha < t; alpha++)
-                            { 
+                            for(unsigned alpha = 0; alpha < t; alpha++) { 
                                 vec.erase(vec.begin());
                             }
                             break;
                         }
                     }
 
-                    if(!found)
-                    {
-                        std::cout << "NODE NOT FOUND\n";
+                    if(!found) {
+                        cout << "NODE NOT FOUND\n";
                         i++;
-                    }
-                    else
-                    {
-                        std::cout << "converged at ";
-                        node2Match->printNodeSimply(std::cout);
-                        std::cout << " in i: " << indexOne << " and j: " << indexTwo << std::endl;
+                    } else {
+                        cout << "converged at ";
+                        node2Match->printNodeSimply(cout);
+                        cout << " in i: " << indexOne << " and j: " << indexTwo << endl;
                         alignedPairs.push_back(std::make_tuple(indexOne, indexTwo));
                         i++; j++;
                         break;
                     }
-                }
-                else if(node2Match->type == nodeType::Virtual && virtualNodeMatch.find(node2Match->name) == virtualNodeMatch.end())
-                {
+                } else if(node2Match->type == nodeType::Virtual && virtualNodeMatch.find(node2Match->name) == virtualNodeMatch.end()) {
                     // this is when it was found in the virtual node
-                    std::vector<unsigned> &vec = virtualNodeMatch[node2Match->name];
+                    vector<unsigned> &vec = virtualNodeMatch[node2Match->name];
                     bool found = false;
                     unsigned size = vec.size();
-                    for(unsigned t = 0; t < size; t++)
-                    {
-                        if(vec[t] >= j_start)
-                        {
+                    for(unsigned t = 0; t < size; t++) {
+                        if(vec[t] >= j_start) {
                             j = vec[t];
                             found = true;
                             //alignedVN.push_back(std::make_tuple(i, j));
-                            for(unsigned alpha = 0; alpha < t; alpha++)
-                            {
+                            for(unsigned alpha = 0; alpha < t; alpha++) {
                                 vec.erase(vec.begin());
                             }
                             break;
                         }
                     }
 
-                    if(!found)
-                    {
+                    if(!found) {
                         i++;
-                    }
-                    else
-                    {
-                        std::cout << "converged at ";
-                        node2Match->printNodeSimply(std::cout);
-                        std::cout << " in i: " << indexOne << " and j: " << j << std::endl; 
+                    } else {
+                        cout << "converged at ";
+                        node2Match->printNodeSimply(cout);
+                        cout << " in i: " << indexOne << " and j: " << j << endl; 
                         i++; j++;
                         break;
                     }
-                }
-                else if(node2Match->type == nodeType::Virtual && virtualNodeMatch.find(node2Match->name) != virtualNodeMatch.end())
-                {
+                } else if(node2Match->type == nodeType::Virtual && virtualNodeMatch.find(node2Match->name) != virtualNodeMatch.end()) {
                     // this is when it was not found as the virtual node
                     i++;
-                }
-                else
-                {
+                } else {
                     // this is when it was not found as not a virtual node
                     i++;
                 }
@@ -813,6 +731,61 @@ bool Comparison::stopCondition(node *n, node *dp, set<node *>& pd) {
     return false;
 }
 
+void Comparison::printConvergence(node *cp, node *cpOne, node *cpTwo, unsigned i, unsigned j) 
+{
+    if(cp->type == nodeType::Virtual) {
+        cp = ((virtualNode *)cp)->head;
+        assert(cpOne->type == nodeType::Virtual && cpTwo->type == nodeType::Virtual);
+        virtualNode *vnOne = (virtualNode *)cpOne, *vnTwo = (virtualNode *)cpTwo;
+        while(cpOne->type == nodeType::Virtual) {
+            cpOne = get<0>(vnOne->contents[0]);
+            i = get<1>(vnOne->contents[0]);
+            if(cpOne->type == nodeType::Virtual) {
+                vnOne = (virtualNode *)cpOne;
+            }
+        }
+        while(cpTwo->type == nodeType::Virtual) {
+            cpTwo = get<0>(vnTwo->contents[0]);
+            j = get<1>(vnTwo->contents[0]);
+            if(cpTwo->type == nodeType::Virtual) {
+                vnTwo = (virtualNode *)cpTwo;
+            }
+        }
+
+        cout << "converged at " << *cp << "in i: " 
+            << i << " and j: " << j << endl;
+    } else {
+        cout << "converged at " << *cp << "in i: " 
+            << i << " and j: " << j << endl;
+    }
+    return;
+}
+
+void Comparison::printConvergence(node *cp)
+{
+    while(cp->type == nodeType::Virtual) 
+        cp = ((virtualNode *)cp)->head;
+    cout << "converged at " << *cp;
+    return;
+}
+
+void Comparison::printDivergence(node *dp, node *dpOne, node *dpTwo, unsigned i, unsigned j)
+{
+    if(dp->type == nodeType::Virtual) { 
+        dp = ((virtualNode *)dp)->head;
+        assert(dpOne->type == nodeType::Virtual && dpTwo->type == nodeType::Virtual);
+        virtualNode *vnOne = (virtualNode *)dpOne, *vnTwo = (virtualNode *)dpTwo;
+        unsigned lastOne = get<1>(vnOne->contents[vnOne->contents.size() - 1]); 
+        unsigned lastTwo = get<1>(vnTwo->contents[vnTwo->contents.size() - 1]); 
+        cout << "diverted at " << *dp << " in i: " 
+            << lastOne << " and j: " << lastTwo << endl;
+    } else {
+        cout << "diverted at " << *dp << " in i: " 
+            << i << " and j: " << j << endl;
+    }
+    return;
+}
+
 /* 
  * the below method is creating a post dominator
  */
@@ -843,12 +816,15 @@ ErrorCode Comparison::postDominatorApproach(vector<tuple<unsigned, unsigned>> &a
     //cout << "found post dominators\n";
     //cout << pd << endl;
 
-    unsigned i = 0, j = 0, indexOne, indexTwo;
-    node *nodeOne, *nodeTwo, *dp = nullptr, *tmpOne, *tmpTwo;
-    bool aligned = false;
+    unsigned i = 0, j = 0, indexOne = 0, indexTwo = 0, prevOne, prevTwo;
+    node *nodeOne = nullptr, *nodeTwo = nullptr, *dp = nullptr, *tmpOne, *tmpTwo, *prevNodeOne, *prevNodeTwo;
     while(i < tlp1.size() && j < tlp2.size()) {
+        prevNodeOne = nodeOne;
+        prevNodeTwo = nodeTwo;
         nodeOne = get<0>(tlp1[i]); 
         nodeTwo = get<0>(tlp2[j]);
+        prevOne = indexOne;
+        prevTwo = indexTwo;
         indexOne = get<1>(tlp1[i]);
         indexTwo = get<1>(tlp2[j]);
         if(nodeOne->type == nodeType::Virtual) {
@@ -862,7 +838,6 @@ ErrorCode Comparison::postDominatorApproach(vector<tuple<unsigned, unsigned>> &a
         //cout << "nodeOne: " << *nodeOne << endl;
         //cout << "nodeTwo:" << *nodeTwo << endl;
         if(nodeMatch(nodeOne, nodeTwo)) {
-            aligned = true;
             if(nodeOne->type != nodeType::Virtual) {
                 alignedPairs.push_back(make_tuple(indexOne, indexTwo));
             } else {
@@ -873,30 +848,17 @@ ErrorCode Comparison::postDominatorApproach(vector<tuple<unsigned, unsigned>> &a
             }
             i++; j++;
         } else {
-            if(aligned) {
-                dp = get<0>(tlp1[i - 1]);
-                if(dp->type == nodeType::Virtual) {
-                    dp = sg->virtualNodes[((virtualNode *)dp)->head];
-                }
-                cout << "diverted at "; dp->printNodeSimply(cout);
-                cout << " in i: " << i - 1 << " and j: " << j - 1 << endl;
-                aligned = false;
-                diff++;
-                //cout << "now " << *nodeOne << " and " << *nodeTwo << endl;
-                /*
-                for(auto n: lp1) {
-                    cout << *n << endl;
-                }
-                for(auto n: lp2) {
-                    cout << *n << endl;
-                }
-                */
+            dp = get<0>(tlp1[i - 1]);
+            if(dp->type == nodeType::Virtual) {
+                dp = sg->virtualNodes[((virtualNode *)dp)->head];
             }
+            //cout << "indexOne: " << indexOne << ", i: " << i << ", indexTwo: " << indexTwo << ", j: " << j << endl;
+            printDivergence(dp, prevNodeOne, prevNodeTwo, prevOne, prevTwo);
+
+            diff++;
 
             set<node *> &p = pd[dp];
 
-            //cout << "printing\n" << p << endl;
-            
             bool end = false;
             while(!stopCondition(nodeOne, dp, p)) {
                 if(i == tlp1.size() - 1) {
@@ -912,20 +874,17 @@ ErrorCode Comparison::postDominatorApproach(vector<tuple<unsigned, unsigned>> &a
             } 
 
             if(end) {
-                cout << "converged at ";
                 node *endNode = get<0>(tlp1[0]);
-                endNode->printNodeSimply(cout); 
+                printConvergence(endNode); 
                 cout << " at the end of the loop iteration\n";
                 if(endNode->type == nodeType::ePoint) {
                     cerr << "Error: the last point was entry point of the function\nlast divergence point: " << *dp << endl;
                     exit(1);
                 }
 
-                aligned = true;
                 break;
             }
 
-            //cout << "stopping at " << *nodeOne << endl;
             while(!stopCondition(nodeTwo, dp, p)) {
                 nodeTwo = get<0>(tlp2[++j]);
                 if(nodeTwo->type == nodeType::Virtual) {
@@ -934,13 +893,9 @@ ErrorCode Comparison::postDominatorApproach(vector<tuple<unsigned, unsigned>> &a
                 } 
                 indexTwo = get<1>(tlp2[j]); 
             }
-            //cout << "stopping at " << *nodeTwo << endl;
             // I am asserting here 
             assert(nodeMatch(nodeOne, nodeTwo));
-            cout << "converged at ";
-            nodeOne->printNodeSimply(cout);
-            cout << "in i: " << indexOne << " and j: " << indexTwo << endl;
-            aligned = true;
+            printConvergence(nodeOne, nodeOne, nodeTwo, indexOne, indexTwo);
         }
     }
 

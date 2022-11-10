@@ -182,3 +182,11 @@ void construct(vector<vector<string>>& input,int tail,vector<unordered_map<int,u
 void insertAlpha(string str) {
     alpha.insert(str);
 }
+
+void printAlpha() {
+    cout << "\nprinting alpha\n";
+    for(auto itr = alpha.begin(); itr != alpha.end(); itr++)
+    {    
+        cout << (*itr) << endl;
+    }
+}

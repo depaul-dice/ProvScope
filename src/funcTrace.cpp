@@ -464,29 +464,24 @@ std::vector<std::tuple<node *, unsigned>> funcTrace::cognizeLoops(std::vector<no
     unsigned prev;
     unsigned index = 0;
 
-    for(unsigned origIndex = 0; origIndex < originalPath.size(); origIndex++, index++)
-    {
+    for(unsigned origIndex = 0; origIndex < originalPath.size(); origIndex++, index++) {
         curr = originalPath[origIndex];
         // if curr is not found in the pastNodes
-        if(pastNodes.find(curr) == pastNodes.end())
-        {
+        if(pastNodes.find(curr) == pastNodes.end()) {
             //loopPath.push_back(curr);
-            loopPath.push_back(std::make_tuple(curr, origIndex));
+            loopPath.push_back(make_tuple(curr, origIndex));
             pastNodes[curr] = index;
-        }
-        // else if curr is found in the pastNodes
-        else
-        {
+        } else {
+            // else if curr is found in the pastNodes
             prev = pastNodes[curr];
             // you want to create a tmpVec and insert all those in the index of loopPath into tmpVec
             // below is the part that copies at once
-            std::vector<std::tuple<node *, unsigned>> newVec = std::vector<std::tuple<node *, unsigned>>(loopPath.begin() + prev, loopPath.end());
+            vector<tuple<node *, unsigned>> newVec = vector<tuple<node *, unsigned>>(loopPath.begin() + prev, loopPath.end());
            
 
             // you need to delete all the smaller things from pastNodes
-            for(unsigned i = prev; i < index; i++)
-            {
-                tmp = std::get<0>(loopPath.back());
+            for(unsigned i = prev; i < index; i++) {
+                tmp = get<0>(loopPath.back());
                 loopPath.pop_back();
                 pastNodes.erase(tmp); // you need to delete the elements from hashmap too
                
@@ -501,8 +496,8 @@ std::vector<std::tuple<node *, unsigned>> funcTrace::cognizeLoops(std::vector<no
             virtualNodes.push_back(vn);
             pastNodes[curr] = index;
            
-            loopPath.push_back(std::make_tuple((node *)vn, (unsigned)-1));
-            loopPath.push_back(std::make_tuple(curr, origIndex)); 
+            loopPath.push_back(make_tuple((node *)vn, (unsigned)-1));
+            loopPath.push_back(make_tuple(curr, origIndex)); 
         }
     }
     return loopPath;
@@ -571,7 +566,7 @@ void funcTrace::ftcmp(funcTrace *ft2, std::map<std::string, cfg_t *> &cfgs, long
     //std::vector<std::tuple<unsigned, unsigned>> tmpPairs;
 
     Comparison c(path1, path2, loopPath1, loopPath2);
-    this->__ftcmp(POSTDOMINATOR, c, cfgs, ft2, diff, time);
+    this->__ftcmp(LOOPGREEDY, c, cfgs, ft2, diff, time);
 }
 
 void funcTrace::__ftcmp(int which, Comparison &c, map<string, cfg_t *> &cfgs, funcTrace *ft2, int &diff, long &time) 

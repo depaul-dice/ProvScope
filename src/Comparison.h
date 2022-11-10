@@ -58,7 +58,9 @@ private:
     ErrorCode fillMatrix(void);
     bool nodeMatch(node *a, node *b);
     bool stopCondition(node *n, node *dp, std::set<node *>& pd);
-
+    void printConvergence(node *cp, node *cpOne, node *cpTwo, unsigned i, unsigned j);
+    void printConvergence(node *cp);
+    void printDivergence(node *dp, node *dpOne, node *dpTwo, unsigned i, unsigned j);
     //regexGraph createRegex(void);
    
 };

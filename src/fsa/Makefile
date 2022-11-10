@@ -3,6 +3,8 @@ CC = g++
 OBJ = fsa.o
 DEPS = fsa.h
 
+object: $(OBJ)
+
 $(EXEC): $(OBJ)
 	$(CC) test.cc $(OBJ) -Wall -o $(EXEC)
 

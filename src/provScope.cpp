@@ -67,11 +67,17 @@ int pathCompare(Args& args)
     ft1->updateHash();
     auto end1 = chrono::steady_clock::now();
 
+    cout << "printing path1 in hierarchical format\n";
+    ft1->printRecursiveFT(cout);
+
     auto start2 = chrono::steady_clock::now();
     funcTrace *ft2 = new funcTrace();
     ft2->makeFuncTrace(flatTrace2, clibDict, noRetFuncs, cfgs);
     ft2->updateHash();
     auto end2 = chrono::steady_clock::now();
+
+    cout << "printing path2 in hierarchical format\n";
+    ft2->printRecursiveFT(cout);
 
     cout << "flatTrace1 functionTrace make time: "
         << std::chrono::duration_cast<std::chrono::microseconds>(end1 - start1).count()
@@ -176,31 +182,30 @@ int findAPath(Args& args)
     std::map<std::string, cfg_t *>cfgs = readCFGs(tmpStr, ec);
     free(tmpStr);
     */
-    std::map<std::string, cfg_t *>cfgs = getCFGs(args);
+    map<string, cfg_t *>cfgs = getCFGs(args);
 
-    std::map<std::string, int> clibDict = file2Dict(args.clibFile);    
-    std::vector<std::string> flatTrace1 = makeFlatTrace(args.flatTrace1);
+    map<string, int> clibDict = file2Dict(args.clibFile);    
+    vector<string> flatTrace1 = makeFlatTrace(args.flatTrace1);
     //print_vector(flatTrace1);
-    std::map<std::string, int> noRetFuncs = file2Dict(args.noRetFile);
+    map<string, int> noRetFuncs = file2Dict(args.noRetFile);
 
-    std::cout << "making function trace hierarchical\n";
+    cout << "making function trace hierarchical\n";
     funcTrace *ft1 = new funcTrace();
     ft1 = ft1->makeFuncTrace(flatTrace1, clibDict, noRetFuncs, cfgs);
 
-    std::cout << "trying to find out the path\n";
-    auto tik = std::chrono::steady_clock::now();
+    cout << "trying to find out the path\n";
+    auto tik = chrono::steady_clock::now();
     ft1->getAPathRecursive(cfgs);
-    auto tok = std::chrono::steady_clock::now();
-    std::cout << "found a path\n";
-    std::cout << "path finding time: "
-        << std::chrono::duration_cast<std::chrono::microseconds>(tok - tik).count()
+    auto tok = chrono::steady_clock::now();
+    cout << "found a path\n";
+    cout << "path finding time: "
+        << chrono::duration_cast<chrono::microseconds>(tok - tik).count()
         << " microseconds\n";
 
     delete ft1; 
     
-    std::map<std::string, cfg_t *>::iterator it;
-    for(it = cfgs.begin(); it != cfgs.end(); it++)
-    {
+    map<string, cfg_t *>::iterator it;
+    for(it = cfgs.begin(); it != cfgs.end(); it++) {
         delete it->second;
     }
  
@@ -219,23 +224,22 @@ int printHierarchicalPath(Args& args)
     std::map<std::string, cfg_t *>cfgs = readCFGs(tmpStr, ec);
     free(tmpStr);
     */
-    std::map<std::string, cfg_t *>cfgs = getCFGs(args);
+    map<string, cfg_t *>cfgs = getCFGs(args);
 
-    std::map<std::string, int> clibDict = file2Dict(args.clibFile);    
-    std::vector<std::string> flatTrace1 = makeFlatTrace(args.flatTrace1);
-    std::map<std::string, int> noRetFuncs = file2Dict(args.noRetFile);
+    map<string, int> clibDict = file2Dict(args.clibFile);    
+    vector<string> flatTrace1 = makeFlatTrace(args.flatTrace1);
+    map<string, int> noRetFuncs = file2Dict(args.noRetFile);
 
-    std::cout << "making function trace hierarchical\n";
+    cout << "making function trace hierarchical\n";
     funcTrace *ft1 = new funcTrace();
     ft1 = ft1->makeFuncTrace(flatTrace1, clibDict, noRetFuncs, cfgs);
 
-    std::cout << "printing the path out\n"; 
+    cout << "printing the path out\n"; 
 
-    ft1->printRecursiveFT(std::cout);
+    ft1->printRecursiveFT(cout);
 
-    std::map<std::string, cfg_t *>::iterator it;
-    for(it = cfgs.begin(); it != cfgs.end(); it++)
-    {
+    map<string, cfg_t *>::iterator it;
+    for(it = cfgs.begin(); it != cfgs.end(); it++) {
         delete it->second;
     }
  

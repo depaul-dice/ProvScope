@@ -17,4 +17,6 @@ void insertAlpha(std::string str);
 
 void construct(std::vector<std::vector<std::string>>& input,int tail,std::vector<std::unordered_map<int, std::unordered_set<int>>>& transition_table);
 
+void printAlpha();
+
 #endif /* FSA_H */
