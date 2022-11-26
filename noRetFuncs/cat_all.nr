@@ -1,0 +1,9 @@
+strrchr
+__madvise
+atexit
+read
+write
+__munmap
+close
+__syscall_cp
+getopt_long

@@ -1,0 +1,12 @@
+fstatat
+__stdio_seek
+fchownat
+atexit
+__ofl_unlock
+strrchr
+getline
+close
+__syscall_cp
+stat
+getopt_long
+__stdio_close

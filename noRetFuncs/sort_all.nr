@@ -1,0 +1,17 @@
+strtoumax
+__ofl_unlock
+atexit
+reallocarray
+getopt_long
+__munmap
+stat
+__stdio_close
+dup2
+sched_getaffinity
+__syscall_cp
+strrchr
+euidaccess
+lseek
+close
+__lsysinfo
+ftruncate

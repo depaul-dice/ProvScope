@@ -1,0 +1,14 @@
+__stdio_close
+getline
+strftime
+__ofl_unlock
+lseek
+clock_settime
+__secs_to_zone
+__lctrans
+atexit
+getopt_long
+stat
+__nl_langinfo
+strtoul
+strrchr

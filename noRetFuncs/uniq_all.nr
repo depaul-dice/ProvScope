@@ -1,0 +1,9 @@
+__stdio_close
+strtoumax
+strrchr
+__ofl_unlock
+lseek
+atexit
+__dup3
+dup2
+getopt_long
