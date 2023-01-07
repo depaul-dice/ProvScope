@@ -54,6 +54,7 @@ public:
     friend std::ostream& operator << (std::ostream& os, funcTrace const&);
     friend std::ostream& operator << (std::ostream& os, std::vector<funcTrace *> const&);
     void printRecursiveFT(std::ostream& os);
+    void printRecursiveFTFormat(std::ostream& os, int tabs);
 
     // comparing two function trace
     void ftcmp(funcTrace *, std::map<std::string, cfg_t *>&, long&, int&);

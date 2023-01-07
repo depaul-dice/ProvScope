@@ -8,7 +8,7 @@ using namespace std;
 using namespace Tools;
 
 /*
-funcTraceElement::funcTraceElement(const std::string& funcName)
+funcTraceElement::funcTraceElement(const string& funcName)
     :funcName(funcName)
 {
 }
@@ -80,12 +80,12 @@ const funcTrace* funcTrace::operator [] (size_t idx) const
     return __funcTrace[idx];
 }
 
-std::string funcTrace::getFuncName(void)
+string funcTrace::getFuncName(void)
 {
     return funcName;
 }
 
-std::vector<funcTrace *> funcTrace::getFuncTrace(void)
+vector<funcTrace *> funcTrace::getFuncTrace(void)
 {
     return __funcTrace;
 }
@@ -136,7 +136,7 @@ std::ostream& operator << (std::ostream& os, funcTrace const& ft)
     return os;
 }
 
-std::ostream& operator << (std::ostream& os, std::vector<funcTrace *> const& tmp)
+std::ostream& operator << (std::ostream& os, vector<funcTrace *> const& tmp)
 {
     for(unsigned i = 0; i < tmp.size(); i++)
     {
@@ -146,7 +146,7 @@ std::ostream& operator << (std::ostream& os, std::vector<funcTrace *> const& tmp
     return os;
 }
 
-void funcTrace::__printRecursiveFT(std::ostream& os, int tabs, int &count)
+void funcTrace::__printRecursiveFT(ostream& os, int tabs, int &count)
 {
     for(unsigned i = 0; i < this->__funcTrace.size(); i++)
     {
@@ -160,26 +160,32 @@ void funcTrace::__printRecursiveFT(std::ostream& os, int tabs, int &count)
     }
 }
 
-void funcTrace::printRecursiveFT(std::ostream& os)
+void funcTrace::printRecursiveFT(ostream& os)
 {
     int count = 0;
     int tabs = 0;
-    for(unsigned i = 0; i < this->__funcTrace.size(); i++)
-    {
+    for(unsigned i = 0; i < this->__funcTrace.size(); i++) {
         os << ++count << "\t:" << this->__funcTrace[i]->funcName << '\n';
         this->__funcTrace[i]->__printRecursiveFT(os, tabs + 1, count);
     }
     /*
-    os << *this << std::endl;
+    os << *this << endl;
     for(unsigned i = 0; i < this->__funcTrace.size(); i++)
     {
-        //std::cout << *(this->__funcTrace[i]) << std::endl;
+        //cout << *(this->__funcTrace[i]) << endl;
         this->__funcTrace[i]->printRecursiveFT();
     } 
     */
 }
 
-unsigned popTillLastBranch(std::vector<node *> &path, std::vector<unsigned> &branch, unsigned index, ErrorCode &ec)
+void funcTrace::printRecursiveFTFormat(ostream& os, int tabs) {
+    for(unsigned i = 0; i < this->__funcTrace.size(); i++) {
+        os << tabs << ":" << this->__funcTrace[i]->funcName << '\n';
+        this->__funcTrace[i]->printRecursiveFTFormat(os, tabs + 1);
+    }
+}
+
+unsigned popTillLastBranch(vector<node *> &path, vector<unsigned> &branch, unsigned index, ErrorCode &ec)
 {
     if(path.size() == 0)
     {
@@ -197,7 +203,7 @@ unsigned popTillLastBranch(std::vector<node *> &path, std::vector<unsigned> &bra
         index--;
         if(path.size() == 0)
         {
-            //std::cerr << "do not have a matching path" << std::endl;
+            //std::cerr << "do not have a matching path" << endl;
             ec = ErrorCode::NOPATH;
             return index;
         }
@@ -212,10 +218,10 @@ unsigned popTillLastBranch(std::vector<node *> &path, std::vector<unsigned> &bra
         {
             std::cerr << branch[i] << ',';
         }
-        std::cerr << std::endl;
+        std::cerr << endl;
         for(unsigned i = 0; i < path.size(); i++)
         {
-            std::cerr << *path[i] << std::endl;
+            std::cerr << *path[i] << endl;
         }
 
         std::cerr << "branch.back(): " << branch.back() << 
@@ -234,16 +240,16 @@ unsigned popTillLastBranch(std::vector<node *> &path, std::vector<unsigned> &bra
     return index;
 }
 
-std::vector<std::vector<node *>> getAllPossiblePaths(funcTrace *ft, cfg_t *cfg)
+vector<vector<node *>> getAllPossiblePaths(funcTrace *ft, cfg_t *cfg)
 {
-    std::vector<std::vector<node *>> rv;
-    std::vector<node *> path {};
-    std::vector<unsigned> branch {};
+    vector<vector<node *>> rv;
+    vector<node *> path {};
+    vector<unsigned> branch {};
     path.push_back(cfg->ep);   
     branch.push_back(0);
     unsigned index = 0;
-    std::string currStr;
-    std::vector<funcTrace *> currft = ft->getFuncTrace();
+    string currStr;
+    vector<funcTrace *> currft = ft->getFuncTrace();
     node *curr;
     node *next;
     funcNode *funcNext;
@@ -255,14 +261,14 @@ std::vector<std::vector<node *>> getAllPossiblePaths(funcTrace *ft, cfg_t *cfg)
     {
         curr = path.back();
         //num = branch.back();
-        //std::cout << num << std::endl << *curr << std::endl;
+        //cout << num << endl << *curr << endl;
         next = curr->oEdges[num].ptr;
         if(branch.size() != path.size())
         {
             std::cerr << "size of branch and size of path were different\n";
             std::cerr << "branch.size(): " << 
                 branch.size() << " vs. path.size(): " <<
-                path.size() << std::endl;
+                path.size() << endl;
             exit(1);
         }
 
@@ -300,7 +306,7 @@ std::vector<std::vector<node *>> getAllPossiblePaths(funcTrace *ft, cfg_t *cfg)
             if(index == currft.size())
             {
                 path.push_back(next);
-                std::vector<node *> pathCopy = path;
+                vector<node *> pathCopy = path;
 
                 rv.push_back(pathCopy);
                 path.pop_back();
@@ -328,16 +334,16 @@ std::vector<std::vector<node *>> getAllPossiblePaths(funcTrace *ft, cfg_t *cfg)
     return rv;
 }
 
-std::vector<node *> getPossiblePath(funcTrace *ft, cfg_t *cfg)
+vector<node *> getPossiblePath(funcTrace *ft, cfg_t *cfg)
 {
-    std::vector<node *> path;
-    std::vector<unsigned> branch;
+    vector<node *> path;
+    vector<unsigned> branch;
     path.push_back(cfg->ep);   
     branch.push_back(0);
     unsigned index = 0;
     unsigned biggestIndex = 0;
-    std::string currStr;
-    std::vector<funcTrace *> currft = ft->getFuncTrace();
+    string currStr;
+    vector<funcTrace *> currft = ft->getFuncTrace();
     node *curr;
     node *next;
     funcNode *funcNext;
@@ -363,9 +369,9 @@ std::vector<node *> getPossiblePath(funcTrace *ft, cfg_t *cfg)
                 index = popTillLastBranch(path, branch, index, ec);
                 if(ec == ErrorCode::NOPATH)
                 {
-                    std::cerr << "DO NOT have a matching path\nFunction Name: " << ft->getFuncName() << std::endl;
+                    std::cerr << "DO NOT have a matching path\nFunction Name: " << ft->getFuncName() << endl;
                     ft->print_currFT(".log.txt");
-                    std::cerr << currft[biggestIndex]->getFuncName() << ',' << biggestIndex << std::endl;
+                    std::cerr << currft[biggestIndex]->getFuncName() << ',' << biggestIndex << endl;
                     exit(1);
                 }
                 assert(branch.size() > 0);
@@ -399,9 +405,9 @@ std::vector<node *> getPossiblePath(funcTrace *ft, cfg_t *cfg)
                 index = popTillLastBranch(path, branch, index, ec);
                 if(ec == ErrorCode::NOPATH)
                 {
-                    std::cerr << "DO NOT have a matching path\nFunction Name: " << ft->getFuncName() << std::endl;
+                    std::cerr << "DO NOT have a matching path\nFunction Name: " << ft->getFuncName() << endl;
                     ft->print_currFT(".log.txt");
-                    std::cerr << currft[biggestIndex]->getFuncName() << ',' << biggestIndex << std::endl;
+                    std::cerr << currft[biggestIndex]->getFuncName() << ',' << biggestIndex << endl;
                     exit(1);
                 }
                 assert(branch.size() > 0);
@@ -414,19 +420,19 @@ std::vector<node *> getPossiblePath(funcTrace *ft, cfg_t *cfg)
     return path;
 }
 
-void funcTrace::printPath(std::ostream& os, std::vector<node *> path)
+void funcTrace::printPath(std::ostream& os, vector<node *> path)
 {
     for(unsigned i = 0; i < path.size(); i++)
     {
         path[i]->printNodeSimply(os);
-        os << std::endl;
-        //os << *path[i] << std::endl;
+        os << endl;
+        //os << *path[i] << endl;
     }
 }
 
-void funcTrace::printLooppath(std::ostream& os, std::vector<std::tuple<node *, unsigned>>& loopPath, unsigned numTab)
+void funcTrace::printLooppath(std::ostream& os, vector<std::tuple<node *, unsigned>>& loopPath, unsigned numTab)
 {
-    std::string tabs("");
+    string tabs("");
     for(unsigned i = 0; i < numTab; i++)
     {
         tabs += '\t';
@@ -441,7 +447,7 @@ void funcTrace::printLooppath(std::ostream& os, std::vector<std::tuple<node *, u
         index = std::get<1>(loopPath[i]);
         os << tabs;
         curr->printNodeSimply(os);
-        os << ':' << index << std::endl;
+        os << ':' << index << endl;
         if(curr->type == nodeType::Virtual)
         {
             this->printLooppath(os, ((virtualNode *)curr)->contents, numTab + 1);
@@ -453,11 +459,11 @@ void funcTrace::printLooppath(std::ostream& os, std::vector<std::tuple<node *, u
  * this function is used when you are creating the looppath
  * you go through each nodes and consider it the loop when you go through the same node
  */
-std::vector<std::tuple<node *, unsigned>> funcTrace::cognizeLoops(std::vector<node *>& originalPath)
+vector<std::tuple<node *, unsigned>> funcTrace::cognizeLoops(vector<node *>& originalPath)
 {
-    //std::vector<node *> loopPath;
-    std::vector<std::tuple<node *, unsigned>> loopPath; // the second element is index
-    std::map<node *, unsigned> pastNodes;
+    //vector<node *> loopPath;
+    vector<std::tuple<node *, unsigned>> loopPath; // the second element is index
+    map<node *, unsigned> pastNodes;
     virtualNode *vn;
     node *curr;
     node *tmp;
@@ -503,12 +509,12 @@ std::vector<std::tuple<node *, unsigned>> funcTrace::cognizeLoops(std::vector<no
     return loopPath;
 }
 
-void funcTrace::ftcmp(funcTrace *ft2, std::map<std::string, cfg_t *> &cfgs, long &time, int &diff)
+void funcTrace::ftcmp(funcTrace *ft2, map<string, cfg_t *> &cfgs, long &time, int &diff)
 {
     /*
     if(DEBUG)
     {
-        std::cout << "we are at " << this->funcName << std::endl; 
+        cout << "we are at " << this->funcName << endl; 
     }
     */
     if(this->deepEqual(*ft2))
@@ -516,7 +522,7 @@ void funcTrace::ftcmp(funcTrace *ft2, std::map<std::string, cfg_t *> &cfgs, long
         /*
         if(DEBUG)
         {
-            std::cout << "these were deeply the same" << std::endl;
+            cout << "these were deeply the same" << endl;
             this->print_digest(this->deepDigest);
         }
         */
@@ -524,7 +530,7 @@ void funcTrace::ftcmp(funcTrace *ft2, std::map<std::string, cfg_t *> &cfgs, long
     }
     if(*this == *ft2)
     {
-        //std::cout << "these were at the surface the same" << std::endl;
+        //cout << "these were at the surface the same" << endl;
         assert(this->__funcTrace.size() == ft2->getFuncTrace().size());
 
         for(unsigned i = 0; i < this->__funcTrace.size(); i++)
@@ -538,32 +544,32 @@ void funcTrace::ftcmp(funcTrace *ft2, std::map<std::string, cfg_t *> &cfgs, long
     cfg_t *cfg = cfgs[this->funcName];
 
     auto tik = std::chrono::steady_clock::now();
-    std::vector<node *> path1 = getPossiblePath(this, cfg); 
-    std::vector<node *> path2 = getPossiblePath(ft2, cfg);
+    vector<node *> path1 = getPossiblePath(this, cfg); 
+    vector<node *> path2 = getPossiblePath(ft2, cfg);
 
-    std::vector<std::tuple<node *, unsigned>> loopPath1 = this->cognizeLoops(path1);
-    std::vector<std::tuple<node *, unsigned>> loopPath2 = this->cognizeLoops(path2);
+    vector<std::tuple<node *, unsigned>> loopPath1 = this->cognizeLoops(path1);
+    vector<std::tuple<node *, unsigned>> loopPath2 = this->cognizeLoops(path2);
     /*
-    std::cout << "\n\nNow we are printing a simple path\n";
+    cout << "\n\nNow we are printing a simple path\n";
     for(unsigned i = 0; i < path1.size(); i++)
     {
-        path1[i]->printNodeSimply(std::cout); 
-        std::cout << std::endl;
+        path1[i]->printNodeSimply(cout); 
+        cout << endl;
     }
-    std::cout << "\n\nNow we are printing loopPath\n";
-    this->printLooppath(std::cout, loopPath1, 0);
-    this->printLooppath(std::cout, loopPath2, 0);
+    cout << "\n\nNow we are printing loopPath\n";
+    this->printLooppath(cout, loopPath1, 0);
+    this->printLooppath(cout, loopPath2, 0);
     */
     
     auto tok = std::chrono::steady_clock::now();
 #ifdef PRINTPOSSIBLEPATH 
-    std::cout << "printing paths\n";
-    printPath(std::cout, path2);
-    printPath(std::cout, path1);
+    cout << "printing paths\n";
+    printPath(cout, path2);
+    printPath(cout, path1);
 #endif
     time = time + std::chrono::duration_cast<std::chrono::microseconds>(tok - tik).count();
 
-    //std::vector<std::tuple<unsigned, unsigned>> tmpPairs;
+    //vector<std::tuple<unsigned, unsigned>> tmpPairs;
 
     Comparison c(path1, path2, loopPath1, loopPath2);
     this->__ftcmp(LOOPGREEDY, c, cfgs, ft2, diff, time);
@@ -603,7 +609,7 @@ void funcTrace::postDominatorContent(Comparison &c, int &diff, map<string, cfg_t
     {
         i = get<0>(alignedPairs[t]) - 1;
         j = get<1>(alignedPairs[t]) - 1;
-        //std::cout << "doing ftcmp for i: " << i << ", j: " << j << std::endl;
+        //cout << "doing ftcmp for i: " << i << ", j: " << j << endl;
         this->__funcTrace[i]->ftcmp(ft2->getFuncTrace()[j], cfgs, time, diff);
     }
 } 
@@ -617,19 +623,19 @@ void funcTrace::greedyContent(Comparison &c, int &diff, map<string, cfg_t *> &cf
     {
         i = get<0>(alignedPairs[t]) - 1;
         j = get<1>(alignedPairs[t]) - 1;
-        //std::cout << "doing ftcmp for i: " << i << ", j: " << j << std::endl;
+        //cout << "doing ftcmp for i: " << i << ", j: " << j << endl;
         this->__funcTrace[i]->ftcmp(ft2->getFuncTrace()[j], cfgs, time, diff);
     }
 }
 
-void funcTrace::editDistanceContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time)
+void funcTrace::editDistanceContent(Comparison &c, int &diff, map<string, cfg_t *> &cfgs, funcTrace *ft2, long &time)
 {
     
-    std::vector<node *> path1 = c.hpath;
-    std::vector<node *> path2 = c.vpath;
+    vector<node *> path1 = c.hpath;
+    vector<node *> path2 = c.vpath;
 
     unsigned i = 0; unsigned j = 0;
-    std::vector<std::tuple<unsigned, unsigned>> alignedPairs;
+    vector<std::tuple<unsigned, unsigned>> alignedPairs;
     c.editDistance(alignedPairs);
     unsigned prevI = 0; unsigned prevJ = 0;
     for(unsigned t = 0; t < alignedPairs.size(); t++)
@@ -638,19 +644,19 @@ void funcTrace::editDistanceContent(Comparison &c, int &diff, std::map<std::stri
         j = std::get<1>(alignedPairs[t]);
         if((i - prevI != 1 || j - prevJ != 1) && (i != 0 || j != 0))
         {
-            std::cout << "diverted at "; 
-            path1[prevI]->printNodeSimply(std::cout);
-            std::cout << ", (i, j) = (" << prevI << ", " << prevJ << ")\nconverged at ";
-            path1[i]->printNodeSimply(std::cout);
-            std::cout << ", (i, j) = (" << i << ", " << j << ")\n";
+            cout << "diverted at "; 
+            path1[prevI]->printNodeSimply(cout);
+            cout << ", (i, j) = (" << prevI << ", " << prevJ << ")\nconverged at ";
+            path1[i]->printNodeSimply(cout);
+            cout << ", (i, j) = (" << i << ", " << j << ")\n";
             diff++;
         }
 
         /*
-        path1[i]->printNodeSimply(std::cout);
-        std::cout << " vs. ";
-        path2[j]->printNodeSimply(std::cout);
-        std::cout << " i: " << i << ", j: " << j << std::endl;
+        path1[i]->printNodeSimply(cout);
+        cout << " vs. ";
+        path2[j]->printNodeSimply(cout);
+        cout << " i: " << i << ", j: " << j << endl;
         */
 
         assert(path1[i] == path2[j]);
@@ -664,22 +670,22 @@ void funcTrace::editDistanceContent(Comparison &c, int &diff, std::map<std::stri
     }
 }
 
-void funcTrace::loopGreedyContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time)
+void funcTrace::loopGreedyContent(Comparison &c, int &diff, map<string, cfg_t *> &cfgs, funcTrace *ft2, long &time)
 {
     unsigned i = 0; unsigned j = 0;
-    std::vector<std::tuple<unsigned, unsigned>> alignedPairs;
-    c.loopGreedyApproach(alignedPairs, diff);
+    vector<std::tuple<unsigned, unsigned>> alignedPairs;
+    c.loopGreedyApproach(c.loopPath1, c.loopPath2, alignedPairs, diff);
     for(unsigned t = 1; t < alignedPairs.size() - 1; t++)
     {
         i = std::get<0>(alignedPairs[t]) - 1;        
         j = std::get<1>(alignedPairs[t]) - 1; 
-        //std::cout << "going to work on (" << i << ", " << j << ")\n";
+        //cout << "going to work on (" << i << ", " << j << ")\n";
         this->__funcTrace[i]->ftcmp(ft2->getFuncTrace()[j], cfgs, time, diff);
     }
 }
 
 /*
-void funcTrace::regExContent(Comparison &c, int &diff, std::map<std::string, cfg_t *> &cfgs, funcTrace *ft2, long &time) 
+void funcTrace::regExContent(Comparison &c, int &diff, map<string, cfg_t *> &cfgs, funcTrace *ft2, long &time) 
 {
     unsigned i, j;
     vector<tuple<unsigned, unsigned>> alignedPairs;
@@ -702,7 +708,7 @@ void funcTrace::regExContent(Comparison &c, int &diff, std::map<std::string, cfg
 }
 */
 
-int funcTrace::getAPathRecursive(std::map<std::string, cfg_t *> cfgs)
+int funcTrace::getAPathRecursive(map<string, cfg_t *> cfgs)
 {
     if(this->__funcTrace.size() == 0)
     {
@@ -711,9 +717,9 @@ int funcTrace::getAPathRecursive(std::map<std::string, cfg_t *> cfgs)
 
     cfg_t *cfg = cfgs[this->funcName];
 
-    //std::cout << this->funcName << std::endl;
-    std::vector<node *> path = getPossiblePath(this, cfg);
-    //std::cout << "printing path" << std::endl;
+    //cout << this->funcName << endl;
+    vector<node *> path = getPossiblePath(this, cfg);
+    //cout << "printing path" << endl;
     //printPath(path);
 
     for(unsigned i = 0; i < this->__funcTrace.size(); i++)
@@ -723,7 +729,7 @@ int funcTrace::getAPathRecursive(std::map<std::string, cfg_t *> cfgs)
     return 0;
 }
 
-long funcTrace::cntPaths(std::map<std::string, cfg_t *> cfgs)
+long funcTrace::cntPaths(map<string, cfg_t *> cfgs)
 {
     if(this->__funcTrace.size() == 0)
     {
@@ -732,21 +738,21 @@ long funcTrace::cntPaths(std::map<std::string, cfg_t *> cfgs)
 
     cfg_t *cfg = cfgs[this->funcName];
 
-    std::cout << this->funcName << std::endl;
-    std::vector<std::vector<node *>> paths = getAllPossiblePaths(this, cfg);
+    cout << this->funcName << endl;
+    vector<vector<node *>> paths = getAllPossiblePaths(this, cfg);
 
     long numPaths = paths.size();
     if(numPaths == 0)
     {
-        std::cout << "found 0 paths at: " << this->funcName << '\n';
+        cout << "found 0 paths at: " << this->funcName << '\n';
     }
 
-    std::cout << this->funcName << ", numPaths: " << numPaths << "\n";
+    cout << this->funcName << ", numPaths: " << numPaths << "\n";
     for(unsigned i = 0; i < this->__funcTrace.size(); i++)
     {
         numPaths *= this->__funcTrace[i]->cntPaths(cfgs);
     }
-    std::cout << this->funcName << ", totalPaths: " << numPaths << "\n";
+    cout << this->funcName << ", totalPaths: " << numPaths << "\n";
     return numPaths;
 }
 
@@ -754,10 +760,10 @@ long funcTrace::cntPaths(std::map<std::string, cfg_t *> cfgs)
  * moves index forward until the part where the return is matched to the function
  * returns 0 for success, non-0 for failure
  */
-int funcTrace::matchingFuncs(const std::vector<std::string> &flatTrace, unsigned &index)
+int funcTrace::matchingFuncs(const vector<string> &flatTrace, unsigned &index)
 {
-    std::vector<std::string> callStack;
-    std::string currStr;
+    vector<string> callStack;
+    string currStr;
     while(true)
     {
         currStr = flatTrace[index++];
@@ -812,14 +818,14 @@ int funcTrace::matchingFuncs(const std::vector<std::string> &flatTrace, unsigned
  * so what we need to do is do this matching until the /__getopt_long
  * we can assert that __getopt_long is not nonRet function
  */
-unsigned funcTrace::copeNoRetFuncs(unsigned &index, const std::vector<std::string> &flatTrace, const std::map<std::string, int> &clibDict, std::map<std::string, cfg_t *> &cfgs, std::map<std::string, int>& noRetFuncs)
+unsigned funcTrace::copeNoRetFuncs(unsigned &index, const vector<string> &flatTrace, const map<string, int> &clibDict, map<string, cfg_t *> &cfgs, map<string, int>& noRetFuncs)
 {
    // read all the functions in the current function 
-   std::string originalFunc = flatTrace[index];
-   std::map<std::string, int> funcs = cfg2funcs(cfgs, flatTrace[index]); 
-   //std::cout << "map" << std::endl;
+   string originalFunc = flatTrace[index];
+   map<string, int> funcs = cfg2funcs(cfgs, flatTrace[index]); 
+   //cout << "map" << endl;
    //Tools::print_map(funcs);
-   std::string currStr = flatTrace[++index];
+   string currStr = flatTrace[++index];
 
    /* this part of the algorithm is problematic because you are not aware whether or not the function is returning */
    while(funcs.find(currStr) != funcs.end()) // as long as you find that funcs you continue 
@@ -854,7 +860,7 @@ unsigned funcTrace::copeNoRetFuncs(unsigned &index, const std::vector<std::strin
         currStr = flatTrace[index];
         if(currStr[0] == '/')
         {
-            std::string tmp = currStr;
+            string tmp = currStr;
             tmp.erase(0, 1);
             if(funcs.find(tmp) != funcs.end())
             {
@@ -867,33 +873,29 @@ unsigned funcTrace::copeNoRetFuncs(unsigned &index, const std::vector<std::strin
    return index;
 }
 
-funcTrace *funcTrace::makeFuncTrace(std::vector<std::string>& flatTrace, std::map<std::string, int>& clibDict, std::map<std::string, int>& noRetFuncs, std::map<std::string, cfg_t *>& cfgs)
+funcTrace *funcTrace::makeFuncTrace(vector<string>& flatTrace, map<string, int>& clibDict, map<string, int>& noRetFuncs, map<string, cfg_t *>& cfgs)
 {
-    std::vector<funcTrace *> callStack {};
-    std::string currStr;
-    std::string tmpStr;
+    vector<funcTrace *> callStack {};
+    string currStr;
+    string tmpStr;
     //funcTrace *rv;
     funcTrace *currFT;
     funcTrace *currEle;
     //unsigned cnt = 0;
 
-    for(unsigned index = 0; index < flatTrace.size(); index++)
-    {
+    for(unsigned index = 0; index < flatTrace.size(); index++) {
         // determine if this is a return or not
         currStr = flatTrace[index];
-        //std::cout << "currStr: " << currStr << std::endl;
+        //cout << "currStr: " << currStr << endl;
        
-        if(currStr[currStr.length() - 1] == '\n')
-        {
+        if(currStr[currStr.length() - 1] == '\n') {
             currStr.resize(currStr.size() - 1);
         }
 
-        if(currStr[0] == '/')
-        {
+        if(currStr[0] == '/') {
             currStr.erase(0, 1);
             // it needs to put an end to the current fTrace and go up one more
-            if(currFT->getFuncName() != currStr)
-            {
+            if(currFT->getFuncName() != currStr) {
                 cerr << "it is not returning to the right function\n"   
                     << "index: " << index << endl
                     << "currFT->getFuncName(): " << currFT->getFuncName() << endl
@@ -901,46 +903,34 @@ funcTrace *funcTrace::makeFuncTrace(std::vector<std::string>& flatTrace, std::ma
                 exit(1);
             }
 
-            if(currStr != "main")
-            {
+            if(currStr != "main") {
                 currFT = callStack.back();
                 assert(currFT != nullptr);
                 callStack.pop_back();
             }
-        }
-        else
-        {
+        } else {
             // it needs to add the funcElement to the trace
             // then it needs to go into another trace
-            if(currStr == "main")
-            {
+            if(currStr == "main") {
                 //rv = new funcTrace(currStr); 
                 this->funcName = currStr;
                 //callStack.push_back(rv);
                 currFT = this;
-            }
-            else
-            {
+            } else {
                 // create a function trace element
                 currEle = new funcTrace(currStr);
                 currFT->push_back(currEle);
 
-                if(noRetFuncs.find(currStr) != noRetFuncs.end())
-                {
+                if(noRetFuncs.find(currStr) != noRetFuncs.end()) {
                     //cout << currStr << " is noRetFunc!\n";
                     index = copeNoRetFuncs(index, flatTrace, clibDict, cfgs, noRetFuncs);
                     //cout << "came back from " << currStr << endl;
-                }
-                else
-                {
-                    if(clibDict.find(currStr) == clibDict.end())
-                    {
+                } else {
+                    if(clibDict.find(currStr) == clibDict.end()) {
                         // if the currStr was not found in clibDict
                         callStack.push_back(currFT);
                         currFT = currEle;
-                    }
-                    else
-                    {
+                    } else {
                         // if found in the currStr
                         // assert if next string is '/' + currStr
                         index++;
@@ -953,7 +943,11 @@ funcTrace *funcTrace::makeFuncTrace(std::vector<std::string>& flatTrace, std::ma
                         }
                         */
                         tmpStr = flatTrace[index]; 
-                        assert(tmpStr[0] == '/');
+                        if(tmpStr[0] != '/') {
+                            cerr << "assertion of tmpStr[0] == \'/\' failed\nprint tmpStr: "
+                                << tmpStr << endl << "exitting...\n";
+                            exit(1);
+                        }
                         tmpStr.erase(0, 1);
                         assert(tmpStr == currStr);
                     }
@@ -962,19 +956,18 @@ funcTrace *funcTrace::makeFuncTrace(std::vector<std::string>& flatTrace, std::ma
 
         }
     }
-    if(callStack.size() != 0)
-    {
-        std::cout << callStack.size() << std::endl;
-        std::cout << (unsigned)(-1) << std::endl;
+    if(callStack.size() != 0) {
+        cout << callStack.size() << endl;
+        cout << (unsigned)(-1) << endl;
         exit(1);
     }
     return this;
 }
 
-std::map<std::string, int> funcTrace::cfg2funcs(std::map<std::string, cfg_t *> &cfgs, std::string currFunc)
+map<string, int> funcTrace::cfg2funcs(map<string, cfg_t *> &cfgs, string currFunc)
 {
-    std::map<std::string, int> funcs;
-    //std::cout << currFunc << std::endl;
+    map<string, int> funcs;
+    //cout << currFunc << endl;
     cfg_t *currCFG = cfgs[currFunc];
 
     if(currCFG == nullptr)
@@ -983,21 +976,21 @@ std::map<std::string, int> funcTrace::cfg2funcs(std::map<std::string, cfg_t *> &
         exit(1);
     }
 
-    std::map<node *, int> visited;
+    map<node *, int> visited;
     node *currNode = currCFG->ep;
     __dfsFind(currNode, visited, funcs);
-    //std::cout << "print map at the end" << std::endl;
+    //cout << "print map at the end" << endl;
     //print_map(funcs);
 
     return funcs;
 }
 
-void funcTrace::__dfsFind(node *currNode, std::map<node *, int> &visited, std::map<std::string, int> &funcs)
+void funcTrace::__dfsFind(node *currNode, map<node *, int> &visited, map<string, int> &funcs)
 {
     visited[currNode] = 1; // currNode is in visited now;
     if(currNode->type == nodeType::funcCall)
     {
-        //std::cout << "adding " << ((funcNode *)currNode)->funcName << std::endl;
+        //cout << "adding " << ((funcNode *)currNode)->funcName << endl;
         funcs[((funcNode *)currNode)->funcName] = 1; 
     }
 
@@ -1015,7 +1008,7 @@ void funcTrace::__dfsFind(node *currNode, std::map<node *, int> &visited, std::m
 void funcTrace::print_currFT(char const *const filename)
 {
     FILE *fp = fopen(filename, "w");
-    std::vector<funcTrace *>ft = this->__funcTrace;
+    vector<funcTrace *>ft = this->__funcTrace;
 
     fwrite(this->funcName.c_str(), 1, strlen(this->funcName.c_str()), fp);
     fwrite(":\n\n", 1, strlen(":\n\n"), fp);

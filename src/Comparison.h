@@ -35,7 +35,7 @@ public:
     ErrorCode editDistance(std::vector<std::tuple<unsigned, unsigned>>& alignedPairs);    
     void greedyApproach(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff);
 
-    ErrorCode loopGreedyApproach(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff);
+    ErrorCode loopGreedyApproach(std::vector<std::tuple<node *, unsigned>> &, std::vector<std::tuple<node *, unsigned>>&, std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff);
 
     //ErrorCode regEx(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff);
     ErrorCode postDominatorApproach(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff, std::vector<std::tuple<node *, unsigned>> &tlp1, std::vector<std::tuple<node *, unsigned>> &tlp2);
@@ -53,7 +53,6 @@ private:
     float smallest(float, float, float);
     ErrorCode returnEC(unsigned , unsigned);
 
-    ErrorCode __loopGreedyContents(std::vector<std::tuple<node *, unsigned>>& content1, std::vector<std::tuple<node *, unsigned>>& content2, std::vector<std::tuple<unsigned, unsigned>> &alignedPairs, int &diff);
     ErrorCode findMinCostTrace(std::vector<std::tuple<unsigned, unsigned>> &alignedPairs);
     ErrorCode fillMatrix(void);
     bool nodeMatch(node *a, node *b);
