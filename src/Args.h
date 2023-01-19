@@ -16,6 +16,8 @@ enum class Mode
     FINDPATH,
     READFILE,
     PRINTTRACE,
+    EXPERIMENT,
+    SPEC,
     ERR,
 };
 
@@ -39,6 +41,7 @@ public:
     std::string parsedDirectory;
     std::string flatTrace1;
     std::string flatTrace2;
+    std::string outfile;
 
 private:
     Mode parseMode(char *arg, int argc);

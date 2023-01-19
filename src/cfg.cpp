@@ -33,7 +33,7 @@ enum class NodeInfos
     OTHER
 };
 
-std::ostream& operator << (std::ostream& os, const nodeType& tmp)
+ostream& operator << (std::ostream& os, const nodeType& tmp)
 {
     if(tmp == nodeType::ePoint)
         os << "ePoint";
@@ -374,6 +374,19 @@ std::ostream& operator << (std::ostream& os, const node& tmp)
     return os;
 }
 
+ofstream& toJson(ofstream& os, const node& curr){
+    os << "\t\t{\n\t\t\"id\": \"" << curr.name << "\",\n"
+        << "\t\t\"type\": \"" << curr.type << "\"";
+    string fn;
+    if(curr.type == nodeType::funcCall) {
+        fn = (string)(((funcNode *)(&curr))->funcName);
+        os << ",\n\t\t\"label\": \"" << fn << "\"\n\t\t}";
+    } else {
+        os << "\n\t\t}";
+    }
+    return os;
+}
+
 void node::printNodeSimply(std::ostream& os)
 {
     os << this->name << ",";
@@ -563,7 +576,13 @@ cfg_t::~cfg_t()
         Queue.pop();
     }
 
-    assert(numNodes == s.size());
+    if(numNodes != s.size()) {
+        cerr << "in a function " << name << ", numNodes and s.size() is not the same!\n"
+            << "numNodes: " << numNodes << endl
+            << "s.size(): " << s.size() << endl
+            << "aborting...\n";
+        exit(1);
+    }
     while(!s.empty())
     {
         curr = s.top();
@@ -712,40 +731,28 @@ static node *_parseLine(char *line, cfg_t *cfg, ErrorCode &ec)
                 return nullptr;
         }
     }
-    node *rv;
-    if(nt == nodeType::ePoint || nt == nodeType::retCall || nt == nodeType::empty)
-    {
+    node *rv = nullptr;
+    if(nt == nodeType::ePoint || nt == nodeType::retCall || nt == nodeType::empty) {
         if(numBEdges > 0)
             rv = new node(id, nt, numOEdges, numIEdges, numBEdges, outEdges, inEdges, backEdges, cfg);
         else
             rv = new node(id, nt, numOEdges, numIEdges, outEdges, inEdges, cfg);
-    }
-    else if(nt == nodeType::funcCall)
-    {
-        if(numBEdges == 0)
-        {
+    } else if(nt == nodeType::funcCall) {
+        if(numBEdges == 0) {
             rv = new funcNode(funcName, id, nt, numOEdges, numIEdges, outEdges, inEdges, cfg);
-        }   
-        else
-        {    
+        } else {    
             rv = new funcNode(funcName, id, nt, numOEdges, numIEdges, numBEdges, outEdges, inEdges, backEdges, cfg);
         }
-    }
-    else
-    {
+    } else {
         assert(nt == nodeType::sysCall);
-        if(numBEdges == 0)
-        {
+        if(numBEdges == 0) {
             rv = new sysNode(sysNum, id, nt, numOEdges, numIEdges, outEdges, inEdges, cfg); 
-        }
-        else
-        {
+        } else {
             rv = new sysNode(sysNum, id, nt, numOEdges, numIEdges, numBEdges, outEdges, inEdges, backEdges, cfg); 
         }
     }
 
-    if(outEdges == nullptr)
-    {
+    if(outEdges == nullptr) {
         /*
         if(nt != nodeType::retCall && numBEdges <= 0)
         {
@@ -754,9 +761,7 @@ static node *_parseLine(char *line, cfg_t *cfg, ErrorCode &ec)
         }
         assert(nt == nodeType::retCall || numBEdges > 0);
         */
-    }
-    else
-    {
+    } else {
         free(outEdges[0]);
         free(outEdges);
     }
@@ -960,3 +965,49 @@ std::ostream& operator << (std::ostream& os, cfg_t const& cfg)
     return os;
 }
 
+
+ofstream& toJson(ofstream& os, const cfg_t &cfg) {
+    // first you are going to print the nodes
+    queue<node *> Queue;
+    set<vector<string>> edges{};
+    Queue.push(cfg.ep);
+    node *curr = nullptr;
+    os << "\t\"nodes\": [\n";
+    while(!Queue.empty()) {
+        curr = Queue.front();
+        if(curr->color == WHITE) {
+            if(curr != cfg.ep) {
+                os << ",\n";
+            }
+            toJson(os, *curr);
+            for(int i = 0; i < curr->numOEdges; i++) {
+                Queue.push(curr->oEdges[i].ptr);
+                vector<string> edge{(string)(curr->name), (string)(curr->oEdges[i].ptr->name)};
+                edges.insert(edge); 
+            }
+
+        }
+        curr->color = BLACK;
+        Queue.pop();
+    }
+    // then the edges
+    os << "\n\t]";
+    if(edges.size() > 0) {
+        os << ",\n\t\"edges\": [\n";
+        for(auto it = edges.begin(); it != edges.end(); it++) {
+            os << "\t\t{\n\t\t\"src\": \"" << (*it)[0] << "\",\n"
+               << "\t\t\"dst\": \"" << (*it)[1] << "\""; 
+            if(next(it) != edges.end()) {
+                os << "\n\t\t},\n";
+            } else {
+                os << "\n\t\t}";
+            }
+        }
+      
+        os << "\n\t]\n";
+    } else {
+        os << "\n";
+    }
+
+    return os;
+}

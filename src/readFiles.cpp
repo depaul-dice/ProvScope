@@ -97,20 +97,14 @@ std::map<std::string, cfg_t *> readCFGs(char *dirName, ErrorCode& ec)
         {
             cfg_t *cfg = new cfg_t(filename);
             name = extractSubstring(filename);
-            cfgs[(std::string)name] = cfg;
-            //cfgs.insert(make_pair((string)name, cfg));
-            //map<string, cfg_t *>::iterator it;
-
-            /*
-            cout << "created cfg, now printing..." << cfg->name << endl;
-            for(it = cfgs.begin(); it != cfgs.end(); it++)
-            {
-                cout << it->first << endl << *(it->second) << endl;
-                it->second->clearTraverse();
+            if(cfgs.find((string)name) == cfgs.end()) {
+                cfgs[(string)name] = cfg;
+            } else {
+                cerr << "duplicate cfg found in function: " << name << ", renewing them\n";
+                delete cfgs[(string)name];
+                cfgs[(string)name] = cfg;
             }
-            */
         }
-
 
     }
     /*

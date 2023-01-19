@@ -81,30 +81,9 @@ label:
 map<node *, set<node *>> subgraph::findPostDominators() 
 {
     map<node *, set<node *>> pd{};
-    /*
-    map<node *, set<node *>> rEdges{}; // I will get the edges reversed
-    node *src;
-    for(auto it = edges.begin(); it != edges.end(); it++) {
-        src = it->first;
-        cout << "src: " << *src << endl;
-        for(auto dst: it->second) {
-            if(!isContained(dst, rEdges)) {
-                rEdges[dst];
-            }
-            cout << "dst: " << *dst << endl;
-            rEdges[dst].insert(src);
-        }
-    }
-    */
-    //cout << "at find postDominators\n";
+   //cout << "at find postDominators\n";
     vector<node *> v = reverseTopSort();
-    /*
-    cout << "i have done top sort: " << v.size() << endl;
-    for(auto e: v) {
-        cout << *e << endl;
-    }
-    */
-    
+   
     bool alpha;
     for(auto src: v) {
         alpha = true;

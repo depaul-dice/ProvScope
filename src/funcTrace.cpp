@@ -561,13 +561,13 @@ void funcTrace::ftcmp(funcTrace *ft2, map<string, cfg_t *> &cfgs, long &time, in
     this->printLooppath(cout, loopPath2, 0);
     */
     
-    auto tok = std::chrono::steady_clock::now();
+    auto tok = chrono::steady_clock::now();
 #ifdef PRINTPOSSIBLEPATH 
     cout << "printing paths\n";
     printPath(cout, path2);
     printPath(cout, path1);
 #endif
-    time = time + std::chrono::duration_cast<std::chrono::microseconds>(tok - tik).count();
+    time = time + chrono::duration_cast<std::chrono::microseconds>(tok - tik).count();
 
     //vector<std::tuple<unsigned, unsigned>> tmpPairs;
 

@@ -3,6 +3,7 @@
 //#include <dirent.h>
 //#include <sys/stat.h>
 #include <chrono>
+#include <json/json.h>
 
 #include "tools.h"
 #include "readFiles.h"
@@ -193,6 +194,8 @@ int findAPath(Args& args)
     funcTrace *ft1 = new funcTrace();
     ft1 = ft1->makeFuncTrace(flatTrace1, clibDict, noRetFuncs, cfgs);
 
+    //ft1->printRecursiveFT(cout);
+
     cout << "trying to find out the path\n";
     auto tik = chrono::steady_clock::now();
     ft1->getAPathRecursive(cfgs);
@@ -260,6 +263,142 @@ int usage()
     return EXIT_SUCCESS;      
 }
 
+int experiment(Args& args)
+{
+    ErrorCode ec = ErrorCode::SUCCESS;
+    char *tmpStr = (char *)malloc(strlen(args.parsedDirectory.c_str()) + 1);
+    strcpy(tmpStr, args.parsedDirectory.c_str());
+
+    /*
+     * this part is reading cfgs that are created with llvmanalysis repo
+     */
+    map<std::string, cfg_t *>cfgs = readCFGs(tmpStr, ec); 
+    free(tmpStr);
+    //Tools::print_map(cfgs);
+
+    /*
+     * this part is reading the clibFile which states which functions are relevant to system calls
+     */
+    std::map<std::string, int> clibDict = file2Dict(args.clibFile);    
+
+    /*
+     * this part is creating the flat trace without the consideration of function hierarchy from the trace that's captured preliminarily.
+     */
+    //Tools::print_map(clibDict);
+    vector<string> flatTrace1 = makeFlatTrace(args.flatTrace1); 
+    //print_vector(flatTrace);
+    vector<string> flatTrace2 = makeFlatTrace(args.flatTrace2); 
+
+    /*
+     * this part is reading the functions that did not have return statement, which creates more hassle to create function level trace from the flat trace we just read
+     */
+    map<string, int> noRetFuncs = file2Dict(args.noRetFile);
+
+    /*
+     * the below is where function trace is being made hierarchical instead of flat
+     */
+    funcTrace *ft1 = new funcTrace();
+    ft1->makeFuncTrace(flatTrace1, clibDict, noRetFuncs, cfgs);
+    ft1->updateHash();
+
+    cout << "path1\n";
+    ft1->printRecursiveFTFormat(cout, 0);
+    cout << endl;
+
+    funcTrace *ft2 = new funcTrace();
+    ft2->makeFuncTrace(flatTrace2, clibDict, noRetFuncs, cfgs);
+    ft2->updateHash();
+
+    cout << "path2\n";
+    ft2->printRecursiveFTFormat(cout, 0);
+    cout << endl;
+
+
+    /*
+     * below is where hierarchical function trace is being compared with the other hierarchical function trace
+     */
+    //cout << "comparison has started" << std::endl;
+    long time = 0;
+    int diff = 0;
+    auto start = chrono::high_resolution_clock::now();
+    ft1->ftcmp(ft2, cfgs, time, diff);
+    auto end = chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::microseconds>(end - start);    
+    ofstream timeFile("time.csv", ios::app);
+
+    if(timeFile.is_open()) {
+        timeFile << args.flatTrace1 << "," << args.flatTrace2 << "," << duration.count() << endl;
+
+        timeFile.close();
+    } else {
+        cerr << "error opening time.csv\n";
+    }
+
+    /*
+     * reporting the number of divergence in the trace
+     */
+    //cout << diff << " divergence were there\n";
+    if(diff == 0) {
+        cerr << "0 divergences are found between " << args.flatTrace1 << " and " << args.flatTrace2 << endl; 
+    }
+
+    delete ft1; 
+    delete ft2;
+    map<string, cfg_t *>::iterator it;
+    for(it = cfgs.begin(); it != cfgs.end(); it++) {
+        delete it->second;
+    }
+    
+    return EXIT_SUCCESS;
+}
+
+int pspecOut(Args& args)
+{
+    ErrorCode ec = ErrorCode::SUCCESS;
+    char *tmpStr = (char *)malloc(strlen(args.parsedDirectory.c_str()) + 1);
+    strcpy(tmpStr, args.parsedDirectory.c_str());
+
+    /*
+     * this part is reading cfgs that are created with llvmanalysis repo
+     */
+    map<std::string, cfg_t *>cfgs = readCFGs(tmpStr, ec); 
+    free(tmpStr);
+    
+    ofstream file;
+    file.open(args.outfile);
+    
+    /*
+    Json::Value j;
+    Json::StreamWriterBuilder builder;
+    for(auto it = cfgs.begin(); it != cfgs.end(); it++) {
+        j[it->first] = it->first;
+        unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter()); 
+        writer->write(j, &cout);
+    }
+    */
+    file << "{\n";
+    for(auto it = cfgs.begin(); it != cfgs.end(); it++) {
+        file << "{\n\t\"function name\": \"" << it->first << "\",\n";    
+        toJson(file, *(it->second)); 
+        if(next(it) == cfgs.end()) {
+            file << "}\n";
+        } else {
+            file << "},\n";
+        } 
+        it->second->clearTraverse();
+    }
+    file << "}\n";
+    file.close();
+ 
+    map<string, cfg_t *>::iterator it;
+    for(it = cfgs.begin(); it != cfgs.end(); it++) {
+        delete it->second;
+    }
+ 
+    return EXIT_SUCCESS;
+}
+
+
 /*
  * this is main function, all it does is pass the arguments to each options and according to the options given, does path-finding, comparison, printing a hierarchical path, printing a usage of the program
  */
@@ -268,51 +407,40 @@ int main(int argc, char **argv)
 
     Args args;
     int k = args.processArgs(argc, argv);
-    if(k == -1) 
-    {
+    if(k == -1) {
         fprintf(stderr, "processing args failed\n");
         usage();
         return EXIT_FAILURE;
     }
     
-    if(args.mode == Mode::READFILE)
-    {
-        std::cout << "need to read the file first\n";
+    if(args.mode == Mode::READFILE) {
+        cout << "need to read the file first\n";
         args.readFile();
     }
 
-    std::cout << "below is what you are trying to do\n" << args;
+    //cout << "below is what you are trying to do\n" << args;
 
-    if(args.mode == Mode::HELP)
-    {
+    if(args.mode == Mode::HELP) {
         return usage();
-    }
-    else if(args.mode == Mode::COMPARE)
-    {
+    } else if(args.mode == Mode::COMPARE) {
         return pathCompare(args);
-    }
-    else if(args.mode == Mode::FINDPATH)
-    {
+    } else if(args.mode == Mode::FINDPATH) {
         return findAPath(args);
-    }
-    else if(args.mode == Mode::READFILE)
-    {
+    } else if(args.mode == Mode::SPEC) {
+        return pspecOut(args);
+    } else if(args.mode == Mode::READFILE) {
         fprintf(stderr, "ERROR::Mode is not supposed to be READFILE after the file is read\n");
         usage();
         return EXIT_FAILURE;
-    } 
-    else if(args.mode == Mode::PRINTTRACE)
-    {
+    } else if(args.mode == Mode::PRINTTRACE) {
         return printHierarchicalPath(args);
-    }
-    else if(args.mode == Mode::ERR)
-    {
+    } else if(args.mode == Mode::EXPERIMENT) {
+        return experiment(args);
+    } else if(args.mode == Mode::ERR) {
         fprintf(stderr, "ERROR::Mode is ERR\n");
         usage();
         return EXIT_FAILURE;
-    } 
-    else
-    {
+    } else {
         fprintf(stderr, "ERROR::Mode is not right at all\n");
         usage();
         return EXIT_FAILURE; 

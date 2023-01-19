@@ -3,6 +3,8 @@
 #define CFG_H
 #include <vector>
 #include <iostream>
+#include <fstream>
+#include <set>
 #include "ec.h"
 
 #define NORMAL 0
@@ -61,6 +63,8 @@ public:
     node(char const * const name, const nodeType& nt, const int& numOEdges, const int& numIEdges, const int& numBEdges, edge* const& _oEdges, edge* const& _iEdges, edge* const& _bEdges, cfg_t *cfg);
 
     friend std::ostream& operator << (std::ostream& os, const node&);
+    friend std::ofstream& toJson(std::ofstream& os, const node&);
+    
     void printNodeSimply(std::ostream& os);
     bool operator == (const node& rhs) const;
     bool operator == (const virtualNode &rhs) const;
@@ -136,6 +140,7 @@ public:
 
     cfg_t(char *pathname);
     friend std::ostream& operator << (std::ostream& os, const cfg_t& cfg);
+    friend std::ofstream& toJson(std::ofstream& os, const cfg_t &cfg);
     void clearTraverse();
 
     // members
