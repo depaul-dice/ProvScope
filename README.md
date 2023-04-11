@@ -2,12 +2,29 @@
 Two programs exist in this repo. One is to parse the function trace and the other is to find the divergence/convergence of the two executions.
 
 ## HOW TO PARSE THE RAW FUNCTION TRACE ##
+Below is the command to use
+```
+python3 extractFunccalls.py file2parse sysfile
+```
+sysfile is the file which specifies which function leads to system calls or not. 
+When the function does not lead to system calls, those function calls are omitted. 
+These sysfiles are created at LLVM analyses directory which is another repository.
+
+The command above creates two types of files, \*.ftr and \*.nr. \*.ftr files are the function call traces that are parsed and \*.nr files are the list of functions which we could not detect returning. While using Intel Pin to create a function call trace, some functions do not return using the return calls; instead they use jumps to be back at the instruction pointer of the caller function. In order to create a hierarchical trace accurately, we need to know which functions do not return preliminarily.
+ 
 ## HOW TO FIND THE DIVERGENCE/CONVERGENCE ##
-## HOW TO FIND THE NUMBER OF PATHS THAT ALIGNS WITH FUNCTION TRACES ##
+To find the points of divergence/convergence, the following command works. You first need to make though!
+```
+./src/provScope -c funcList.txt nrfile parsedCFG ftrfile1 ftrfile2
+```
+Notice that you only need one nonreturn function files because they ftrfiles should be from the same executables, and so is parsedCFGs which are created from LLVManalyses. If you need to run multiple times and becomes tedious, you can prepare a txt file with one line above (let's say the file name is input.txt) and you can use the following command to do the same.
+```
+./src/provScope -f input.txt
+```
 
 # OBJECTIVE OF THE PROGRAM #
 
-- main: to get the divergence/convergence of the two executions 
+- provScope: to get the divergence/convergence of the two executions 
 - countPaths: to get the number of paths that would align the function trace
 
 # WHAT IS NECESSARY AS INPUTS #
