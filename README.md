@@ -60,6 +60,14 @@ The objective of the preliminary steps are to parse the function traces so that 
 1. One needs to prepare so much before being able to run this program, and likely to face many dependency issues that would take a lot of time to solve
 
 # EXPERIMENTS #
-# NOTE #
-- In the experiment, since it was a hassle to deal with many functions that glibc deals with, the executables are compiled with libc in musllvm. The experiment dataset uses coreutils. 
+1. (HiPC 2022 paper) General informations on program specification, before and after the simplifications of the graphs <- this is done in LLVManalyses
 
+2. (HiPC 2022 paper) Modules with correct/incorrect reconvergence observed by SP: We have differenciated two simplified function traces using the linux command `diff` first. Then as a comparison, we find points of divergence/convergence and check if `diff` command yielded point of divergence/convergence correctly regarding the function hierarchy manually.
+
+3. (HiPC 2022 paper) \# of differential locations: this experiment is created counting the points of divergences comparing 2 function traces with the same executables.
+
+4. (HiPC 2022 paper) Tracing Overhead over Normal Execution: This is the pinTool overhead and it is uploaded on tools directory. 
+
+5. (HiPC 2022 paper) Reduction in Program Specification: this is from LLVManalyses repo.  
+
+6. (HiPC 2022 paper) Reduction in PIN Function Traces: this is created through using `extractFunccalls.py` in tools directory. 
