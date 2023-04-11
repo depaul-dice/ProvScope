@@ -9,3 +9,5 @@
 4. `countDiff.py`: This is a tool automating counting how many differences exist in the output of linux command *diff*. 
 
 5. `extractFunccalls.py`: Explained in the README of the parent directory. 
+
+6. `FuncAnalysis`: This is a PinTool directory. If you untar it under pin/source/tools and make the file and run with shared object and the binary file *pin*.
