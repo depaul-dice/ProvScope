@@ -1,0 +1,4 @@
+0x2291ec0,epoint,1,0,0,0x2291ec0_0,na,na
+0x2291ec0_0,funccall,reallocarray,2,1,0,0x2293280:0x22932d0,0x2291ec0,na
+0x2293280,funccall,xalloc_die,0,1,0,na,0x2291ec0_0,na
+0x22932d0,ret,0,1,0,na,0x2291ec0_0,na

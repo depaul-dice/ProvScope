@@ -1,0 +1,4 @@
+0x128d010,epoint,1,0,0,0x128d010_0,na,na
+0x128d010_0,funccall,malloc,1,1,0,0x128d010_1,0x128d010,na
+0x128d010_1,funccall,nonnull,1,1,0,0x128d010_2,0x128d010_0,na
+0x128d010_2,ret,0,1,0,na,0x128d010_1,na

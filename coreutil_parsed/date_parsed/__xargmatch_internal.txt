@@ -1,0 +1,5 @@
+0x18cfa40,epoint,2,0,0,0x18cfc20:0x18cfd60,na,na
+0x18cfc20,funccall,argmatch_invalid,1,1,0,0x18cfc20_1,0x18cfa40,na
+0x18cfc20_1,funccall,argmatch_valid,1,1,0,0x18cfc70,0x18cfc20,na
+0x18cfc70,funccall,__argmatch_die,1,1,0,0x18cfd60,0x18cfc20_1,na
+0x18cfd60,ret,0,2,0,na,0x18cfa40:0x18cfc70,na

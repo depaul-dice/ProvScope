@@ -1,0 +1,7 @@
+0x16c1510,epoint,1,0,0,0x16c1510_0,na,na
+0x16c1510_0,funccall,close_stream,3,1,0,0x16c17a0:0x16c16b0:0x16c1750,0x16c1510,na
+0x16c16b0,funccall,quotearg_colon,1,1,0,0x16c1750,0x16c1510_0,na
+0x16c1750,funccall,_exit,0,2,0,na,0x16c16b0:0x16c1510_0,na
+0x16c17a0,funccall,close_stream,2,1,0,0x16c17f0:0x16c1840,0x16c1510_0,na
+0x16c17f0,funccall,_exit,0,1,0,na,0x16c17a0,na
+0x16c1840,ret,0,1,0,na,0x16c17a0,na

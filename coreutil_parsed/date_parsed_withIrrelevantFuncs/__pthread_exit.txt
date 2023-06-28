@@ -1,0 +1,15 @@
+0x1cfdc00,epoint,1,0,0,0x1cfe600,na,na
+0x1cfe600,funccall,__pthread_tsd_run_dtors,1,1,0,0x1cfe600_1,0x1cfdc00,na
+0x1cfe600_1,funccall,__lock,1,1,0,0x1cfe600_2,0x1cfe600,na
+0x1cfe600_2,funccall,__block_app_sigs,1,1,0,0x1cfe600_3,0x1cfe600_1,na
+0x1cfe600_3,funccall,__tl_lock,2,1,0,0x1cfe650:0x1cfe6a0,0x1cfe600_2,na
+0x1cfe650,funccall,__tl_unlock,1,1,0,0x1cfe650_1,0x1cfe600_3,na
+0x1cfe650_1,funccall,__restore_sigs,1,1,0,0x1cfe650_2,0x1cfe650,na
+0x1cfe650_2,funccall,__unlock,1,1,0,0x1cfe650_3,0x1cfe650_1,na
+0x1cfe650_3,funccall,exit,0,1,0,na,0x1cfe650_2,na
+0x1cfe6a0,funccall,__vm_lock,1,1,0,0x1cfe880,0x1cfe600_3,na
+0x1cfe880,funccall,__vm_unlock,1,1,0,0x1cfe880_1,0x1cfe6a0,na
+0x1cfe880_1,funccall,__do_orphaned_stdio_locks,1,1,0,0x1cfe880_2,0x1cfe880,na
+0x1cfe880_2,funccall,__dl_thread_cleanup,2,1,0,0x1cfe920:0x1cfeab0,0x1cfe880_1,na
+0x1cfe920,funccall,__block_all_sigs,1,1,0,0x1cfeab0,0x1cfe880_2,na
+0x1cfeab0,funccall,__unlock,0,2,0,na,0x1cfe880_2:0x1cfe920,na

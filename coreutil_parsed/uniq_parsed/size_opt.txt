@@ -1,0 +1,3 @@
+0x167b400,epoint,1,0,0,0x167b400_0,na,na
+0x167b400_0,funccall,xstrtoumax,1,1,0,0x167b680,0x167b400,na
+0x167b680,ret,0,1,0,na,0x167b400_0,na

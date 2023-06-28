@@ -1,0 +1,3 @@
+0x195b310,epoint,1,0,0,0x195b310_0,na,na
+0x195b310_0,funccall,vfprintf,1,1,0,0x195b310_1,0x195b310,na
+0x195b310_1,ret,0,1,0,na,0x195b310_0,na

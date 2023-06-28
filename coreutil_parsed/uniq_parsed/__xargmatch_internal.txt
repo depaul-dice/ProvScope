@@ -1,0 +1,5 @@
+0x16771b0,epoint,2,0,0,0x16784e0:0x1678620,na,na
+0x16784e0,funccall,argmatch_invalid,1,1,0,0x16784e0_1,0x16771b0,na
+0x16784e0_1,funccall,argmatch_valid,1,1,0,0x1678530,0x16784e0,na
+0x1678530,funccall,__argmatch_die,1,1,0,0x1678620,0x16784e0_1,na
+0x1678620,ret,0,2,0,na,0x16771b0:0x1678530,na

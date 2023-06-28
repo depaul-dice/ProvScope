@@ -1,0 +1,6 @@
+0xd596a0,epoint,1,0,0,0xd596a0_0,na,na
+0xd596a0_0,funccall,raise,1,1,0,0xd596a0_1,0xd596a0,na
+0xd596a0_1,funccall,__block_all_sigs,1,1,0,0xd596a0_2,0xd596a0_0,na
+0xd596a0_2,funccall,__lock,1,1,0,0xd596a0_3,0xd596a0_1,na
+0xd596a0_3,funccall,raise,1,1,0,0xd596a0_4,0xd596a0_2,na
+0xd596a0_4,funccall,_Exit,0,1,0,na,0xd596a0_3,na

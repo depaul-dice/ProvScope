@@ -1,0 +1,3 @@
+0xc52940,epoint,1,0,0,0xc52ce0,na,na
+0xc52ce0,funccall,__stdio_write,1,1,0,0xc52ce0_1,0xc52940,na
+0xc52ce0_1,ret,0,1,0,na,0xc52ce0,na

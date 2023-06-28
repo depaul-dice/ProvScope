@@ -1,0 +1,13 @@
+0x1399fb0,epoint,1,0,0,0x139a9b0,na,na
+0x139a9b0,funccall,__pthread_tsd_run_dtors,1,1,0,0x139a9b0_1,0x1399fb0,na
+0x139a9b0_1,funccall,__lock,1,1,0,0x139a9b0_2,0x139a9b0,na
+0x139a9b0_2,funccall,__block_app_sigs,1,1,0,0x139a9b0_3,0x139a9b0_1,na
+0x139a9b0_3,funccall,__tl_lock,2,1,0,0x139aa00:0x139ac30,0x139a9b0_2,na
+0x139aa00,funccall,__tl_unlock,1,1,0,0x139aa00_1,0x139a9b0_3,na
+0x139aa00_1,funccall,__restore_sigs,1,1,0,0x139aa00_2,0x139aa00,na
+0x139aa00_2,funccall,__unlock,1,1,0,0x139aa00_3,0x139aa00_1,na
+0x139aa00_3,funccall,exit,0,1,0,na,0x139aa00_2,na
+0x139ac30,funccall,__vm_unlock,1,1,0,0x139ac30_1,0x139a9b0_3,na
+0x139ac30_1,funccall,__dl_thread_cleanup,2,1,0,0x139acd0:0x139ae60,0x139ac30,na
+0x139acd0,funccall,__block_all_sigs,1,1,0,0x139ae60,0x139ac30_1,na
+0x139ae60,funccall,__unlock,0,2,0,na,0x139ac30_1:0x139acd0,na

@@ -1,0 +1,4 @@
+0x96e020,epoint,1,0,0,0x96e020_0,na,na
+0x96e020_0,funccall,mfile_name_concat,2,1,0,0x9c0b50:0x9c0ba0,0x96e020,na
+0x9c0b50,funccall,xalloc_die,0,1,0,na,0x96e020_0,na
+0x9c0ba0,ret,0,1,0,na,0x96e020_0,na

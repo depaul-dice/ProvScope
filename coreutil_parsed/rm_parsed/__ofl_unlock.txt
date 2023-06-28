@@ -1,0 +1,3 @@
+0xca2840,epoint,1,0,0,0xca2840_0,na,na
+0xca2840_0,funccall,__unlock,1,1,0,0xca2840_1,0xca2840,na
+0xca2840_1,ret,0,1,0,na,0xca2840_0,na

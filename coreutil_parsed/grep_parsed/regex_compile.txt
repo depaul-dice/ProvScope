@@ -1,0 +1,4 @@
+0x21c9d00,epoint,2,0,0,0x21ca6e0:0x21ca690,na,na
+0x21ca690,funccall,xmalloc,1,1,0,0x21ca6e0,0x21c9d00,na
+0x21ca6e0,funccall,rpl_re_compile_pattern,1,2,0,0x21ca6e0_1,0x21ca690:0x21c9d00,na
+0x21ca6e0_1,ret,0,1,0,na,0x21ca6e0,na

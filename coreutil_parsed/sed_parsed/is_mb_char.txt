@@ -1,0 +1,4 @@
+0x2c00bb0,epoint,1,0,0,0x2c00bb0_0,na,na
+0x2c00bb0_0,funccall,rpl_mbrtowc,2,1,0,0x2c00e30:0x2c00de0,0x2c00bb0,na
+0x2c00de0,funccall,panic,0,1,0,na,0x2c00bb0_0,na
+0x2c00e30,ret,0,1,0,na,0x2c00bb0_0,na

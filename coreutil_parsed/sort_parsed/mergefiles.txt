@@ -1,0 +1,5 @@
+0x15bdaf0,epoint,1,0,0,0x15bdaf0_0,na,na
+0x15bdaf0_0,funccall,open_input_files,2,1,0,0x15c0410:0x15c03c0,0x15bdaf0,na
+0x15c03c0,funccall,sort_die,0,1,0,na,0x15bdaf0_0,na
+0x15c0410,funccall,mergefps,1,1,0,0x15c0410_1,0x15bdaf0_0,na
+0x15c0410_1,ret,0,1,0,na,0x15c0410,na

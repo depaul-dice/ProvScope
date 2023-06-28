@@ -1,0 +1,3 @@
+0x23f2290,epoint,1,0,0,0x23f2290_0,na,na
+0x23f2290_0,funccall,setlocale_null_r,1,1,0,0x22b4580,0x23f2290,na
+0x22b4580,ret,0,1,0,na,0x23f2290_0,na

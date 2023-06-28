@@ -1,0 +1,3 @@
+0x2422540,epoint,1,0,0,0x2422540_0,na,na
+0x2422540_0,funccall,__pthread_rwlock_timedrdlock,1,1,0,0x2422540_1,0x2422540,na
+0x2422540_1,ret,0,1,0,na,0x2422540_0,na

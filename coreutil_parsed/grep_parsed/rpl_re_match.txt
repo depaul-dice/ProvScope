@@ -1,0 +1,3 @@
+0x28a7b50,epoint,1,0,0,0x28a7b50_0,na,na
+0x28a7b50_0,funccall,re_search_stub,1,1,0,0x28a7b50_1,0x28a7b50,na
+0x28a7b50_1,ret,0,1,0,na,0x28a7b50_0,na

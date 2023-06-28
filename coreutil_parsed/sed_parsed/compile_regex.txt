@@ -1,0 +1,7 @@
+0x270d200,epoint,3,0,0,0x270e300:0x270e2b0:0x270e350,na,na
+0x270e2b0,funccall,dcgettext,1,1,0,0x270e2b0_1,0x270d200,na
+0x270e2b0_1,funccall,bad_prog,0,1,0,na,0x270e2b0,na
+0x270e300,funccall,xzalloc,1,1,0,0x270e300_1,0x270d200,na
+0x270e300_1,funccall,normalize_text,1,1,0,0x270e300_2,0x270e300,na
+0x270e300_2,funccall,compile_regex_1,1,1,0,0x270e350,0x270e300_1,na
+0x270e350,ret,0,2,0,na,0x270e300_2:0x270d200,na

@@ -1,0 +1,7 @@
+0x2396f60,epoint,2,0,0,0x23972b0:0x2397710,na,na
+0x23972b0,funccall,xpalloc,1,1,0,0x23972b0_1,0x2396f60,na
+0x23972b0_1,funccall,xreallocarray,1,1,0,0x23972b0_2,0x23972b0,na
+0x23972b0_2,funccall,xreallocarray,1,1,0,0x23972b0_3,0x23972b0_1,na
+0x23972b0_3,funccall,xreallocarray,2,1,0,0x2397710:0x2397300,0x23972b0_2,na
+0x2397300,funccall,xreallocarray,1,1,0,0x2397710,0x23972b0_3,na
+0x2397710,ret,0,3,0,na,0x2396f60:0x23972b0_3:0x2397300,na

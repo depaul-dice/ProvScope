@@ -1,0 +1,4 @@
+0x15546b0,epoint,1,0,0,0x15546b0_0,na,na
+0x15546b0_0,funccall,strlen,1,1,0,0x15546b0_1,0x15546b0,na
+0x15546b0_1,funccall,__memrchr,1,1,0,0x15546b0_2,0x15546b0_0,na
+0x15546b0_2,ret,0,1,0,na,0x15546b0_1,na

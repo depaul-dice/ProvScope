@@ -1,0 +1,4 @@
+0x16c3880,epoint,1,0,0,0x16c3880_0,na,na
+0x16c3880_0,funccall,ferror,1,1,0,0x16c3880_1,0x16c3880,na
+0x16c3880_1,funccall,rpl_fclose,1,1,0,0x16c3b00,0x16c3880_0,na
+0x16c3b00,ret,0,1,0,na,0x16c3880_1,na

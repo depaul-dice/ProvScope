@@ -1,0 +1,2 @@
+0xeb97b0,epoint,1,0,0,0xeb97b0_0,na,na
+0xeb97b0_0,funccall,abort,0,1,0,na,0xeb97b0,na

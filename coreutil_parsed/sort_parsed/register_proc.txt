@@ -1,0 +1,6 @@
+0x155d050,epoint,2,0,0,0x1562610:0x1562520,na,na
+0x1562520,funccall,hash_initialize,2,1,0,0x1562610:0x1562570,0x155d050,na
+0x1562570,funccall,xalloc_die,0,1,0,na,0x1562520,na
+0x1562610,funccall,hash_insert,2,2,0,0x15626b0:0x1562660,0x155d050:0x1562520,na
+0x1562660,funccall,xalloc_die,0,1,0,na,0x1562610,na
+0x15626b0,ret,0,1,0,na,0x1562610,na

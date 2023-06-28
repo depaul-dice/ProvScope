@@ -1,0 +1,4 @@
+0xb7ac70,epoint,1,0,0,0xb7aea0,na,na
+0xb7aea0,funccall,open,1,1,0,0xb7aea0_1,0xb7ac70,na
+0xb7aea0_1,funccall,fd_safer,1,1,0,0xb7aea0_2,0xb7aea0,na
+0xb7aea0_2,ret,0,1,0,na,0xb7aea0_1,na

@@ -1,0 +1,4 @@
+0xd35b60,epoint,1,0,0,0xd35b60_0,na,na
+0xd35b60_0,funccall,close,1,1,0,0xd35b60_1,0xd35b60,na
+0xd35b60_1,funccall,free,1,1,0,0xd35b60_2,0xd35b60_0,na
+0xd35b60_2,ret,0,1,0,na,0xd35b60_1,na

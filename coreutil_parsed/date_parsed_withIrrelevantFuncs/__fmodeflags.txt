@@ -1,0 +1,5 @@
+0x1d15080,epoint,1,0,0,0x1d15080_0,na,na
+0x1d15080_0,funccall,strchr,1,1,0,0x1d15120,0x1d15080,na
+0x1d15120,funccall,strchr,1,1,0,0x1d15120_1,0x1d15080_0,na
+0x1d15120_1,funccall,strchr,1,1,0,0x1d15120_2,0x1d15120,na
+0x1d15120_2,ret,0,1,0,na,0x1d15120_1,na

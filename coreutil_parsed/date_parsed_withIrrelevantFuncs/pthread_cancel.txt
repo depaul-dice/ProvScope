@@ -1,0 +1,7 @@
+0x1ce8560,epoint,2,0,0,0x1ce8600:0x1ce85b0,na,na
+0x1ce85b0,funccall,memset,1,1,0,0x1ce85b0_1,0x1ce8560,na
+0x1ce85b0_1,funccall,__libc_sigaction,1,1,0,0x1ce8600,0x1ce85b0,na
+0x1ce8600,funccall,__pthread_self_internal,3,2,0,0x1ce8740:0x1ce8790:0x1ce86f0,0x1ce8560:0x1ce85b0_1,na
+0x1ce86f0,funccall,__pthread_exit,0,1,0,na,0x1ce8600,na
+0x1ce8740,funccall,pthread_kill,1,1,0,0x1ce8790,0x1ce8600,na
+0x1ce8790,ret,0,2,0,na,0x1ce8740:0x1ce8600,na

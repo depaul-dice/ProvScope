@@ -1,0 +1,5 @@
+0x12cc5d0,epoint,2,0,0,0x12cc6a0:0x12cc6f0,na,na
+0x12cc6a0,funccall,fflush,1,1,0,0x12cc740,0x12cc5d0,na
+0x12cc6f0,funccall,clear_ungetc_buffer_preserving_position,1,1,0,0x12cc6f0_1,0x12cc5d0,na
+0x12cc6f0_1,funccall,fflush,1,1,0,0x12cc740,0x12cc6f0,na
+0x12cc740,ret,0,2,0,na,0x12cc6a0:0x12cc6f0_1,na

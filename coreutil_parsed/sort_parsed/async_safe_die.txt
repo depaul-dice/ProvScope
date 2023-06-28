@@ -1,0 +1,6 @@
+0x1565c60,epoint,1,0,0,0x1565c60_0,na,na
+0x1565c60_0,funccall,write,2,1,0,0x1565d10:0x1565d60,0x1565c60,na
+0x1565d10,funccall,write,1,1,0,0x1565d10_1,0x1565c60_0,na
+0x1565d10_1,funccall,write,1,1,0,0x1565d60,0x1565d10,na
+0x1565d60,funccall,write,1,2,0,0x1565d60_1,0x1565c60_0:0x1565d10_1,na
+0x1565d60_1,funccall,_exit,0,1,0,na,0x1565d60,na

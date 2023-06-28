@@ -1,0 +1,4 @@
+0x25b4120,epoint,1,0,0,0x25b4120_0,na,na
+0x25b4120_0,funccall,xzalloc,2,1,0,0x25b4240:0x25b4290,0x25b4120,na
+0x25b4240,funccall,print_and_abort,0,1,0,na,0x25b4120_0,na
+0x25b4290,ret,0,1,0,na,0x25b4120_0,na

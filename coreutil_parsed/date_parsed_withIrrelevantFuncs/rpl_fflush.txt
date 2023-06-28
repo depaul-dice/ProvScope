@@ -1,0 +1,6 @@
+0x1c421e0,epoint,2,0,0,0x1c46040:0x1c45ff0,na,na
+0x1c45ff0,funccall,__freading,2,1,0,0x1c46040:0x1c46090,0x1c421e0,na
+0x1c46040,funccall,fflush,1,2,0,0x1c460e0,0x1c421e0:0x1c45ff0,na
+0x1c46090,funccall,clear_ungetc_buffer_preserving_position,1,1,0,0x1c46090_1,0x1c45ff0,na
+0x1c46090_1,funccall,fflush,1,1,0,0x1c460e0,0x1c46090,na
+0x1c460e0,ret,0,2,0,na,0x1c46040:0x1c46090_1,na

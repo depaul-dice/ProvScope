@@ -1,0 +1,3 @@
+0x15a2090,epoint,1,0,0,0x15a2090_0,na,na
+0x15a2090_0,funccall,fcntl,1,1,0,0x15a2090_1,0x15a2090,na
+0x15a2090_1,ret,0,1,0,na,0x15a2090_0,na

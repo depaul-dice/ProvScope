@@ -1,0 +1,3 @@
+0xc74be0,epoint,1,0,0,0xc74be0_0,na,na
+0xc74be0_0,funccall,vfprintf,1,1,0,0xc74be0_1,0xc74be0,na
+0xc74be0_1,ret,0,1,0,na,0xc74be0_0,na

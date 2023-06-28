@@ -1,0 +1,6 @@
+0x1505c40,epoint,1,0,0,0x1505c40_0,na,na
+0x1505c40_0,funccall,__pthread_mutex_lock,2,1,0,0x1270d10:0x1270d60,0x1505c40,na
+0x1270d10,funccall,pthread_cond_wait,1,2,1,0x1270d60,0x1505c40_0:0x1270d10,0x1270d10
+0x1270d60,funccall,__pthread_mutex_unlock,1,2,0,0x1270d60_1,0x1505c40_0:0x1270d10,na
+0x1270d60_1,funccall,lock_node,1,1,0,0x1270d60_2,0x1270d60,na
+0x1270d60_2,ret,0,1,0,na,0x1270d60_1,na

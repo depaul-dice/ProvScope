@@ -1,0 +1,3 @@
+0x3187c80,epoint,1,0,0,0x3187c80_0,na,na
+0x3187c80_0,funccall,__aio_close,1,1,0,0x3187c80_1,0x3187c80,na
+0x3187c80_1,ret,0,1,0,na,0x3187c80_0,na

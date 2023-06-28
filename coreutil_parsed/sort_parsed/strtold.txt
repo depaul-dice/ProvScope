@@ -1,0 +1,3 @@
+0x1961e60,epoint,1,0,0,0x1961e60_0,na,na
+0x1961e60_0,funccall,strtox,1,1,0,0x1961e60_1,0x1961e60,na
+0x1961e60_1,ret,0,1,0,na,0x1961e60_0,na

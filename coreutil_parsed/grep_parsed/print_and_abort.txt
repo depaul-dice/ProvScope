@@ -1,0 +1,4 @@
+0x20f3b30,epoint,1,0,0,0x20f3b30_0,na,na
+0x20f3b30_0,funccall,dcgettext,1,1,0,0x20f3b30_1,0x20f3b30,na
+0x20f3b30_1,funccall,fprintf,1,1,0,0x20f3b30_2,0x20f3b30_0,na
+0x20f3b30_2,funccall,exit,0,1,0,na,0x20f3b30_1,na

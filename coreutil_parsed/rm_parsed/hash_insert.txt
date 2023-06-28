@@ -1,0 +1,3 @@
+0xad9400,epoint,1,0,0,0xad9400_0,na,na
+0xad9400_0,funccall,hash_insert_if_absent,1,1,0,0xadc910,0xad9400,na
+0xadc910,ret,0,1,0,na,0xad9400_0,na

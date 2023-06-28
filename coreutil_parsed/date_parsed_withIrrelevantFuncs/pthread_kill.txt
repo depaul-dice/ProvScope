@@ -1,0 +1,4 @@
+0x1cf65a0,epoint,1,0,0,0x1cf65a0_0,na,na
+0x1cf65a0_0,funccall,__lock,1,1,0,0x1cfaea0,0x1cf65a0,na
+0x1cfaea0,funccall,__unlock,1,1,0,0x1cfaea0_1,0x1cf65a0_0,na
+0x1cfaea0_1,ret,0,1,0,na,0x1cfaea0,na

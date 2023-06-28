@@ -1,0 +1,4 @@
+0x268b660,epoint,1,0,0,0x268b660_0,na,na
+0x268b660_0,funccall,dcgettext,1,1,0,0x268b660_1,0x268b660,na
+0x268b660_1,funccall,xmalloc,1,1,0,0x268b660_2,0x268b660_0,na
+0x268b660_2,funccall,bad_prog,0,1,0,na,0x268b660_1,na

@@ -1,0 +1,4 @@
+0x1d30970,epoint,1,0,0,0x1d30970_0,na,na
+0x1d30970_0,funccall,__vdsosym,2,1,0,0x1d30a10:0x1d309c0,0x1d30970,na
+0x1d309c0,funccall,__clock_gettime,1,1,0,0x1d30a10,0x1d30970_0,na
+0x1d30a10,ret,0,2,0,na,0x1d30970_0:0x1d309c0,na

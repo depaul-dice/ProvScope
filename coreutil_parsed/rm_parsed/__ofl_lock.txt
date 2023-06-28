@@ -1,0 +1,3 @@
+0xc500d0,epoint,1,0,0,0xc500d0_0,na,na
+0xc500d0_0,funccall,__lock,1,1,0,0xc500d0_1,0xc500d0,na
+0xc500d0_1,ret,0,1,0,na,0xc500d0_0,na

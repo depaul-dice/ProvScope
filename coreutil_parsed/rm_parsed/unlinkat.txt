@@ -1,0 +1,2 @@
+0xda5020,epoint,1,0,0,0xda5020_0,na,na
+0xda5020_0,ret,0,1,0,na,0xda5020,na

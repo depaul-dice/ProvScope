@@ -1,0 +1,2 @@
+0x3069d10,epoint,1,0,0,0x306db40,na,na
+0x306db40,ret,0,1,0,na,0x3069d10,na

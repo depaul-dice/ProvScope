@@ -1,0 +1,8 @@
+0x123dcd0,epoint,1,0,0,0x123dcd0_0,na,na
+0x123dcd0_0,funccall,xstrtoumax,1,1,0,0x123dcd0_1,0x123dcd0,na
+0x123dcd0_1,funccall,getrlimit,4,1,0,0x123e2a0:0x123e2f0:0x123e020:0x123e110,0x123dcd0_0,na
+0x123e020,funccall,quote,1,1,0,0x123e020_1,0x123dcd0_1,na
+0x123e020_1,funccall,quote,0,1,0,na,0x123e020,na
+0x123e110,ret,0,1,0,na,0x123dcd0_1,na
+0x123e2a0,funccall,quote,0,1,0,na,0x123dcd0_1,na
+0x123e2f0,funccall,xstrtol_fatal,0,1,0,na,0x123dcd0_1,na

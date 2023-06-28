@@ -1,0 +1,10 @@
+0x1baff90,epoint,1,0,0,0x1baff90_0,na,na
+0x1baff90_0,funccall,__errno_location,3,1,0,0x1bb0160:0x1bb03e0:0x1bb02f0,0x1baff90,na
+0x1bb0160,funccall,abort,0,1,0,na,0x1baff90_0,na
+0x1bb02f0,funccall,xpalloc,1,1,0,0x1bb03e0,0x1baff90_0,na
+0x1bb03e0,funccall,quotearg_buffer_restyled,3,2,0,0x1bb0520:0x1bb0480:0x1bb04d0,0x1baff90_0:0x1bb02f0,na
+0x1bb0480,funccall,rpl_free,1,1,0,0x1bb04d0,0x1bb03e0,na
+0x1bb04d0,funccall,xcharalloc,1,2,0,0x1bb04d0_1,0x1bb0480:0x1bb03e0,na
+0x1bb04d0_1,funccall,quotearg_buffer_restyled,1,1,0,0x1bb0520,0x1bb04d0,na
+0x1bb0520,funccall,__errno_location,1,2,0,0x1bb0520_1,0x1bb03e0:0x1bb04d0_1,na
+0x1bb0520_1,ret,0,1,0,na,0x1bb0520,na

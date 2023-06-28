@@ -1,0 +1,3 @@
+0x25adf20,epoint,1,0,0,0x25adf20_0,na,na
+0x25adf20_0,funccall,setlocale,1,1,0,0x25ae150,0x25adf20,na
+0x25ae150,ret,0,1,0,na,0x25adf20_0,na

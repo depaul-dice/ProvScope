@@ -1,0 +1,5 @@
+0x10a44f0,epoint,1,0,0,0x10a44f0_0,na,na
+0x10a44f0_0,funccall,rpl_fts_open,3,1,0,0x10a46c0:0x10a4620:0x10a4670,0x10a44f0,na
+0x10a4620,funccall,__assert_fail,0,1,0,na,0x10a44f0_0,na
+0x10a4670,funccall,xalloc_die,0,1,0,na,0x10a44f0_0,na
+0x10a46c0,ret,0,1,0,na,0x10a44f0_0,na

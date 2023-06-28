@@ -1,0 +1,5 @@
+0x2400ae0,epoint,1,0,0,0x2400ae0_0,na,na
+0x2400ae0_0,funccall,xmalloc,1,1,0,0x2400ae0_1,0x2400ae0,na
+0x2400ae0_1,funccall,_obstack_begin,2,1,0,0x2400dd0:0x2400f60,0x2400ae0_0,na
+0x2400dd0,funccall,_obstack_newchunk,1,1,0,0x2400f60,0x2400ae0_1,na
+0x2400f60,ret,0,2,0,na,0x2400ae0_1:0x2400dd0,na

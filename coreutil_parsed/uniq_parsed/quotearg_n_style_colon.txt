@@ -1,0 +1,4 @@
+0x1694940,epoint,1,0,0,0x1694940_0,na,na
+0x1694940_0,funccall,quoting_options_from_style,1,1,0,0x1694940_1,0x1694940,na
+0x1694940_1,funccall,quotearg_n_options,1,1,0,0x1694940_2,0x1694940_0,na
+0x1694940_2,ret,0,1,0,na,0x1694940_1,na

@@ -1,0 +1,4 @@
+0x1d085b0,epoint,1,0,0,0x1d085b0_0,na,na
+0x1d085b0_0,funccall,libc_exit_fini,1,1,0,0x1d085b0_1,0x1d085b0,na
+0x1d085b0_1,funccall,__stdio_exit,1,1,0,0x1d085b0_2,0x1d085b0_0,na
+0x1d085b0_2,funccall,_Exit,0,1,0,na,0x1d085b0_1,na

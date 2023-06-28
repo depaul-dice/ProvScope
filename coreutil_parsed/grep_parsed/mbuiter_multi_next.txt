@@ -1,0 +1,6 @@
+0x2ec77f0,epoint,3,0,0,0x2ec7f10:0x2ec7b00:0x2ec7a60,na,na
+0x2ec7a60,funccall,__assert_fail,0,1,0,na,0x2ec77f0,na
+0x2ec7b00,funccall,rpl_mbrtowc,3,1,0,0x2ec7f10:0x2ec7d30:0x2ec7dd0,0x2ec77f0,na
+0x2ec7d30,funccall,__assert_fail,0,1,0,na,0x2ec7b00,na
+0x2ec7dd0,funccall,__assert_fail,0,1,0,na,0x2ec7b00,na
+0x2ec7f10,ret,0,2,0,na,0x2ec77f0:0x2ec7b00,na

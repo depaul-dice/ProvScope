@@ -1,0 +1,3 @@
+0x129c620,epoint,1,0,0,0x129c620_0,na,na
+0x129c620_0,funccall,safe_hasher,1,1,0,0x129cd20,0x129c620,na
+0x129cd20,ret,0,1,0,na,0x129c620_0,na

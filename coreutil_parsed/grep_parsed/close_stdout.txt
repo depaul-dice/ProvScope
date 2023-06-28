@@ -1,0 +1,7 @@
+0x28df510,epoint,1,0,0,0x28df510_0,na,na
+0x28df510_0,funccall,close_stream,2,1,0,0x28df5e0:0x28df590,0x28df510,na
+0x28df590,funccall,dcgettext,1,1,0,0x28df590_1,0x28df510_0,na
+0x28df590_1,funccall,_exit,0,1,0,na,0x28df590,na
+0x28df5e0,funccall,close_stream,2,1,0,0x28df680:0x28df630,0x28df510_0,na
+0x28df630,funccall,_exit,0,1,0,na,0x28df5e0,na
+0x28df680,ret,0,1,0,na,0x28df5e0,na

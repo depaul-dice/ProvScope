@@ -1,0 +1,9 @@
+0x2710b80,epoint,2,0,0,0x2710ed0:0x2710f20,na,na
+0x2710ed0,funccall,malloc,1,1,0,0x2710f20,0x2710b80,na
+0x2710f20,funccall,rpl_re_compile_pattern,3,2,0,0x2711010:0x2711150:0x2711100,0x2710ed0:0x2710b80,na
+0x2711010,funccall,bad_prog,0,1,0,na,0x2710f20,na
+0x2711100,funccall,dcgettext,1,1,0,0x2711100_1,0x2710f20,na
+0x2711100_1,funccall,bad_prog,0,1,0,na,0x2711100,na
+0x2711150,funccall,dfaalloc,1,1,0,0x2711150_1,0x2710f20,na
+0x2711150_1,funccall,dfacomp,1,1,0,0x2711330,0x2711150,na
+0x2711330,ret,0,1,0,na,0x2711150_1,na

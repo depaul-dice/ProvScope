@@ -1,0 +1,3 @@
+0x20fede0,epoint,1,0,0,0x20fede0_0,na,na
+0x20fede0_0,funccall,quote_n,1,1,0,0x20fede0_1,0x20fede0,na
+0x20fede0_1,ret,0,1,0,na,0x20fede0_0,na

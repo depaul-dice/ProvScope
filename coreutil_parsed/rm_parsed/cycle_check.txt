@@ -1,0 +1,3 @@
+0xade200,epoint,2,0,0,0x9bf5d0:0x9bf8f0,na,na
+0x9bf5d0,funccall,__assert_fail,0,1,0,na,0xade200,na
+0x9bf8f0,ret,0,1,0,na,0xade200,na

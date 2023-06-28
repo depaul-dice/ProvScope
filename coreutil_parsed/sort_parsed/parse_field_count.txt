@@ -1,0 +1,4 @@
+0x122af60,epoint,1,0,0,0x122af60_0,na,na
+0x122af60_0,funccall,xstrtoumax,2,1,0,0x122bf80:0x122be40,0x122af60,na
+0x122be40,funccall,quote,0,1,0,na,0x122af60_0,na
+0x122bf80,ret,0,1,0,na,0x122af60_0,na

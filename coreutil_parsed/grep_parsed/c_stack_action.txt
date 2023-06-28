@@ -1,0 +1,6 @@
+0x24ca890,epoint,1,0,0,0x24ca890_0,na,na
+0x24ca890_0,funccall,dcgettext,1,1,0,0x24ca890_1,0x24ca890,na
+0x24ca890_1,funccall,dcgettext,1,1,0,0x24ca890_2,0x24ca890_0,na
+0x24ca890_2,funccall,stackoverflow_install_handler,2,1,0,0x24ca990:0x24ca9e0,0x24ca890_1,na
+0x24ca990,funccall,sigsegv_install_handler,1,1,0,0x24ca9e0,0x24ca890_2,na
+0x24ca9e0,ret,0,2,0,na,0x24ca990:0x24ca890_2,na

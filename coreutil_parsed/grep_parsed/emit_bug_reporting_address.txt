@@ -1,0 +1,9 @@
+0x20f0840,epoint,1,0,0,0x20f0840_0,na,na
+0x20f0840_0,funccall,fputc,1,1,0,0x20f0840_1,0x20f0840,na
+0x20f0840_1,funccall,dcgettext,1,1,0,0x20f0840_2,0x20f0840_0,na
+0x20f0840_2,funccall,printf,1,1,0,0x20f0840_3,0x20f0840_1,na
+0x20f0840_3,funccall,dcgettext,1,1,0,0x20f0840_4,0x20f0840_2,na
+0x20f0840_4,funccall,printf,1,1,0,0x20f0840_5,0x20f0840_3,na
+0x20f0840_5,funccall,dcgettext,1,1,0,0x20f0840_6,0x20f0840_4,na
+0x20f0840_6,funccall,printf,1,1,0,0x20f0840_7,0x20f0840_5,na
+0x20f0840_7,ret,0,1,0,na,0x20f0840_6,na

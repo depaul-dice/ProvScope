@@ -1,0 +1,4 @@
+0x1de3310,epoint,1,0,0,0x1de3310_0,na,na
+0x1de3310_0,funccall,__shlim,1,1,0,0x1de3310_1,0x1de3310,na
+0x1de3310_1,funccall,__intscan,1,1,0,0x1de35d0,0x1de3310_0,na
+0x1de35d0,ret,0,1,0,na,0x1de3310_1,na

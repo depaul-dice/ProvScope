@@ -1,0 +1,6 @@
+0x2c12540,epoint,1,0,0,0x2c12540_0,na,na
+0x2c12540_0,funccall,ck_fflush,1,1,0,0x2c12540_1,0x2c12540,na
+0x2c12540_1,funccall,clearerr,1,1,0,0x2c12540_2,0x2c12540_0,na
+0x2c12540_2,funccall,fclose,2,1,0,0x2c125c0:0x2c12610,0x2c12540_1,na
+0x2c125c0,funccall,panic,0,1,0,na,0x2c12540_2,na
+0x2c12610,ret,0,1,0,na,0x2c12540_2,na

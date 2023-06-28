@@ -1,0 +1,2 @@
+0xc4a900,epoint,1,0,0,0xc4a900_0,na,na
+0xc4a900_0,ret,0,1,0,na,0xc4a900,na

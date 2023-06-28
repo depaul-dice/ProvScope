@@ -1,0 +1,4 @@
+0x2594170,epoint,2,0,0,0x24ea760:0x24ea710,na,na
+0x24ea710,funccall,dcgettext,1,1,0,0x24ea7b0,0x2594170,na
+0x24ea760,funccall,dcgettext,1,1,0,0x24ea7b0,0x2594170,na
+0x24ea7b0,funccall,exit,0,2,0,na,0x24ea710:0x24ea760,na

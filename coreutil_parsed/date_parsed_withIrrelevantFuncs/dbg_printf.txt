@@ -1,0 +1,4 @@
+0x19b9950,epoint,1,0,0,0x19b9950_0,na,na
+0x19b9950_0,funccall,fputs,1,1,0,0x19b9950_1,0x19b9950,na
+0x19b9950_1,funccall,vfprintf,1,1,0,0x19b9950_2,0x19b9950_0,na
+0x19b9950_2,ret,0,1,0,na,0x19b9950_1,na

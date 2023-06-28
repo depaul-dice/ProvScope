@@ -1,0 +1,3 @@
+0x9f2e10,epoint,2,0,0,0x88bca0:0x9f35d0,na,na
+0x9f35d0,funccall,xalloc_die,0,1,0,na,0x9f2e10,na
+0x88bca0,ret,0,1,0,na,0x9f2e10,na

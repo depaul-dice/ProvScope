@@ -1,0 +1,4 @@
+0xdf1040,epoint,2,0,0,0xdf1d90:0xdf2060,na,na
+0xdf1d90,funccall,fputs,1,1,0,0xdf1d90_1,0xdf1040,na
+0xdf1d90_1,funccall,abort,0,1,0,na,0xdf1d90,na
+0xdf2060,ret,0,1,0,na,0xdf1040,na

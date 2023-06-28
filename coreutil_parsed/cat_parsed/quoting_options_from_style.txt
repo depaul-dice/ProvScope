@@ -1,0 +1,3 @@
+0xe30880,epoint,2,0,0,0xe31aa0:0xe31af0,na,na
+0xe31aa0,funccall,abort,0,1,0,na,0xe30880,na
+0xe31af0,ret,0,1,0,na,0xe30880,na

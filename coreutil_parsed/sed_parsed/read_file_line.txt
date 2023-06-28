@@ -1,0 +1,4 @@
+0x31539f0,epoint,1,0,0,0x31539f0_0,na,na
+0x31539f0_0,funccall,ck_getdelim,2,1,0,0x3153b90:0x3153b40,0x31539f0,na
+0x3153b40,funccall,str_append,1,1,0,0x3153b90,0x31539f0_0,na
+0x3153b90,ret,0,2,0,na,0x31539f0_0:0x3153b40,na

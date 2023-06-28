@@ -1,0 +1,17 @@
+0x18e2380,epoint,1,0,0,0x18e2380_0,na,na
+0x18e2380_0,funccall,strcmp,2,1,0,0x18e2570:0x18e26b0,0x18e2380,na
+0x18e2570,funccall,fopen,2,1,0,0x18e26b0:0x18e25c0,0x18e2380_0,na
+0x18e25c0,funccall,__errno_location,1,1,0,0x18e25c0_1,0x18e2570,na
+0x18e25c0_1,funccall,quotearg_n_style_colon,1,1,0,0x18e25c0_2,0x18e25c0,na
+0x18e25c0_2,funccall,error,0,1,0,na,0x18e25c0_1,na
+0x18e26b0,funccall,getline,2,4,0,0x18e2750:0x18e2930,0x18e2380_0:0x18e2840_1:0x18e2890:0x18e2570,na
+0x18e2750,funccall,parse_datetime2,2,1,0,0x18e2890:0x18e2840,0x18e26b0,na
+0x18e2840,funccall,quote,1,1,0,0x18e2840_1,0x18e2750,na
+0x18e2840_1,funccall,error,0,1,1,na,0x18e2840,0x18e26b0
+0x18e2890,funccall,show_date,0,1,1,na,0x18e2750,0x18e26b0
+0x18e2930,funccall,rpl_fclose,2,1,0,0x18e2980:0x18e29d0,0x18e26b0,na
+0x18e2980,funccall,__errno_location,1,1,0,0x18e2980_1,0x18e2930,na
+0x18e2980_1,funccall,quotearg_n_style_colon,1,1,0,0x18e2980_2,0x18e2980,na
+0x18e2980_2,funccall,error,0,1,0,na,0x18e2980_1,na
+0x18e29d0,funccall,rpl_free,1,1,0,0x18e29d0_1,0x18e2930,na
+0x18e29d0_1,ret,0,1,0,na,0x18e29d0,na

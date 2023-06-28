@@ -1,0 +1,3 @@
+0x18dcb10,epoint,1,0,0,0x18dcb10_0,na,na
+0x18dcb10_0,funccall,quote_n,1,1,0,0x18dcb10_1,0x18dcb10,na
+0x18dcb10_1,ret,0,1,0,na,0x18dcb10_0,na

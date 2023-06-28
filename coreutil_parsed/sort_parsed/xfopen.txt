@@ -1,0 +1,4 @@
+0x1253910,epoint,1,0,0,0x1253910_0,na,na
+0x1253910_0,funccall,stream_open,2,1,0,0x12544c0:0x1254470,0x1253910,na
+0x1254470,funccall,sort_die,0,1,0,na,0x1253910_0,na
+0x12544c0,ret,0,1,0,na,0x1253910_0,na

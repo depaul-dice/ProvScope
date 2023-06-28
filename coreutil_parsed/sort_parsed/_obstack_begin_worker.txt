@@ -1,0 +1,4 @@
+0x1672b00,epoint,1,0,0,0x1674d30,na,na
+0x1674d30,funccall,call_chunkfun,2,1,0,0x1674e70:0x1674dd0,0x1672b00,na
+0x1674dd0,funccall,print_and_abort,0,1,0,na,0x1674d30,na
+0x1674e70,ret,0,1,0,na,0x1674d30,na

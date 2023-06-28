@@ -1,0 +1,4 @@
+0x31aadb0,epoint,1,0,0,0x31aadb0_0,na,na
+0x31aadb0_0,funccall,__block_app_sigs,1,1,0,0x31aadb0_1,0x31aadb0,na
+0x31aadb0_1,funccall,__restore_sigs,1,1,0,0x31aadb0_2,0x31aadb0_0,na
+0x31aadb0_2,ret,0,1,0,na,0x31aadb0_1,na

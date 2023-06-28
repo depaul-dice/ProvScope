@@ -1,0 +1,14 @@
+0x31fccf0,epoint,1,0,0,0x31fd6f0,na,na
+0x31fd6f0,funccall,__pthread_tsd_run_dtors,1,1,0,0x31fd6f0_1,0x31fccf0,na
+0x31fd6f0_1,funccall,__lock,1,1,0,0x31fd6f0_2,0x31fd6f0,na
+0x31fd6f0_2,funccall,__block_app_sigs,1,1,0,0x31fd6f0_3,0x31fd6f0_1,na
+0x31fd6f0_3,funccall,__tl_lock,2,1,0,0x31fd740:0x31fd970,0x31fd6f0_2,na
+0x31fd740,funccall,__tl_unlock,1,1,0,0x31fd740_1,0x31fd6f0_3,na
+0x31fd740_1,funccall,__restore_sigs,1,1,0,0x31fd740_2,0x31fd740,na
+0x31fd740_2,funccall,__unlock,1,1,0,0x31fd740_3,0x31fd740_1,na
+0x31fd740_3,funccall,exit,0,1,0,na,0x31fd740_2,na
+0x31fd970,funccall,__vm_unlock,1,1,0,0x31fd970_1,0x31fd6f0_3,na
+0x31fd970_1,funccall,__dl_thread_cleanup,2,1,0,0x31fda10:0x31fdba0,0x31fd970,na
+0x31fda10,funccall,__block_all_sigs,1,1,0,0x31fdab0,0x31fd970_1,na
+0x31fdab0,funccall,__vm_wait,1,1,0,0x31fdba0,0x31fda10,na
+0x31fdba0,funccall,__unlock,0,2,0,na,0x31fd970_1:0x31fdab0,na

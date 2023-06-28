@@ -1,0 +1,14 @@
+0x3058840,epoint,1,0,0,0x3059240,na,na
+0x3059240,funccall,__pthread_tsd_run_dtors,1,1,0,0x3059240_1,0x3058840,na
+0x3059240_1,funccall,__lock,1,1,0,0x3059240_2,0x3059240,na
+0x3059240_2,funccall,__block_app_sigs,1,1,0,0x3059240_3,0x3059240_1,na
+0x3059240_3,funccall,__tl_lock,2,1,0,0x3059290:0x30594c0,0x3059240_2,na
+0x3059290,funccall,__tl_unlock,1,1,0,0x3059290_1,0x3059240_3,na
+0x3059290_1,funccall,__restore_sigs,1,1,0,0x3059290_2,0x3059290,na
+0x3059290_2,funccall,__unlock,1,1,0,0x3059290_3,0x3059290_1,na
+0x3059290_3,funccall,exit,0,1,0,na,0x3059290_2,na
+0x30594c0,funccall,__vm_unlock,1,1,0,0x30594c0_1,0x3059240_3,na
+0x30594c0_1,funccall,__dl_thread_cleanup,2,1,0,0x3059560:0x30596f0,0x30594c0,na
+0x3059560,funccall,__block_all_sigs,1,1,0,0x3059600,0x30594c0_1,na
+0x3059600,funccall,__vm_wait,1,1,0,0x30596f0,0x3059560,na
+0x30596f0,funccall,__unlock,0,2,0,na,0x30594c0_1:0x3059600,na

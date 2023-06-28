@@ -1,0 +1,3 @@
+0x10fa8e0,epoint,2,0,0,0x10fae70:0x10fac40,na,na
+0x10fac40,funccall,abort,0,1,0,na,0x10fa8e0,na
+0x10fae70,ret,0,1,0,na,0x10fa8e0,na

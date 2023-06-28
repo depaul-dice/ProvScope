@@ -1,0 +1,3 @@
+0x33c1710,epoint,1,0,0,0x33c1710_0,na,na
+0x33c1710_0,funccall,malloc,1,1,0,0x33c1900,0x33c1710,na
+0x33c1900,ret,0,1,0,na,0x33c1710_0,na

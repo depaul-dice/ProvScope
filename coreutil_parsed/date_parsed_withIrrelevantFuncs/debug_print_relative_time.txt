@@ -1,0 +1,13 @@
+0x1b816c0,epoint,1,0,0,0x1b816c0_0,na,na
+0x1b816c0_0,funccall,debugging,2,1,0,0x1b81830:0x1b81b00,0x1b816c0,na
+0x1b81830,funccall,dbg_printf,2,1,0,0x1b81ab0:0x1b81a60,0x1b816c0_0,na
+0x1b81a60,funccall,fputs,1,1,0,0x1b81b00,0x1b81830,na
+0x1b81ab0,funccall,print_rel_part,1,1,0,0x1b81ab0_1,0x1b81830,na
+0x1b81ab0_1,funccall,print_rel_part,1,1,0,0x1b81ab0_2,0x1b81ab0,na
+0x1b81ab0_2,funccall,print_rel_part,1,1,0,0x1b81ab0_3,0x1b81ab0_1,na
+0x1b81ab0_3,funccall,print_rel_part,1,1,0,0x1b81ab0_4,0x1b81ab0_2,na
+0x1b81ab0_4,funccall,print_rel_part,1,1,0,0x1b81ab0_5,0x1b81ab0_3,na
+0x1b81ab0_5,funccall,print_rel_part,1,1,0,0x1b81ab0_6,0x1b81ab0_4,na
+0x1b81ab0_6,funccall,print_rel_part,1,1,0,0x1b81ab0_7,0x1b81ab0_5,na
+0x1b81ab0_7,funccall,fputc,1,1,0,0x1b81b00,0x1b81ab0_6,na
+0x1b81b00,ret,0,3,0,na,0x1b81a60:0x1b81ab0_7:0x1b816c0_0,na

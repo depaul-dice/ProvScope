@@ -1,0 +1,3 @@
+0x2e04570,epoint,1,0,0,0x2e04570_0,na,na
+0x2e04570_0,funccall,dcgettext,1,1,0,0x26e63d0,0x2e04570,na
+0x26e63d0,ret,0,1,0,na,0x2e04570_0,na

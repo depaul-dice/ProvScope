@@ -1,0 +1,3 @@
+0x1217330,epoint,2,0,0,0x12174a0:0x12177c0,na,na
+0x12174a0,funccall,__assert_fail,0,1,0,na,0x1217330,na
+0x12177c0,ret,0,1,0,na,0x1217330,na

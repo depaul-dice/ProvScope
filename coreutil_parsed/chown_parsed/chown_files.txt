@@ -1,0 +1,6 @@
+0x1086310,epoint,1,0,0,0x109dcb0,na,na
+0x109dcb0,funccall,xfts_open,1,1,0,0x109dd00,0x1086310,na
+0x109dd00,funccall,rpl_fts_read,2,2,0,0x109dee0:0x109df30,0x109dcb0:0x109dee0,na
+0x109dee0,funccall,change_file_owner,0,1,1,na,0x109dd00,0x109dd00
+0x109df30,funccall,rpl_fts_close,1,1,0,0x109dfd0,0x109dd00,na
+0x109dfd0,ret,0,1,0,na,0x109df30,na

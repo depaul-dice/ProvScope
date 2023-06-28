@@ -1,0 +1,4 @@
+0x12b1ff0,epoint,1,0,0,0x12b2220,na,na
+0x12b2220,funccall,open,1,1,0,0x12b2220_1,0x12b1ff0,na
+0x12b2220_1,funccall,fd_safer,1,1,0,0x12b2220_2,0x12b2220,na
+0x12b2220_2,ret,0,1,0,na,0x12b2220_1,na

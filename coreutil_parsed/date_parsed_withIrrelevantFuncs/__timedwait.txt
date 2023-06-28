@@ -1,0 +1,5 @@
+0x1cd2950,epoint,1,0,0,0x1cd2950_0,na,na
+0x1cd2950_0,funccall,__pthread_setcancelstate,1,1,0,0x1cd2950_1,0x1cd2950,na
+0x1cd2950_1,funccall,__timedwait_cp,1,1,0,0x1cd2950_2,0x1cd2950_0,na
+0x1cd2950_2,funccall,__pthread_setcancelstate,1,1,0,0x1cd2950_3,0x1cd2950_1,na
+0x1cd2950_3,ret,0,1,0,na,0x1cd2950_2,na

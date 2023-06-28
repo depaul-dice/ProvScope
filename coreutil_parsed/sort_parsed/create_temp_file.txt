@@ -1,0 +1,8 @@
+0x1556df0,epoint,1,0,0,0x1556df0_0,na,na
+0x1556df0_0,funccall,xmalloc,1,1,0,0x1556f50,0x1556df0,na
+0x1556f50,funccall,cs_enter,1,1,0,0x1556f50_1,0x1556df0_0,na
+0x1556f50_1,funccall,mkostemp_safer,1,1,0,0x1556ff0,0x1556f50,na
+0x1556ff0,funccall,cs_leave,3,1,0,0x1557180:0x15570e0:0x1557130,0x1556f50_1,na
+0x15570e0,funccall,quotearg_style,0,1,0,na,0x1556ff0,na
+0x1557130,funccall,rpl_free,1,1,0,0x1557180,0x1556ff0,na
+0x1557180,ret,0,2,0,na,0x1556ff0:0x1557130,na

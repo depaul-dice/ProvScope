@@ -1,0 +1,7 @@
+0x15aabc0,epoint,1,0,0,0x15aabc0_0,na,na
+0x15aabc0_0,funccall,getrlimit,1,1,0,0x15ab9e0,0x15aabc0,na
+0x15ab9e0,funccall,getrlimit,1,1,0,0x15abad0,0x15aabc0_0,na
+0x15abad0,funccall,getrlimit,1,1,0,0x15abbc0,0x15ab9e0,na
+0x15abbc0,funccall,physmem_available,1,1,0,0x15abbc0_1,0x15abad0,na
+0x15abbc0_1,funccall,physmem_total,1,1,0,0x15abee0,0x15abbc0,na
+0x15abee0,ret,0,1,0,na,0x15abbc0_1,na

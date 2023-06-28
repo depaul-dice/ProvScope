@@ -1,0 +1,2 @@
+0x1fc1f10,epoint,1,0,0,0x1fc1f10_0,na,na
+0x1fc1f10_0,funccall,usage,0,1,0,na,0x1fc1f10,na

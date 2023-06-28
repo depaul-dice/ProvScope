@@ -1,0 +1,4 @@
+0x13c1180,epoint,1,0,0,0x13c1180_0,na,na
+0x13c1180_0,funccall,quotearg_n_style_mem,1,1,0,0x13c1180_1,0x13c1180,na
+0x13c1180_1,funccall,quotearg_n_style_mem,1,1,0,0x13c1180_2,0x13c1180_0,na
+0x13c1180_2,ret,0,1,0,na,0x13c1180_1,na

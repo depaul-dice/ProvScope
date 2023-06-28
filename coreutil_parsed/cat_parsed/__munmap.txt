@@ -1,0 +1,3 @@
+0xf2c050,epoint,1,0,0,0xf2c050_0,na,na
+0xf2c050_0,funccall,__vm_wait,1,1,0,0xf2c050_1,0xf2c050,na
+0xf2c050_1,ret,0,1,0,na,0xf2c050_0,na

@@ -1,0 +1,6 @@
+0x18f0110,epoint,1,0,0,0x18f0110_0,na,na
+0x18f0110_0,funccall,__fork_handler,1,1,0,0x18f0110_1,0x18f0110,na
+0x18f0110_1,funccall,__block_all_sigs,1,1,0,0x18f0880,0x18f0110_0,na
+0x18f0880,funccall,__restore_sigs,1,1,0,0x18f0880_1,0x18f0110_1,na
+0x18f0880_1,funccall,__fork_handler,1,1,0,0x18f0880_2,0x18f0880,na
+0x18f0880_2,ret,0,1,0,na,0x18f0880_1,na

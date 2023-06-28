@@ -1,0 +1,7 @@
+0x128d210,epoint,1,0,0,0x128d210_0,na,na
+0x128d210_0,funccall,randread_new,2,1,0,0x128d3a0:0x128d350,0x128d210,na
+0x128d350,funccall,sort_die,0,1,0,na,0x128d210_0,na
+0x128d3a0,funccall,randread,1,1,0,0x128d3a0_1,0x128d210_0,na
+0x128d3a0_1,funccall,randread_free,2,1,0,0x128d3f0:0x128d440,0x128d3a0,na
+0x128d3f0,funccall,sort_die,0,1,0,na,0x128d3a0_1,na
+0x128d440,ret,0,1,0,na,0x128d3a0_1,na

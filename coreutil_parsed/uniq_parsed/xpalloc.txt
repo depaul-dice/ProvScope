@@ -1,0 +1,4 @@
+0x16c7ab0,epoint,2,0,0,0x16c8ee0:0x16c8e90,na,na
+0x16c8e90,funccall,xalloc_die,0,1,0,na,0x16c7ab0,na
+0x16c8ee0,funccall,xrealloc,1,1,0,0x16c8ee0_1,0x16c7ab0,na
+0x16c8ee0_1,ret,0,1,0,na,0x16c8ee0,na

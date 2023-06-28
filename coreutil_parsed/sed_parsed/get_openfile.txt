@@ -1,0 +1,9 @@
+0x26e90c0,epoint,1,0,0,0x26e90c0_0,na,na
+0x26e90c0_0,funccall,read_filename,4,1,0,0x26e9270:0x26e96d0:0x26e9590:0x26e9680,0x26e90c0,na
+0x26e9270,funccall,dcgettext,1,1,0,0x26e9270_1,0x26e90c0_0,na
+0x26e9270_1,funccall,bad_prog,0,1,0,na,0x26e9270,na
+0x26e9590,funccall,_obstack_newchunk,1,1,0,0x26e9680,0x26e90c0_0,na
+0x26e9680,funccall,xstrdup,1,2,0,0x26e9680_1,0x26e9590:0x26e90c0_0,na
+0x26e9680_1,funccall,ck_fopen,1,1,0,0x26e96d0,0x26e9680,na
+0x26e96d0,funccall,free_buffer,1,2,0,0x26e96d0_1,0x26e9680_1:0x26e90c0_0,na
+0x26e96d0_1,ret,0,1,0,na,0x26e96d0,na

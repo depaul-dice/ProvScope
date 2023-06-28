@@ -1,0 +1,4 @@
+0xd5a8b0,epoint,1,0,0,0xd5a8b0_0,na,na
+0xd5a8b0_0,funccall,fprintf,1,1,0,0xd5a8b0_1,0xd5a8b0,na
+0xd5a8b0_1,funccall,fflush,1,1,0,0xd5a8b0_2,0xd5a8b0_0,na
+0xd5a8b0_2,funccall,abort,0,1,0,na,0xd5a8b0_1,na

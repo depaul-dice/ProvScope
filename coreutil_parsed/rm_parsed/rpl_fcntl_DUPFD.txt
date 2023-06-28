@@ -1,0 +1,3 @@
+0xb691e0,epoint,1,0,0,0xb691e0_0,na,na
+0xb691e0_0,funccall,fcntl,1,1,0,0xb691e0_1,0xb691e0,na
+0xb691e0_1,ret,0,1,0,na,0xb691e0_0,na

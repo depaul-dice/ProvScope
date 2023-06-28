@@ -1,0 +1,5 @@
+0x1255800,epoint,1,0,0,0x1255800_0,na,na
+0x1255800_0,funccall,_obstack_begin,1,1,0,0x1255800_1,0x1255800,na
+0x1255800_1,funccall,_obstack_begin,1,1,0,0x1255800_2,0x1255800_0,na
+0x1255800_2,funccall,_obstack_begin,1,1,0,0x1255800_3,0x1255800_1,na
+0x1255800_3,ret,0,1,0,na,0x1255800_2,na

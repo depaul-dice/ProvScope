@@ -1,0 +1,4 @@
+0x1e70bb0,epoint,1,0,0,0x1e71290,na,na
+0x1e71290,funccall,__year_to_secs,1,1,0,0x1e71290_1,0x1e70bb0,na
+0x1e71290_1,funccall,__month_to_secs,1,1,0,0x1e71290_2,0x1e71290,na
+0x1e71290_2,ret,0,1,0,na,0x1e71290_1,na

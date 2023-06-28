@@ -1,0 +1,3 @@
+0x1265500,epoint,1,0,0,0x1265500_0,na,na
+0x1265500_0,funccall,filesystem_type,1,1,0,0x1268e00,0x1265500,na
+0x1268e00,ret,0,1,0,na,0x1265500_0,na

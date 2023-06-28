@@ -1,0 +1,5 @@
+0x12b5db0,epoint,2,0,0,0x12b5eb0:0x12b6130,na,na
+0x12b5eb0,funccall,parse_omp_threads,1,1,0,0x12b5eb0_1,0x12b5db0,na
+0x12b5eb0_1,funccall,parse_omp_threads,2,1,0,0x12b6130:0x12b6270,0x12b5eb0,na
+0x12b6130,funccall,num_processors_ignoring_omp,1,2,0,0x12b6270,0x12b5db0:0x12b5eb0_1,na
+0x12b6270,ret,0,2,0,na,0x12b5eb0_1:0x12b6130,na

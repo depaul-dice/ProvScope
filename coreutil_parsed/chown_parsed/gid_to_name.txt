@@ -1,0 +1,4 @@
+0x1098380,epoint,1,0,0,0x1098380_0,na,na
+0x1098380_0,funccall,getgrgid,1,1,0,0x10984a0,0x1098380,na
+0x10984a0,funccall,xstrdup,1,1,0,0x10984a0_1,0x1098380_0,na
+0x10984a0_1,ret,0,1,0,na,0x10984a0,na

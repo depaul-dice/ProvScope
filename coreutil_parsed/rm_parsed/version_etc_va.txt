@@ -1,0 +1,3 @@
+0xa6ab00,epoint,1,0,0,0xa6ae30,na,na
+0xa6ae30,funccall,version_etc_arn,1,1,0,0xa6ae30_1,0xa6ab00,na
+0xa6ae30_1,ret,0,1,0,na,0xa6ae30,na

@@ -1,0 +1,3 @@
+0x169e080,epoint,1,0,0,0x169e080_0,na,na
+0x169e080_0,funccall,xstrtol_error,1,1,0,0x169e080_1,0x169e080,na
+0x169e080_1,funccall,abort,0,1,0,na,0x169e080_0,na

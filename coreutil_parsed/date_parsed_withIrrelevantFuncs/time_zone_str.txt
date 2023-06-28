@@ -1,0 +1,5 @@
+0x1aa0090,epoint,1,0,0,0x1aa0090_0,na,na
+0x1aa0090_0,funccall,abs,1,1,0,0x1aa0090_1,0x1aa0090,na
+0x1aa0090_1,funccall,sprintf,1,1,0,0x1aa0090_2,0x1aa0090_0,na
+0x1aa0090_2,funccall,abs,1,1,0,0x19843b0,0x1aa0090_1,na
+0x19843b0,ret,0,1,0,na,0x1aa0090_2,na

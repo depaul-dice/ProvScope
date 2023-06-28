@@ -1,0 +1,4 @@
+0x18ed080,epoint,1,0,0,0x18ed080_0,na,na
+0x18ed080_0,funccall,__ofl_lock,1,1,0,0x18ed150,0x18ed080,na
+0x18ed150,funccall,__ofl_unlock,1,1,0,0x18ed150_1,0x18ed080_0,na
+0x18ed150_1,ret,0,1,0,na,0x18ed150,na

@@ -1,0 +1,4 @@
+0x2370d00,epoint,1,0,0,0x2370ef0,na,na
+0x2370ef0,funccall,fputs,1,1,0,0x2370ef0_1,0x2370d00,na
+0x2370ef0_1,funccall,fputs,1,1,0,0x2371670,0x2370ef0,na
+0x2371670,ret,0,1,0,na,0x2370ef0_1,na

@@ -1,0 +1,3 @@
+0xc5af60,epoint,1,0,0,0xc5af60_0,na,na
+0xc5af60_0,funccall,__getopt_long,1,1,0,0xc5af60_1,0xc5af60,na
+0xc5af60_1,ret,0,1,0,na,0xc5af60_0,na
