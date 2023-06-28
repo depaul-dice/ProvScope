@@ -17,6 +17,11 @@ To find the points of divergence/convergence, the following command works. You f
 ```
 ./src/provScope -c funcList.txt nrfile parsedCFG ftrfile1 ftrfile2
 ```
+
+To give a concrete example it is the following
+```
+./src/provScope -c funcList.txt noRetFuncs/uniq_all.nr coreutil_parsed/uniq_parsed coreFuncTraceInput/uniq/uniqc.ftr coreFuncTraceInput/uniq/uniqd.ftr
+```
 Notice that you only need one nonreturn function files because they ftrfiles should be from the same executables, and so is parsedCFGs which are created from LLVManalyses. If you need to run multiple times and becomes tedious, you can prepare a txt file with one line above (let's say the file name is input.txt) and you can use the following command to do the same.
 ```
 ./src/provScope -f input.txt
